@@ -1,10 +1,13 @@
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:hani_almutairi_logistic/utils/my_theme.dart';
+
 import 'package:hani_almutairi_logistic/utils/routes.dart';
+import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,11 +26,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: AuthProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: OrderProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Hani Almutairi Logistic',
         debugShowCheckedModeBanner: false,
-        theme: my_theme,
+        theme: customTheme,
         // home: Consumer<AuthProvider>(
         //   builder: (_, authProvider, __) {
         //     return FutureBuilder(
@@ -39,7 +45,7 @@ class MyApp extends StatelessWidget {
         //   },
         // ),
         home: LoginScreen(),
-        // initialRoute: LoginScreen.routeName,
+        // initialRoute: '/',
         routes: routes,
       ),
     );

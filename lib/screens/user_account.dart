@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
-import 'package:hani_almutairi_logistic/utils/colors.dart' as Theme;
+import 'package:hani_almutairi_logistic/utils/theme.dart';
 
 class UserAccount extends StatelessWidget {
   static const String routeName = '/user-account';
@@ -8,7 +8,6 @@ class UserAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
       body: GridView(
         padding: EdgeInsets.symmetric(
           horizontal: 25.0,
@@ -27,14 +26,14 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(Icons.location_on),
                     color: Colors.white,
-                    iconSize: 50,
+                    iconSize: 40,
                   ),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.Colors.loginGradientEnd,
-                      Theme.Colors.loginGradientStart
+                      CustomColor.gradientEnd,
+                      CustomColor.gradientStart
                     ],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
@@ -43,9 +42,9 @@ class UserAccount extends StatelessWidget {
                 ),
               ),
               footer: GridTileBar(
-                backgroundColor: Theme.Colors.loginGradientEnd,
+                backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'My Addresses',
+                  'My \n Addresses',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -68,14 +67,14 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(Icons.attach_money_sharp),
                     color: Colors.white,
-                    iconSize: 50,
+                    iconSize: 40,
                   ),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.Colors.loginGradientEnd,
-                      Theme.Colors.loginGradientStart
+                      CustomColor.gradientEnd,
+                      CustomColor.gradientStart
                     ],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
@@ -84,9 +83,9 @@ class UserAccount extends StatelessWidget {
                 ),
               ),
               footer: GridTileBar(
-                backgroundColor: Theme.Colors.loginGradientEnd,
+                backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'COD Amounts',
+                  'COD \n Amounts',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -109,14 +108,14 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(Icons.search_sharp),
                     color: Colors.white,
-                    iconSize: 50,
+                    iconSize: 40,
                   ),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.Colors.loginGradientEnd,
-                      Theme.Colors.loginGradientStart
+                      CustomColor.gradientEnd,
+                      CustomColor.gradientStart
                     ],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
@@ -125,7 +124,7 @@ class UserAccount extends StatelessWidget {
                 ),
               ),
               footer: GridTileBar(
-                backgroundColor: Theme.Colors.loginGradientEnd,
+                backgroundColor: CustomColor.gradientEnd,
                 title: Text(
                   'Reports for all \n orders and COD',
                   textAlign: TextAlign.center,
@@ -150,14 +149,14 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(Icons.lock),
                     color: Colors.white,
-                    iconSize: 50,
+                    iconSize: 40,
                   ),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.Colors.loginGradientEnd,
-                      Theme.Colors.loginGradientStart
+                      CustomColor.gradientEnd,
+                      CustomColor.gradientStart
                     ],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
@@ -166,7 +165,7 @@ class UserAccount extends StatelessWidget {
                 ),
               ),
               footer: GridTileBar(
-                backgroundColor: Theme.Colors.loginGradientEnd,
+                backgroundColor: CustomColor.gradientEnd,
                 title: Text(
                   'Password \n Change',
                   textAlign: TextAlign.center,
@@ -191,14 +190,14 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {},
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,
-                    iconSize: 50,
+                    iconSize: 40,
                   ),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.Colors.loginGradientEnd,
-                      Theme.Colors.loginGradientStart
+                      CustomColor.gradientEnd,
+                      CustomColor.gradientStart
                     ],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
@@ -207,7 +206,7 @@ class UserAccount extends StatelessWidget {
                 ),
               ),
               footer: GridTileBar(
-                backgroundColor: Theme.Colors.loginGradientEnd,
+                backgroundColor: CustomColor.gradientEnd,
                 title: Text(
                   'Logout',
                   textAlign: TextAlign.center,
@@ -223,9 +222,9 @@ class UserAccount extends StatelessWidget {
         ],
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 2.6 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
+          childAspectRatio: 2.8 / 2,
+          crossAxisSpacing: 25,
+          mainAxisSpacing: 25,
         ),
       ),
     );

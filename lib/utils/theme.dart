@@ -1,4 +1,21 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+class CustomColor {
+  const CustomColor();
+
+  static const Color gradientStart = const Color(0xFFF9A773);
+  static const Color gradientEnd = const Color(0xFFEF4472);
+
+  static const primaryGradient = const LinearGradient(
+    colors: const [gradientStart, gradientEnd],
+    stops: const [0.0, 1.0],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+}
 
 Map<int, Color> color = {
   50: Color.fromRGBO(8, 45, 74, .1),
@@ -13,11 +30,10 @@ Map<int, Color> color = {
 };
 
 MaterialColor customPrimaryColor = MaterialColor(0xFF1D1D38, color);
-Color customAccentColor = Color(0xFFF2EFF5);
 
-final my_theme = ThemeData(
+final customTheme = ThemeData(
   primarySwatch: customPrimaryColor,
-  accentColor: customAccentColor,
+  accentColor: Colors.blue,
   errorColor: Colors.redAccent,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'ProximaNova',

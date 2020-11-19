@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoginIndicator extends StatelessWidget {
+class AuthIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -9,7 +9,7 @@ class LoginIndicator extends StatelessWidget {
         CircularProgressIndicator(
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        Text(" Authenticating ... Please wait")
+        Text(" ... Please wait")
       ],
     );
   }

@@ -1,15 +1,6 @@
 class WebApi {
-  static const String apiKey = 'loalsdoalsdola_nljkagn_';
-  static const String baseURL = 'https://demo.softologics.com/API';
-  static const String baseURLImg =
-      'https://demo.softologics.com/assets/uploads/properties/images';
-  static const String baseURLImgNotFound = './assets/images/img_not_found.jpg';
-  static const String loginURL = baseURL + '/auth/login';
-  static const String registerURL = baseURL + '/auth/signup';
-  static const String addProperty = baseURL + '/properties/create';
-  static const String globalPropertiesURL = baseURL + '/properties/properties';
-  static const String userPropertiesURL =
-      baseURL + '/properties/user_properties';
-  static const String citiesURL = baseURL + '/locations/cities/1';
-  static const String propertyTypeURL = baseURL + '/properties/properties_type';
+  static const String apiKey = '1s321d684sd1s4d68s43d4s68d46s1d47sd16s4d89s4d3';
+  static const String baseURL = 'http://192.168.0.102/hubex/api/login_api';
+  static const String loginURL = baseURL + '/login_api';
+  static const String getCountriesURL = baseURL + '/getcountry';
 }

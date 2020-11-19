@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/utils/theme.dart';
+import 'package:provider/provider.dart';
 
 class AddOrderScreen extends StatefulWidget {
   static const String routeName = '/add-order';
@@ -12,12 +15,13 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // PROPERTY NAME
+    final orderPvd = Provider.of<OrderProvider>(context);
+
     final fullNameField = Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
         decoration: InputDecoration(
-          fillColor: Theme.of(context).accentColor,
+          fillColor: Colors.grey[200],
           filled: true,
           labelText: 'Full Name',
           contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
@@ -37,195 +41,176 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
       ),
     );
 
-    final districtField = Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          fillColor: Theme.of(context).accentColor,
-          filled: true,
-          labelText: 'District',
-          contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-        ),
-        keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please type a property name';
-          }
-          return null;
-        },
-        onSaved: (value) {
-          setState(() {
-            // propertyData.name = value;
-          });
-        },
-      ),
-    );
-
-    final cityField = Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          fillColor: Theme.of(context).accentColor,
-          filled: true,
-          labelText: 'City',
-          contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-        ),
-        keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please type a property name';
-          }
-          return null;
-        },
-        onSaved: (value) {
-          setState(() {
-            // propertyData.name = value;
-          });
-        },
-      ),
-    );
-
-    // ADDRESS NAME
-    final mobileField = Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          fillColor: Theme.of(context).accentColor,
-          filled: true,
-          labelText: 'Mobile No',
-          contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
-        ),
-        keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please type a address';
-          }
-          return null;
-        },
-        onSaved: (value) {
-          setState(() {
-            // propertyData.address = value;
-          });
-        },
-      ),
-    );
-
-    //ADD PROPERTY BTN
-    final propertyButton = Material(
-      elevation: 4.0,
-      borderRadius: BorderRadius.circular(6.0),
-      color: Theme.of(context).primaryColor,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width * 0.8,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            // propertyPvd.addProperty(
-            //     context, propertyData, authPvd.token, authPvd.userId);
-            // print(user);
-            // propertyPvd.addProperty(context, user, propertyData);
-          }
-        },
-        child: Text(
-          'ADD ORDER',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.1,
-          ),
-        ),
-      ),
-    );
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Order'),
-      ),
-      backgroundColor: Theme.of(context).accentColor,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  // Image.asset(
-                  //   './assets/images/logo.png',
-                  //   width: 180,
-                  // ),
-
-                  SizedBox(height: 25),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    elevation: 3,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 20),
-                          Text(
-                            'Sender Address',
-                            style: Theme.of(context).textTheme.headline1,
-                          ),
-                          SizedBox(height: 20),
-                          fullNameField,
-                          SizedBox(height: 20),
-                          districtField,
-                          SizedBox(height: 20),
-                          cityField,
-                          SizedBox(height: 20),
-                          mobileField,
-                          SizedBox(height: 20),
-                          CheckboxListTile(
-                            checkColor: Colors.white,
-                            activeColor: Colors.blue,
-                            title: Text("Save Address for future use"),
-                            value: true,
-                            onChanged: (newValue) {
-                              setState(() {});
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                          RadioListTile(
-                            value: true,
-                            groupValue: '1',
-                            title: Text('From 9 to 12'),
-                            activeColor: Theme.of(context).primaryColor,
-                            onChanged: (currentVal) {},
-                          ),
-                          RadioListTile(
-                            value: true,
-                            groupValue: '2',
-                            title: Text('From 12 to 3'),
-                            activeColor: Theme.of(context).primaryColor,
-                            onChanged: (currentVal) {},
-                          ),
-                          RadioListTile(
-                            value: true,
-                            groupValue: '4',
-                            title: Text('From 3 to 6'),
-                            activeColor: Theme.of(context).primaryColor,
-                            onChanged: (currentVal) {},
-                          ),
-                          SizedBox(height: 20),
-                          propertyButton,
-                          SizedBox(height: 20),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              _buildHeader(context, 'Sender Address'),
+              SizedBox(height: 10),
+              _filterBtn(
+                context,
+                orderPvd.activeFilterBtn1,
+                orderPvd.activeFilterBtn2,
+                orderPvd.activeFilterBtn3,
+                orderPvd.getDataFromActivatedFilterBtn1,
+                orderPvd.getDataFromActivatedFilterBtn2,
+                orderPvd.getDataFromActivatedFilterBtn3,
+                'Saved Addresses',
+                'New Address',
+                'My address',
               ),
-            ),
+              if (orderPvd.activeFilterBtn1 == true)
+                Text('Saved Addresses')
+              else if (orderPvd.activeFilterBtn2 == true)
+                Text('New Address')
+              else if (orderPvd.activeFilterBtn3 == true)
+                Text('My address'),
+              SizedBox(height: 20),
+              _buildHeader(context, 'Pickup Prefer Time'),
+              SizedBox(height: 20),
+              _filterBtn(
+                context,
+                orderPvd.activeFilter2Btn1,
+                orderPvd.activeFilter2Btn2,
+                orderPvd.activeFilter2Btn3,
+                orderPvd.getDataFromActivatedFilter2Btn1,
+                orderPvd.getDataFromActivatedFilter2Btn2,
+                orderPvd.getDataFromActivatedFilter2Btn3,
+                'Pickup time from sender',
+                'Example',
+                'Ask',
+              ),
+              SizedBox(height: 20),
+              if (orderPvd.activeFilter2Btn1 == true)
+                Text('Pickup time from sender')
+              else if (orderPvd.activeFilter2Btn2 == true)
+                Text('Example')
+              else if (orderPvd.activeFilter2Btn3 == true)
+                Text('Ask'),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, headerTitle) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+      width: MediaQuery.of(context).size.width / 1,
+      decoration: new BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        gradient: new LinearGradient(
+          colors: [
+            CustomColor.gradientEnd,
+            CustomColor.gradientStart,
+          ],
+          begin: const FractionalOffset(0.2, 0.2),
+          end: const FractionalOffset(1.0, 1.0),
+          stops: [0.0, 1.0],
+          tileMode: TileMode.clamp,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          headerTitle,
+          style: TextStyle(color: Colors.white, fontSize: 18, letterSpacing: 2),
+        ),
+      ),
+    );
+  }
+
+  Widget _filterBtn(
+    BuildContext context,
+    activeFilterBtn1,
+    activeFilterBtn2,
+    activeFilterBtn3,
+    getDataFromActivatedFilterBtn1,
+    getDataFromActivatedFilterBtn2,
+    getDataFromActivatedFilterBtn3,
+    filterTitle1,
+    filterTitle2,
+    filterTitle3,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RaisedButton(
+          elevation: 0,
+          splashColor: Colors.white,
+          onPressed: () {
+            getDataFromActivatedFilterBtn1();
+          },
+          child: Text(
+            '$filterTitle1',
+            style: activeFilterBtn1
+                ? TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )
+                : TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+          ),
+          color:
+              activeFilterBtn1 ? Theme.of(context).primaryColor : Colors.white,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Theme.of(context).primaryColor),
+          ),
+        ),
+        RaisedButton(
+          elevation: 0,
+          splashColor: Colors.white,
+          onPressed: () {
+            getDataFromActivatedFilterBtn2();
+          },
+          child: Text(
+            '$filterTitle2',
+            style: activeFilterBtn2
+                ? TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )
+                : TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+          ),
+          color:
+              activeFilterBtn2 ? Theme.of(context).primaryColor : Colors.white,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Theme.of(context).primaryColor),
+          ),
+        ),
+        RaisedButton(
+          elevation: 0,
+          splashColor: Colors.white,
+          onPressed: () {
+            getDataFromActivatedFilterBtn3();
+          },
+          child: Text(
+            '$filterTitle3',
+            style: activeFilterBtn3
+                ? TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )
+                : TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+          ),
+          color:
+              activeFilterBtn3 ? Theme.of(context).primaryColor : Colors.white,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Theme.of(context).primaryColor),
+          ),
+        ),
+      ],
     );
   }
 }

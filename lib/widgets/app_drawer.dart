@@ -1,7 +1,9 @@
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:hani_almutairi_logistic/utils/colors.dart' as Theme;
+import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
+import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/login_screen.dart';
+import 'package:hani_almutairi_logistic/utils/theme.dart';
 
 import 'package:flutter/material.dart';
 
@@ -19,24 +21,19 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [
-                    Theme.Colors.loginGradientStart,
-                    Theme.Colors.loginGradientEnd
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('./assets/images/header.jpg'),
+              ),
             ),
             currentAccountPicture: CircleAvatar(
               backgroundImage: CachedNetworkImageProvider(
                 'https://www.worldfuturecouncil.org/wp-content/uploads/2020/02/dummy-profile-pic-300x300-1.png',
               ),
             ),
-            accountName: Text('Username'),
-            accountEmail: Text('Email'),
+            accountName: Text('Furqan'),
+            accountEmail: Text('966 323 56462'),
             // accountName: Text('${authPvd.user['user'][0]['username']}'),
             // accountEmail: Text('${authPvd.user['user'][0]['email']}'),
           ),
@@ -61,7 +58,6 @@ class AppDrawer extends StatelessWidget {
             title: Text('Cities. It will be drop list or display list'),
             onTap: () {
               Navigator.pop(context);
-              authPvd.logOut(context);
             },
           ),
           Divider(color: Colors.grey),
@@ -70,7 +66,6 @@ class AppDrawer extends StatelessWidget {
             title: Text('Terms and Conditions'),
             onTap: () {
               Navigator.pop(context);
-              authPvd.logOut(context);
             },
           ),
           Divider(color: Colors.grey),
@@ -79,7 +74,6 @@ class AppDrawer extends StatelessWidget {
             title: Text('Privacy'),
             onTap: () {
               Navigator.pop(context);
-              authPvd.logOut(context);
             },
           ),
           Divider(color: Colors.grey),
@@ -88,7 +82,20 @@ class AppDrawer extends StatelessWidget {
             title: Text('Company website'),
             onTap: () {
               Navigator.pop(context);
-              authPvd.logOut(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (Route<dynamic> route) => false,
+              );
+              // Navigator.of(context).pushReplacementNamed(AuthTabScreen.routeName);
+              // authPvd.logOut(context);
             },
           ),
         ],

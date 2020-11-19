@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/add_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/home_screen.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
+import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account.dart';
 import 'package:hani_almutairi_logistic/screens/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
@@ -13,8 +15,8 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _currentIndex = 2;
-  String _title = 'Home';
+  int _currentIndex = 0;
+  String _title = 'My Orders';
 
   void onTabTapped(int index) {
     setState(() {
@@ -27,12 +29,17 @@ class _TabsScreenState extends State<TabsScreen> {
           break;
         case 1:
           {
-            _title = 'Home';
+            _title = 'Notifications';
           }
           break;
         case 2:
           {
-            _title = 'My Order';
+            _title = 'My Orders';
+          }
+          break;
+        case 3:
+          {
+            _title = 'Create Order';
           }
           break;
       }
@@ -41,8 +48,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
   final List<Widget> _children = [
     UserAccount(),
-    HomeScreen(),
+    NotificationScreen(),
     UserOrderScreen(),
+    AddOrderScreen(),
   ];
 
   @override
@@ -50,11 +58,6 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        iconTheme: IconThemeData(color: Colors.white),
-        elevation: 0,
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
-        ],
       ),
       body: _children[_currentIndex],
       drawer: AppDrawer(),
@@ -75,43 +78,47 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.arrow_upward,
+              _currentIndex == 1
+                  ? Icons.notifications
+                  : Icons.notifications_outlined,
               size: 24.0,
             ),
-            title: Text(''),
+            title: Text('Notifications'),
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     _currentIndex == 2 ? Icons.payment : Icons.payment_outlined,
-          //     size: 24.0,
-          //   ),
-          //   title: Text('My Account'),
-          // ),
           BottomNavigationBarItem(
             icon: Icon(
-              _currentIndex == 2 ? Icons.payments : Icons.payments_outlined,
+              _currentIndex == 2 ? Icons.folder : Icons.folder_open_outlined,
               size: 24.0,
             ),
             title: Text('My Orders'),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              _currentIndex == 3
+                  ? Icons.delivery_dining
+                  : Icons.delivery_dining,
+              size: 24.0,
+            ),
+            title: Text('Create order'),
+          ),
         ],
       ),
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        elevation: 4.0,
-        backgroundColor:
-            _currentIndex == 1 ? Theme.of(context).primaryColor : Colors.white,
-        child: Icon(
-          Icons.home,
-          color: _currentIndex == 1
-              ? Colors.white
-              : Theme.of(context).primaryColor,
-        ),
-        onPressed: () {
-          onTabTapped(1);
-        },
-      ),
+      // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   elevation: 4.0,
+      //   backgroundColor:
+      //       _currentIndex == 1 ? Theme.of(context).primaryColor : Colors.white,
+      //   child: Icon(
+      //     Icons.home,
+      //     color: _currentIndex == 1
+      //         ? Colors.white
+      //         : Theme.of(context).primaryColor,
+      //   ),
+      //   onPressed: () {
+      //     onTabTapped(1);
+      //   },
+      // ),
     );
   }
 }
