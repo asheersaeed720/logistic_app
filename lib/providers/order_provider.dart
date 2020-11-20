@@ -1,88 +1,131 @@
 import 'package:flutter/cupertino.dart';
 
 class OrderProvider with ChangeNotifier {
-  bool _activeFilterBtn1 = false;
-  bool get activeFilterBtn1 => _activeFilterBtn1;
-  set activeFilterBtn1(bool value) {
-    _activeFilterBtn1 = value;
+  bool _addressFilterBtn1 = false;
+  bool get addressFilterBtn1 => _addressFilterBtn1;
+  set addressFilterBtn1(bool value) {
+    _addressFilterBtn1 = value;
     notifyListeners();
   }
 
-  bool _activeFilterBtn2 = false;
-  bool get activeFilterBtn2 => _activeFilterBtn2;
-  set activeFilterBtn2(bool value) {
-    _activeFilterBtn2 = value;
+  bool _addressFilterBtn2 = false;
+  bool get addressFilterBtn2 => _addressFilterBtn2;
+  set addressFilterBtn2(bool value) {
+    _addressFilterBtn2 = value;
     notifyListeners();
   }
 
-  bool _activeFilterBtn3 = true;
-  bool get activeFilterBtn3 => _activeFilterBtn3;
-  set activeFilterBtn3(bool value) {
-    _activeFilterBtn3 = value;
+  bool _addressFilterBtn3 = true;
+  bool get addressFilterBtn3 => _addressFilterBtn3;
+  set addressFilterBtn3(bool value) {
+    _addressFilterBtn3 = value;
     notifyListeners();
   }
 
-  getDataFromActivatedFilterBtn1() {
-    activeFilterBtn1 = true;
-    activeFilterBtn2 = false;
-    activeFilterBtn3 = false;
+  activateAddressFilterBtn1() {
+    addressFilterBtn1 = true;
+    addressFilterBtn2 = false;
+    addressFilterBtn3 = false;
     notifyListeners();
   }
 
-  getDataFromActivatedFilterBtn2() {
-    activeFilterBtn1 = false;
-    activeFilterBtn2 = true;
-    activeFilterBtn3 = false;
+  activateAddressFilterBtn2() {
+    addressFilterBtn1 = false;
+    addressFilterBtn2 = true;
+    addressFilterBtn3 = false;
     notifyListeners();
   }
 
-  getDataFromActivatedFilterBtn3() {
-    activeFilterBtn1 = false;
-    activeFilterBtn2 = false;
-    activeFilterBtn3 = true;
+  activateAddressFilterBtn3() {
+    addressFilterBtn1 = false;
+    addressFilterBtn2 = false;
+    addressFilterBtn3 = true;
     notifyListeners();
   }
 
   // FILTER 2
-  bool _activeFilter2Btn1 = false;
-  bool get activeFilter2Btn1 => _activeFilter2Btn1;
-  set activeFilter2Btn1(bool value) {
-    _activeFilter2Btn1 = value;
+  bool _timeFilterBtn1 = false;
+  bool get timeFilterBtn1 => _timeFilterBtn1;
+  set timeFilterBtn1(bool value) {
+    _timeFilterBtn1 = value;
     notifyListeners();
   }
 
-  bool _activeFilter2Btn2 = false;
-  bool get activeFilter2Btn2 => _activeFilter2Btn2;
-  set activeFilter2Btn2(bool value) {
-    _activeFilter2Btn2 = value;
+  bool _timeFilterBtn2 = false;
+  bool get timeFilterBtn2 => _timeFilterBtn2;
+  set timeFilterBtn2(bool value) {
+    _timeFilterBtn2 = value;
     notifyListeners();
   }
 
-  bool _activeFilter2Btn3 = true;
-  bool get activeFilter2Btn3 => _activeFilter2Btn3;
-  set activeFilter2Btn3(bool value) {
-    _activeFilter2Btn3 = value;
+  bool _timeFilterBtn3 = true;
+  bool get timeFilterBtn3 => _timeFilterBtn3;
+  set timeFilterBtn3(bool value) {
+    _timeFilterBtn3 = value;
     notifyListeners();
   }
 
-  getDataFromActivatedFilter2Btn1() {
-    activeFilter2Btn1 = true;
-    activeFilter2Btn2 = false;
-    activeFilter2Btn3 = false;
+  activateTimeFilterBtn1() {
+    timeFilterBtn1 = true;
+    timeFilterBtn2 = false;
+    timeFilterBtn3 = false;
     notifyListeners();
   }
 
-  getDataFromActivatedFilter2Btn2() {
-    activeFilter2Btn1 = false;
-    activeFilter2Btn2 = true;
-    activeFilter2Btn3 = false;
+  activateTimeFilterBtn2() {
+    timeFilterBtn1 = false;
+    timeFilterBtn2 = true;
+    timeFilterBtn3 = false;
     notifyListeners();
   }
 
-  getDataFromActivatedFilter2Btn3() {
-    activeFilter2Btn1 = false;
-    activeFilter2Btn2 = false;
-    activeFilter2Btn3 = true;
+  activateTimeFilterBtn3() {
+    timeFilterBtn1 = false;
+    timeFilterBtn2 = false;
+    timeFilterBtn3 = true;
+    notifyListeners();
+  }
+
+  // FILTER 3
+  bool _receiverAddressFilterBtn1 = false;
+  bool get receiverAddressFilterBtn1 => _receiverAddressFilterBtn1;
+  set receiverAddressFilterBtn1(bool value) {
+    _receiverAddressFilterBtn1 = value;
+    notifyListeners();
+  }
+
+  bool _receiverAddressFilterBtn2 = false;
+  bool get receiverAddressFilterBtn2 => _receiverAddressFilterBtn2;
+  set receiverAddressFilterBtn2(bool value) {
+    _receiverAddressFilterBtn2 = value;
+    notifyListeners();
+  }
+
+  bool _receiverAddressFilterBtn3 = true;
+  bool get receiverAddressFilterBtn3 => _receiverAddressFilterBtn3;
+  set receiverAddressFilterBtn3(bool value) {
+    _receiverAddressFilterBtn3 = value;
+    notifyListeners();
+  }
+
+  activateReceiverAddressFilterBtn1() {
+    receiverAddressFilterBtn1 = true;
+    receiverAddressFilterBtn2 = false;
+    receiverAddressFilterBtn3 = false;
+    notifyListeners();
+  }
+
+  activateReceiverAddressFilterBtn2() {
+    receiverAddressFilterBtn1 = false;
+    receiverAddressFilterBtn2 = true;
+    receiverAddressFilterBtn3 = false;
+    notifyListeners();
+  }
+
+  activateReceiverAddressFilterBtn3() {
+    receiverAddressFilterBtn1 = false;
+    receiverAddressFilterBtn2 = false;
+    receiverAddressFilterBtn3 = true;
     notifyListeners();
   }
 }

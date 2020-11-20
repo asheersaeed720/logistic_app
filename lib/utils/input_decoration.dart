@@ -34,7 +34,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // }
 
 // TEXTFIELD
-InputDecoration buildInputDecoration(String hintText, IconData icon) {
+InputDecoration buildInputDecoration(hintText, IconData icon) {
   return InputDecoration(
     prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
     hintText: hintText,

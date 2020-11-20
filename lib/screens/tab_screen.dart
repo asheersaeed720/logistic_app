@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/screens/add_order_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order_screen/add_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/home_screen.dart';
 import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account.dart';
-import 'package:hani_almutairi_logistic/screens/user_order_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order_screen/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
 
 class TabsScreen extends StatefulWidget {

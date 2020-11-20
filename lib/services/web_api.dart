@@ -3,4 +3,5 @@ class WebApi {
   static const String baseURL = 'http://192.168.0.102/hubex/api/login_api';
   static const String loginURL = baseURL + '/login_api';
   static const String getCountriesURL = baseURL + '/getcountry';
+  static const String getCitiesURL = baseURL + '/getcity';
 }
