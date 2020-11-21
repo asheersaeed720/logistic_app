@@ -2,6 +2,7 @@ import 'package:hani_almutairi_logistic/screens/order_screen/add_order_screen.da
 import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order_screen/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account.dart';
@@ -17,4 +18,5 @@ final routes = {
   UserAccount.routeName: (context) => UserAccount(),
   OtpScreen.routeName: (context) => OtpScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+  OrderSuccess.routeName: (context) => OrderSuccess(),
 };
