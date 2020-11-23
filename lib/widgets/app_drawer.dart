@@ -1,8 +1,7 @@
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 
 import 'package:flutter/material.dart';

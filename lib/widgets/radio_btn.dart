@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TimeRadioBtn extends StatelessWidget {
+class RadioBtn extends StatelessWidget {
+  final radioBtnTitle1;
+  final radioBtnTitle2;
+  final radioBtnTitle3;
+
+  RadioBtn(this.radioBtnTitle1, this.radioBtnTitle2, this.radioBtnTitle3);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -8,7 +14,7 @@ class TimeRadioBtn extends StatelessWidget {
         RadioListTile(
           value: 1,
           groupValue: 1,
-          title: Text('From 9 to 12'),
+          title: Text('$radioBtnTitle1'),
           activeColor: Colors.black54,
           onChanged: (currentVal) {
             print(currentVal);
@@ -17,7 +23,7 @@ class TimeRadioBtn extends StatelessWidget {
         RadioListTile(
           value: 2,
           groupValue: 2,
-          title: Text('From 12 to 3'),
+          title: Text('$radioBtnTitle2'),
           activeColor: Colors.black54,
           onChanged: (currentVal) {
             print(currentVal);
@@ -26,7 +32,7 @@ class TimeRadioBtn extends StatelessWidget {
         RadioListTile(
           value: 3,
           groupValue: 3,
-          title: Text('From 3 to 6'),
+          title: Text('$radioBtnTitle3'),
           activeColor: Colors.black54,
           onChanged: (currentVal) {
             print(currentVal);

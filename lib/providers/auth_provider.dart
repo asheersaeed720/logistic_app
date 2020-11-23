@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:hani_almutairi_logistic/models/user.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:flushbar/flushbar.dart';

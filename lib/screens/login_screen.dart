@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/sign_up_screen.dart';
+import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
       validator: (value) => value.isEmpty ? "Enter country code" : null,
       onSaved: (value) => _username = value,
       initialValue: '966',
-      decoration: buildDropDownDecoration(),
+      decoration: buildCountryCodeDropDownDecoration(),
     );
 
     final passwordField = TextFormField(

@@ -12,7 +12,7 @@ class TabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _tabTittle = 'My Orders';
+  String _tabTittle = 'Add Order';
   String get tabTittle => _tabTittle;
   set tabTittle(String titleVal) {
     _tabTittle = titleVal;
@@ -46,7 +46,7 @@ class TabProvider with ChangeNotifier {
         break;
       case 3:
         {
-          tabTittle = 'Create Order';
+          tabTittle = 'Add Order';
         }
         break;
     }

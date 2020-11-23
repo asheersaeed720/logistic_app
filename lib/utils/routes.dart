@@ -1,5 +1,5 @@
 import 'package:hani_almutairi_logistic/screens/order_screen/add_order_screen.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/sign_up_screen.dart';
+import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order_screen/order_success_screen.dart';

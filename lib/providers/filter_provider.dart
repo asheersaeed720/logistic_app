@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class FilterProvider with ChangeNotifier {
   // ADDRESS FILTER
-  bool _addressFilterBtn1 = false;
+  bool _addressFilterBtn1 = true;
   bool get addressFilterBtn1 => _addressFilterBtn1;
   set addressFilterBtn1(bool value) {
     _addressFilterBtn1 = value;
@@ -17,7 +17,7 @@ class FilterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _addressFilterBtn3 = true;
+  bool _addressFilterBtn3 = false;
   bool get addressFilterBtn3 => _addressFilterBtn3;
   set addressFilterBtn3(bool value) {
     _addressFilterBtn3 = value;
@@ -43,7 +43,7 @@ class FilterProvider with ChangeNotifier {
   }
 
   // TIME FILTER
-  bool _timeFilterBtn1 = false;
+  bool _timeFilterBtn1 = true;
   bool get timeFilterBtn1 => _timeFilterBtn1;
   set timeFilterBtn1(bool value) {
     _timeFilterBtn1 = value;
@@ -57,7 +57,7 @@ class FilterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _timeFilterBtn3 = true;
+  bool _timeFilterBtn3 = false;
   bool get timeFilterBtn3 => _timeFilterBtn3;
   set timeFilterBtn3(bool value) {
     _timeFilterBtn3 = value;
@@ -83,7 +83,7 @@ class FilterProvider with ChangeNotifier {
   }
 
   // RECEIVER ADDRESS FILTER
-  bool _receiverAddressFilterBtn1 = false;
+  bool _receiverAddressFilterBtn1 = true;
   bool get receiverAddressFilterBtn1 => _receiverAddressFilterBtn1;
   set receiverAddressFilterBtn1(bool value) {
     _receiverAddressFilterBtn1 = value;
@@ -97,7 +97,7 @@ class FilterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _receiverAddressFilterBtn3 = true;
+  bool _receiverAddressFilterBtn3 = false;
   bool get receiverAddressFilterBtn3 => _receiverAddressFilterBtn3;
   set receiverAddressFilterBtn3(bool value) {
     _receiverAddressFilterBtn3 = value;

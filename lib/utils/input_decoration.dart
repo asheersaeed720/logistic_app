@@ -1,38 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// InputDecoration buildInputDecoration(String hintText, IconData icon) {
-//   return InputDecoration(
-//     border: InputBorder.none,
-//     icon: Icon(
-//       icon,
-//       color: Colors.black,
-//       size: 22.0,
-//     ),
-//     hintText: hintText,
-//     hintStyle: TextStyle(fontSize: 17.0),
-//   );
-// }
-
-// InputDecoration buildInputDecorationPassword(
-//     String hintText, IconData icon, suffixIcon) {
-//   return InputDecoration(
-//     border: InputBorder.none,
-//     icon: Icon(
-//       icon,
-//       size: 22.0,
-//       color: Colors.black,
-//     ),
-//     hintText: hintText,
-//     hintStyle: TextStyle(fontSize: 17.0),
-//     suffixIcon: Icon(
-//       suffixIcon,
-//       size: 15.0,
-//       color: Colors.black,
-//     ),
-//   );
-// }
-
 // TEXTFIELD
 InputDecoration buildInputDecoration(hintText, IconData icon) {
   return InputDecoration(
@@ -45,7 +13,7 @@ InputDecoration buildInputDecoration(hintText, IconData icon) {
 }
 
 // DROPDOWN COUNTRY CODE
-InputDecoration buildDropDownDecoration() {
+InputDecoration buildCountryCodeDropDownDecoration() {
   return InputDecoration(
     labelStyle: TextStyle(fontSize: 12),
     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -54,8 +22,7 @@ InputDecoration buildDropDownDecoration() {
 }
 
 // DROPDOWN COUNTRIES
-
-InputDecoration buildCountriesDropDownDecoration(icon) {
+InputDecoration buildDropDownDecoration(icon) {
   return InputDecoration(
     // labelStyle: TextStyle(fontSize: 12),
     suffixIcon: Icon(icon),

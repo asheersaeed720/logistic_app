@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
@@ -221,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
       onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
       initialValue: 'Saudi Arabia',
-      decoration: buildCountriesDropDownDecoration(Icons.arrow_drop_down),
+      decoration: buildDropDownDecoration(Icons.arrow_drop_down),
     );
 
     final citiesField = TextFormField(
@@ -230,7 +230,7 @@ class _SignupScreenState extends State<SignupScreen> {
       onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
       initialValue: 'Riyadh',
-      decoration: buildCountriesDropDownDecoration(Icons.arrow_drop_down),
+      decoration: buildDropDownDecoration(Icons.arrow_drop_down),
     );
 
     final districtField = TextFormField(
