@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -32,22 +34,14 @@ class OrderProvider with ChangeNotifier {
     stepFormNo = 1;
   }
 
-  Future<List> getCities() async {
-    String url = 'https://restcountries.eu/rest/v2/all';
-    final response =
-        await http.get(url, headers: {"Accept": "application/json"});
+  Future<List<SearchCityModel>> getCities(filter) async {
+    var response = await Dio().get(
+      // "http://5d85ccfb1e61af001471bf60.mockapi.io/user",
+      "https://restcountries.eu/rest/v2/all",
+      queryParameters: {"filter": filter},
+    );
 
-    if (response.statusCode == 200) {
-      print(response.body);
-      List<dynamic> responseBody = json.decode(response.body);
-      List<String> countries = new List();
-      for (int i = 0; i < responseBody.length; i++) {
-        countries.add(responseBody[i]['name']);
-      }
-      return countries;
-    } else {
-      print("error from server : $response");
-      throw Exception('Failed to load post');
-    }
+    var models = SearchCityModel.fromJsonList(response.data);
+    return models;
   }
 }

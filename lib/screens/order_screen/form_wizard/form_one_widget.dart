@@ -1,17 +1,15 @@
+import 'package:hani_almutairi_logistic/models/search_city.dart';
+
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
-import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/radio_btn.dart';
 import 'package:provider/provider.dart';
-
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class FormOneWidget extends StatefulWidget {
   @override
@@ -26,32 +24,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   List<String> countries = new List();
 
   Address _address = Address();
-
-  Future<List> getServerData() async {
-    String url = 'https://restcountries.eu/rest/v2/all';
-    final response =
-        await http.get(url, headers: {"Accept": "application/json"});
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      List<dynamic> responseBody = json.decode(response.body);
-      // List<String> countries = new List();
-      countries = new List();
-      for (int i = 0; i < responseBody.length; i++) {
-        countries.add(responseBody[i]['name']);
-      }
-      return countries;
-    } else {
-      print("error from server : $response");
-      throw Exception('Failed to load post');
-    }
-  }
-
-  @override
-  void initState() {
-    getServerData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +40,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               children: [
                 // SENDER ADDRESS SECTION
                 _buildSenderAddressSection(context, filterPvd, orderPvd),
+
+                // SearchableDropdownWidget(),
 
                 // TIME SECTION
                 _buildTimeSection(context, filterPvd),
@@ -90,7 +64,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      print(_address);
+                      print(_address.senderCity);
                       orderPvd.formNavigation();
                     }
                   },
@@ -103,77 +77,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
   }
 
-  Widget getSearchableDropdown(List<String> listData, mapKey) {
-    Map<String, String> selectedValueMap = Map();
-
-    List<DropdownMenuItem> items = [];
-    for (int i = 0; i < listData.length; i++) {
-      items.add(new DropdownMenuItem(
-        child: new Text(
-          listData[i],
-        ),
-        value: listData[i],
-      ));
-    }
-
-    // return Container(
-    //   padding: EdgeInsets.symmetric(horizontal: 10.0),
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(6.0),
-    //     border: Border.all(
-    //         color: Colors.grey, style: BorderStyle.solid, width: 0.80),
-    //   ),
-    //   width: 400,
-    //   child: SearchableDropdown(
-    //     items: items,
-    //     value: selectedValueMap[mapKey],
-    //     isCaseSensitiveSearch: false,
-    //     hint: new Text('Select One'),
-    //     searchHint: new Text(
-    //       'Select One',
-    //       style: new TextStyle(fontSize: 20),
-    //     ),
-    //     onChanged: (value) {
-    //       setState(() {
-    //         selectedValueMap[mapKey] = value;
-    //       });
-    //     },
-    //   ),
-    // );
-    return Container(
-      padding: EdgeInsets.all(0.0),
-      height: 70.0,
-      decoration: BoxDecoration(
-        border: Border.all(),
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: SearchableDropdown(
-        items: items,
-        value: selectedValueMap[mapKey],
-        isCaseSensitiveSearch: false,
-        isExpanded: true,
-        underline: Padding(
-          padding: EdgeInsets.all(0),
-        ),
-        hint: new Text('Select One'),
-        searchHint: new Text(
-          'Select One',
-          style: new TextStyle(fontSize: 20),
-        ),
-        onChanged: (value) {
-          setState(() {
-            selectedValueMap[mapKey] = value;
-          });
-        },
-      ),
-    );
-  }
-
   // SENDER ADDRESS SECTION
   Widget _buildSenderAddressSection(context, filterPvd, orderPvd) {
-    Map<String, String> selectedValueMap = Map();
-
-    List<DropdownMenuItem> items = [];
     final fullNameField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
@@ -182,46 +87,26 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       decoration: buildInputDecoration("Fullname", Icons.person),
     );
 
-    // final citiesSearchableDropDownField = SearchableDropdown(
-    //   items: items,
-    //   value: selectedValueMap['server'],
-    //   isCaseSensitiveSearch: false,
-    //   hint: new Text('Select One'),
-    //   searchHint: new Text(
-    //     'Select One',
-    //     style: new TextStyle(fontSize: 20),
-    //   ),
-    //   onChanged: (value) {
-    //     setState(() {
-    //       selectedValueMap['server'] = value;
-    //     });
-    //   },
-    // );
-
-    final citiesSearchableDropDownField = SearchableDropdown(
-      items: items,
-      value: selectedValueMap['server'],
-      isCaseSensitiveSearch: false,
-      hint: new Text('Select One'),
-      searchHint: new Text(
-        'Select One',
-        style: new TextStyle(fontSize: 20),
-      ),
-      onChanged: (value) {
-        setState(() {
-          selectedValueMap['server'] = value;
-        });
+    final citiesDropdown = DropdownSearch<SearchCityModel>(
+      searchBoxController: TextEditingController(),
+      mode: Mode.BOTTOM_SHEET,
+      isFilteredOnline: true,
+      showClearButton: true,
+      showSearchBox: true,
+      // dropdownSearchDecoration: InputDecoration(
+      //   filled: true,
+      //   fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+      // ),
+      // autoValidateMode: AutovalidateMode.onUserInteraction,
+      // validator: (SearchModel u) =>
+      //     u == null ? "user field is required " : null,
+      onFind: (String filter) => orderPvd.getCities(filter),
+      onChanged: (SearchCityModel data) {
+        _address.senderCity = data;
       },
+      dropdownBuilder: _customDropDownExample,
+      popupItemBuilder: _customPopupItemBuilderExample,
     );
-
-    // final cityDropDownField = TextFormField(
-    //   autofocus: false,
-    //   validator: (value) => value.isEmpty ? "Please type a City" : null,
-    //   onSaved: (value) => _address.senderCity = value,
-    //   keyboardType: TextInputType.name,
-    //   initialValue: 'Riyadh',
-    //   decoration: buildDropDownDecoration(Icons.arrow_drop_down),
-    // );
 
     final districtField = TextFormField(
       autofocus: false,
@@ -265,18 +150,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               children: [
                 fullNameField,
                 SizedBox(height: 14),
-                FutureBuilder<List>(
-                  future: orderPvd.getCities(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return getSearchableDropdown(snapshot.data, "server");
-                    } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
-                    }
-                    // return CircularProgressIndicator();
-                    return citiesSearchableDropDownField;
-                  },
-                ),
+                citiesDropdown,
                 SizedBox(height: 14),
                 districtField,
                 SizedBox(height: 14),
@@ -308,6 +182,41 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           ),
         SizedBox(height: 18),
       ],
+    );
+  }
+
+  Widget _customDropDownExample(
+      BuildContext context, SearchCityModel item, String itemDesignation) {
+    return Container(
+      // padding: EdgeInsets.all(0),
+      height: 28,
+      child: (item?.name == null)
+          ? Padding(
+              padding: EdgeInsets.only(top: 7),
+              child: Text('Select City'),
+            )
+          : Padding(
+              padding: EdgeInsets.only(top: 7),
+              child: Text(item.name),
+            ),
+    );
+  }
+
+  Widget _customPopupItemBuilderExample(
+      BuildContext context, SearchCityModel item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item.name),
+      ),
     );
   }
 
