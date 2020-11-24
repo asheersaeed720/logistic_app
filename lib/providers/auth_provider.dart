@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:flushbar/flushbar.dart';
@@ -9,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
-  // AuthService _authService = AuthService();
+  AuthService _authService = AuthService();
 
-  // bool _isLoading = false;
-  // bool get isLoading => _isLoading;
-  // set isLoading(bool loadVal) {
-  //   _isLoading = loadVal;
-  //   notifyListeners();
-  // }
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  set isLoading(bool loadVal) {
+    _isLoading = loadVal;
+    notifyListeners();
+  }
 
   // bool _isLoggedIn = false;
   // bool get isLoggedIn => _isLoggedIn;
@@ -38,26 +39,27 @@ class AuthProvider with ChangeNotifier {
   //   return _user = await _authService.getUser();
   // }
 
-  // login(context, String username, String password) async {
-  //   isLoading = true;
-  //   await _authService.login(username, password).then((response) {
-  //     if (response['status'] != false) {
-  //       setUser();
-  //       // Navigator.pushAndRemoveUntil(
-  //       //   context,
-  //       //   MaterialPageRoute(builder: (context) => HomeScreen()),
-  //       //   (Route<dynamic> route) => false,
-  //       // );
-  //     } else {
-  //       Flushbar(
-  //         title: "Failed Login",
-  //         message: response['message'].toString(),
-  //         duration: Duration(seconds: 3),
-  //       ).show(context);
-  //     }
-  //   });
-  //   isLoading = false;
-  // }
+  login(context, userCredential) async {
+    isLoading = true;
+    await _authService.login(userCredential).then((response) {
+      if (response['status'] != false) {
+        // setUser();
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OtpScreen()),
+        //   (Route<dynamic> route) => false,
+        // );
+        Navigator.of(context).pushNamed(OtpScreen.routeName);
+      } else {
+        Flushbar(
+          title: "Failed Login",
+          message: response['message'].toString(),
+          duration: Duration(seconds: 3),
+        ).show(context);
+      }
+    });
+    isLoading = false;
+  }
 
   // signUp(context, name, phone, username, email, password) async {
   //   isLoading = true;

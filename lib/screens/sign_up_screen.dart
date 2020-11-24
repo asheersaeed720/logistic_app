@@ -1,187 +1,16 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hani_almutairi_logistic/models/search_city.dart';
+import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
-
-// class SignUpScreen extends StatefulWidget {
-//   @override
-//   _SignUpScreenState createState() => _SignUpScreenState();
-// }
-
-// class _SignUpScreenState extends State<SignUpScreen> {
-//   final _formKey = new GlobalKey<FormState>();
-
-//   String _email, _password, _firstName, _familyName;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // FIRSTNAME
-//     final firstNameField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) => value.isEmpty ? "Please type a firstname" : null,
-//         onSaved: (value) => _firstName = value,
-//         keyboardType: TextInputType.emailAddress,
-//         decoration: buildInputDecoration("FirstName", Icons.person),
-//       ),
-//     );
-
-//     // FIRSTNAME
-//     final familyNameField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) =>
-//             value.isEmpty ? "Please type a family name" : null,
-//         onSaved: (value) => _familyName = value,
-//         keyboardType: TextInputType.emailAddress,
-//         decoration: buildInputDecoration("Family Name", Icons.family_restroom),
-//       ),
-//     );
-
-//     // EMAIL
-//     final emailField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) => value.isEmpty ? "Please type a email" : null,
-//         onSaved: (value) => _email = value,
-//         keyboardType: TextInputType.emailAddress,
-//         decoration: buildInputDecoration("Email", Icons.email),
-//       ),
-//     );
-
-//     // MOBILE NUMBER
-//     final mobileNumberField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) =>
-//             value.isEmpty ? "Please type a family name" : null,
-//         onSaved: (value) => _familyName = value,
-//         keyboardType: TextInputType.number,
-//         decoration: buildInputDecoration("Mobile No", Icons.phone),
-//       ),
-//     );
-
-//     // PASSWORD
-//     final passwordField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) => value.isEmpty ? "Please type a paswword" : null,
-//         onSaved: (value) => _password = value,
-//         decoration: buildInputDecorationPassword(
-//           "Password",
-//           Icons.lock,
-//           Icons.visibility,
-//         ),
-//       ),
-//     );
-
-//     // FORGOT LABEL
-//     final forgotLabel = Padding(
-//       padding: EdgeInsets.only(top: 10.0),
-//       child: FlatButton(
-//         onPressed: () {},
-//         child: Text(
-//           "Forgot Password?",
-//           style: TextStyle(
-//             decoration: TextDecoration.underline,
-//             color: Colors.white,
-//             fontSize: 16.0,
-//           ),
-//         ),
-//       ),
-//     );
-
-//     var doSignUp = () {
-//       // if (_formKey.currentState.validate()) {
-//       //   _formKey.currentState.save();
-//       //   authPvd.signUp(context, _username, _password);
-//       // }
-//       Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-//     };
-
-//     return Container(
-//       padding: EdgeInsets.only(top: 23.0),
-//       child: Column(
-//         children: <Widget>[
-//           Stack(
-//             alignment: Alignment.topCenter,
-//             overflow: Overflow.visible,
-//             children: <Widget>[
-//               Card(
-//                 elevation: 2.0,
-//                 color: Colors.white,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(8.0),
-//                 ),
-//                 child: Container(
-//                   width: 300.0,
-//                   height: 500.0,
-//                   child: Column(
-//                     children: <Widget>[
-//                       emailField,
-//                       Container(
-//                         width: 250.0,
-//                         height: 1.0,
-//                         color: Colors.grey[400],
-//                       ),
-//                       firstNameField,
-//                       Container(
-//                         width: 250.0,
-//                         height: 1.0,
-//                         color: Colors.grey[400],
-//                       ),
-//                       familyNameField,
-//                       Container(
-//                         width: 250.0,
-//                         height: 1,
-//                         color: Colors.grey[400],
-//                       ),
-//                       mobileNumberField,
-//                       Container(
-//                         width: 250.0,
-//                         height: 1,
-//                         color: Colors.grey[400],
-//                       ),
-//                       passwordField,
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//               Container(
-//                 margin: EdgeInsets.only(top: 475),
-//                 child: longButton(context, "SIGNUP", doSignUp),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   static const String routeName = '/signup';
@@ -193,59 +22,77 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = new GlobalKey<FormState>();
 
-  String _name, _phone, _username, _email, _password, _confirmPassword;
+  User _user = User();
+
+  String _confirmPassword;
 
   bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    final canceledField = TextFormField(
-      autofocus: false,
-      validator: (value) => value.isEmpty ? "Please fill this" : null,
-      onSaved: (value) => _name = value,
-      keyboardType: TextInputType.name,
-      decoration: buildInputDecoration("Canceled", Icons.cancel),
-    );
+    final orderPvd = Provider.of<OrderProvider>(context);
+
+    // final canceledField = TextFormField(
+    //   autofocus: false,
+    //   validator: (value) => value.isEmpty ? "Please fill this" : null,
+    //   onSaved: (value) => _user = value,
+    //   keyboardType: TextInputType.name,
+    //   decoration: buildInputDecoration("Canceled", Icons.cancel),
+    // );
 
     final firstNameField = TextFormField(
       autofocus: false,
-      validator: (value) => value.isEmpty ? "Please type a name" : null,
-      onSaved: (value) => _name = value,
+      validator: (value) =>
+          value.isEmpty ? "Please enter your firstname" : null,
+      onSaved: (value) => _user.firstname = value,
       keyboardType: TextInputType.name,
       decoration: buildInputDecoration("Firstname", Icons.person),
+    );
+
+    final lastNameField = TextFormField(
+      autofocus: false,
+      validator: (value) => value.isEmpty ? "Please enter your lastname" : null,
+      onSaved: (value) => _user.lastName = value,
+      keyboardType: TextInputType.name,
+      decoration: buildInputDecoration("Lastname", Icons.person),
     );
 
     final countryField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please type a country" : null,
-      onSaved: (value) => _name = value,
+      onSaved: (value) => _user.country = value,
       keyboardType: TextInputType.name,
       initialValue: 'Saudi Arabia',
       decoration: buildDropDownDecoration(Icons.arrow_drop_down),
     );
 
-    final citiesField = TextFormField(
-      autofocus: false,
-      validator: (value) => value.isEmpty ? "Please type a City" : null,
-      onSaved: (value) => _name = value,
-      keyboardType: TextInputType.name,
-      initialValue: 'Riyadh',
-      decoration: buildDropDownDecoration(Icons.arrow_drop_down),
+    final citiesDropdown = DropdownSearch<SearchCityModel>(
+      searchBoxController: TextEditingController(),
+      mode: Mode.BOTTOM_SHEET,
+      isFilteredOnline: true,
+      showClearButton: true,
+      showSearchBox: true,
+      onFind: (String filter) => orderPvd.getCities(filter),
+      onChanged: (SearchCityModel data) {
+        _user.city = data;
+      },
+      dropdownBuilder: _customDropDownExample,
+      popupItemBuilder: _customPopupItemBuilderExample,
     );
 
     final districtField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please fill this" : null,
-      onSaved: (value) => _name = value,
-      keyboardType: TextInputType.name,
+      onSaved: (value) => _user.district = value,
+      keyboardType: TextInputType.streetAddress,
       decoration: buildInputDecoration("District", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter No" : null,
-      onSaved: (value) => _name = value,
-      keyboardType: TextInputType.name,
+      onSaved: (value) => _user.mobileNo = num.parse(value),
+      keyboardType: TextInputType.number,
       decoration: buildInputDecoration("Mobile", Icons.phone),
     );
 
@@ -253,20 +100,27 @@ class _SignupScreenState extends State<SignupScreen> {
       autofocus: false,
       obscureText: _obscureText,
       validator: (value) => value.isEmpty ? "Please enter password" : null,
-      onSaved: (value) => _password = value,
+      onSaved: (value) {
+        setState(() {
+          _user.password = value;
+        });
+      },
+      onChanged: (text) {
+        _user.password = text;
+      },
       decoration: buildInputDecorationPassword(
         "Password",
         Icons.lock,
-        // GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       _obscureText = !_obscureText;
-        //     });
-        //   },
-        //   child: new Icon(
-        //     _obscureText ? Icons.visibility : Icons.visibility_off,
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+          child: new Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
       ),
     );
 
@@ -276,25 +130,27 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) {
         if (value.isEmpty) {
           return 'Please Enter Confirm Password';
-        } else if (_password != _confirmPassword) {
+        } else if (_user.password != _confirmPassword) {
           return 'Password fields dont match';
         }
         return null;
       },
-      onSaved: (value) => _confirmPassword = value,
+      onChanged: (text) {
+        _confirmPassword = text;
+      },
       decoration: buildInputDecorationPassword(
         "Confirm Password",
         Icons.lock,
-        // GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       _obscureText = !_obscureText;
-        //     });
-        //   },
-        //   child: new Icon(
-        //     _obscureText ? Icons.visibility : Icons.visibility_off,
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+          child: new Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
       ),
     );
 
@@ -324,13 +180,13 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(height: 30.0),
-                    canceledField,
-                    SizedBox(height: 16.0),
                     firstNameField,
+                    SizedBox(height: 16.0),
+                    lastNameField,
                     SizedBox(height: 16.0),
                     countryField,
                     SizedBox(height: 16.0),
-                    citiesField,
+                    citiesDropdown,
                     SizedBox(height: 16.0),
                     districtField,
                     SizedBox(height: 16.0),
@@ -347,6 +203,41 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _customDropDownExample(
+      BuildContext context, SearchCityModel item, String itemDesignation) {
+    return Container(
+      // padding: EdgeInsets.all(0),
+      height: 28,
+      child: (item?.name == null)
+          ? Padding(
+              padding: EdgeInsets.only(top: 6),
+              child: Text('Select City'),
+            )
+          : Padding(
+              padding: EdgeInsets.only(top: 6),
+              child: Text(item.name),
+            ),
+    );
+  }
+
+  Widget _customPopupItemBuilderExample(
+      BuildContext context, SearchCityModel item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item.name),
       ),
     );
   }

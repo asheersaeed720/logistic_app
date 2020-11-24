@@ -1,128 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
-
-// class LoginScreen extends StatefulWidget {
-//   @override
-//   _LoginScreenState createState() => _LoginScreenState();
-// }
-
-// class _LoginScreenState extends State<LoginScreen> {
-//   final _formKey = new GlobalKey<FormState>();
-
-//   String _email, _password;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // EMAIL
-//     final emailField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) => value.isEmpty ? "Please type a email" : null,
-//         onSaved: (value) => _email = value,
-//         keyboardType: TextInputType.emailAddress,
-//         decoration: buildInputDecoration("Email", Icons.email),
-//       ),
-//     );
-
-//     // PASSWORD
-//     final passwordField = Padding(
-//       padding: EdgeInsets.symmetric(
-//         vertical: 20,
-//         horizontal: 25,
-//       ),
-//       child: TextFormField(
-//         autofocus: false,
-//         validator: (value) => value.isEmpty ? "Please type a password" : null,
-//         onSaved: (value) => _password = value,
-//         decoration: buildInputDecorationPassword(
-//           "Password",
-//           Icons.lock,
-//           Icons.visibility,
-//         ),
-//       ),
-//     );
-
-//     // FORGOT LABEL
-//     final forgotLabel = Padding(
-//       padding: EdgeInsets.only(top: 10.0),
-//       child: FlatButton(
-//         onPressed: () {},
-//         child: Text(
-//           "Forgot Password?",
-//           style: TextStyle(
-//             decoration: TextDecoration.underline,
-//             color: Colors.white,
-//             fontSize: 16.0,
-//           ),
-//         ),
-//       ),
-//     );
-
-//     var doLogin = () {
-//       // if (_formKey.currentState.validate()) {
-//       //   _formKey.currentState.save();
-//       //   authPvd.login(context, _username, _password);
-//       // }
-//       Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-//     };
-//     return Container(
-//       padding: EdgeInsets.only(top: 23.0),
-//       child: Column(
-//         children: <Widget>[
-//           Stack(
-//             alignment: Alignment.topCenter,
-//             overflow: Overflow.visible,
-//             children: <Widget>[
-//               Card(
-//                 elevation: 2.0,
-//                 color: Colors.white,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(8.0),
-//                 ),
-//                 child: Container(
-//                   width: 300.0,
-//                   height: 230.0,
-//                   child: Form(
-//                     key: _formKey,
-//                     child: Column(
-//                       children: <Widget>[
-//                         emailField,
-//                         Container(
-//                           width: 250.0,
-//                           height: 1.0,
-//                           color: Colors.grey[400],
-//                         ),
-//                         passwordField,
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               Container(
-//                 margin: EdgeInsets.only(top: 212),
-//                 child: longButton(context, "LOGIN", doLogin),
-//               ),
-//             ],
-//           ),
-//           forgotLabel,
-//         ],
-//       ),
-//     );
-//   }
-// }
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  // static const String routeName = '/login';
-  // static const String routeName = '/login';
+  static const String routeName = '/login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -131,46 +21,68 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = new GlobalKey<FormState>();
 
-  String _username, _password;
+  UserCredential _userCredential = UserCredential();
 
   bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    final phoneNoField = TextFormField(
-      autofocus: false,
-      validator: (value) =>
-          value.isEmpty ? "Please enter a phone number" : null,
-      onSaved: (value) => _username = value,
-      decoration: buildInputDecoration("531020000", Icons.phone),
-    );
+    final authPvd = Provider.of<AuthProvider>(context);
 
     final countriesCodeField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Enter country code" : null,
-      onSaved: (value) => _username = value,
+      onSaved: (value) => _userCredential.password = value,
       initialValue: '966',
       decoration: buildCountryCodeDropDownDecoration(),
+    );
+
+    final phoneNoField = TextFormField(
+      inputFormatters: [
+        new LengthLimitingTextInputFormatter(9),
+      ],
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_userCredential.mobileNo.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _userCredential.mobileNo = text;
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _userCredential.mobileNo = value,
+      decoration: buildInputDecoration("531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
       autofocus: false,
       obscureText: _obscureText,
       validator: (value) => value.isEmpty ? "Please enter password" : null,
-      onSaved: (value) => _password = value,
+      onSaved: (value) {
+        setState(() {
+          _userCredential.password = value;
+        });
+      },
+      onChanged: (text) {
+        _userCredential.password = text;
+      },
       decoration: buildInputDecorationPassword(
         "Password",
         Icons.lock,
-        // GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       _obscureText = !_obscureText;
-        //     });
-        //   },
-        //   child: new Icon(
-        //     _obscureText ? Icons.visibility : Icons.visibility_off,
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+          child: new Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
       ),
     );
 
@@ -201,9 +113,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     var doLogin = () {
-      // if (_formKey1.currentState.validate()) {
-      //   _formKey1.currentState.save();
-      //   Navigator.of(context).pushReplacementNamed(SignupScreen.routeName);
+      // if (_formKey.currentState.validate()) {
+      //   _formKey.currentState.save();
+      //   authPvd.login(context, _userCredential);
       // }
       Navigator.of(context).pushNamed(OtpScreen.routeName);
     };
@@ -235,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(width: 10),
                         Container(
-                          // width: 250,
                           width: MediaQuery.of(context).size.width / 1.8,
                           child: phoneNoField,
                         ),
@@ -247,7 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: passwordField,
                     ),
                     SizedBox(height: 20.0),
-                    longButton(context, 'LOGIN', doLogin),
+                    authPvd.isLoading
+                        ? AuthIndicator()
+                        : longButton(context, 'LOGIN', doLogin),
                     SizedBox(height: 10.0),
                     forgotLabel
                   ],

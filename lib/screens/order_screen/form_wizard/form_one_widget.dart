@@ -41,8 +41,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 // SENDER ADDRESS SECTION
                 _buildSenderAddressSection(context, filterPvd, orderPvd),
 
-                // SearchableDropdownWidget(),
-
                 // TIME SECTION
                 _buildTimeSection(context, filterPvd),
 
@@ -93,13 +91,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       isFilteredOnline: true,
       showClearButton: true,
       showSearchBox: true,
-      // dropdownSearchDecoration: InputDecoration(
-      //   filled: true,
-      //   fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-      // ),
-      // autoValidateMode: AutovalidateMode.onUserInteraction,
-      // validator: (SearchModel u) =>
-      //     u == null ? "user field is required " : null,
       onFind: (String filter) => orderPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
         _address.senderCity = data;
@@ -192,11 +183,11 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       height: 28,
       child: (item?.name == null)
           ? Padding(
-              padding: EdgeInsets.only(top: 7),
+              padding: EdgeInsets.only(top: 6),
               child: Text('Select City'),
             )
           : Padding(
-              padding: EdgeInsets.only(top: 7),
+              padding: EdgeInsets.only(top: 6),
               child: Text(item.name),
             ),
     );

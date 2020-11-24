@@ -1,97 +1,98 @@
-// import 'dart:convert';
+import 'package:http/http.dart';
+import 'dart:async';
+import 'dart:convert';
 
-// import 'package:hani_almutairi_logistic/screens/auth%20tab%20screen/auth_tab_screen.dart';
-// import 'package:hani_almutairi_logistic/services/web_api.dart';
-// import 'package:flushbar/flushbar.dart';
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/services/web_api.dart';
 
-// class AuthService {
-//   Future<Map> login(String username, String password) async {
-//     var result;
+class AuthService {
+  Future<Map> login(userCredential) async {
+    var result;
 
-//     final loginData = {
-//       'username': username,
-//       'password': password,
-//     };
+    final loginData = {
+      'user_mobile': userCredential.mobileNo,
+      'user_password': userCredential.password,
+    };
 
-//     Response response = await post(
-//       // WebApi.loginURL,
-//       body: loginData,
-//       headers: {'APP-KEY': '${WebApi.apiKey}'},
-//     );
+    print(loginData);
 
-//     if (response.statusCode == 200) {
-//       var responseJson = json.decode(response.body);
-//       saveUser(responseJson);
-//       result = {'status': true, 'message': 'Successful', 'user': responseJson};
-//     } else {
-//       result = {
-//         'status': false,
-//         'message': json.decode(response.body)['status'] == 'Invalid Username' ||
-//                 json.decode(response.body)['status'] == 'Invalid Password'
-//             ? json.decode(response.body)['status']
-//             : json.decode(response.body)['error']
-//       };
-//     }
+    Response response = await post(
+      WebApi.loginURL,
+      body: loginData,
+      headers: {'api_key': '${WebApi.apiKey}'},
+    );
 
-//     return result;
-//   }
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
 
-//   Future<Map> signUpUser(name, phone, username, email, password) async {
-//     var result;
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+      print('If' + '$result');
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body)['error'],
+      };
+      print('Else' + '$result');
+    }
+    print('Global' + '$result');
+    return result;
+  }
 
-//     final signUpData = {
-//       'name': name,
-//       'phone': phone,
-//       'username': username,
-//       'email': email,
-//       'password': password,
-//     };
+  // Future<Map> signUpUser(name, phone, username, email, password) async {
+  //   var result;
 
-//     Response response = await post(
-//       // WebApi.registerURL,
-//       body: signUpData,
-//       headers: {'APP-KEY': '${WebApi.apiKey}'},
-//     );
+  //   final signUpData = {
+  //     'name': name,
+  //     'phone': phone,
+  //     'username': username,
+  //     'email': email,
+  //     'password': password,
+  //   };
 
-//     if (response.statusCode == 200) {
-//       var responseJson = json.decode(response.body);
-//       saveUser(responseJson);
-//       result = {'status': true, 'message': 'Successful', 'user': responseJson};
-//     } else {
-//       result = {
-//         'status': false,
-//         'message': json.decode(response.body)['status'],
-//       };
-//     }
+  //   Response response = await post(
+  //     // WebApi.registerURL,
+  //     body: signUpData,
+  //     headers: {'APP-KEY': '${WebApi.apiKey}'},
+  //   );
 
-//     return result;
-//   }
+  //   if (response.statusCode == 200) {
+  //     var responseJson = json.decode(response.body);
+  //     saveUser(responseJson);
+  //     result = {'status': true, 'message': 'Successful', 'user': responseJson};
+  //   } else {
+  //     result = {
+  //       'status': false,
+  //       'message': json.decode(response.body)['status'],
+  //     };
+  //   }
 
-//   saveUser(userData) async {
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     preferences.setString('userData', jsonEncode(userData));
-//     print(preferences.setString('userData', json.encode(userData)));
-//   }
+  //   return result;
+  // }
 
-//   getUser() async {
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     var userData = preferences.getString('userData');
-//     if (userData != null) {
-//       Map<String, dynamic> user = json.decode(userData);
-//       return user;
-//     }
-//   }
+  // saveUser(userData) async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   preferences.setString('userData', jsonEncode(userData));
+  //   print(preferences.setString('userData', json.encode(userData)));
+  // }
 
-//   logoutUser(context) async {
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     preferences.remove('userData');
-//     Navigator.pushAndRemoveUntil(
-//       context,
-//       MaterialPageRoute(builder: (context) => AuthTabScreen()),
-//       (Route<dynamic> route) => false,
-//     );
-//   }
-// }
+  // getUser() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   var userData = preferences.getString('userData');
+  //   if (userData != null) {
+  //     Map<String, dynamic> user = json.decode(userData);
+  //     return user;
+  //   }
+  // }
+
+  // logoutUser(context) async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   preferences.remove('userData');
+  //   Navigator.pushAndRemoveUntil(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => AuthTabScreen()),
+  //     (Route<dynamic> route) => false,
+  //   );
+  // }
+}
