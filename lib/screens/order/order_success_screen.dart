@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
-import 'package:hani_almutairi_logistic/screens/order_screen/add_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -13,12 +12,12 @@ class OrderSuccess extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 36, right: 10, left: 10, bottom: 10),
+        padding: const EdgeInsets.only(top: 36, right: 10, left: 10, bottom: 10),
         child: Column(
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 1,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.green,
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -35,10 +34,10 @@ class OrderSuccess extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Container(
               width: MediaQuery.of(context).size.width / 1,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.red[200],
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -68,14 +67,14 @@ class OrderSuccess extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Card(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.3,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
                     child: Column(
                       children: [
                         Text('Receiver Name'),
@@ -97,7 +96,7 @@ class OrderSuccess extends StatelessWidget {
                 Card(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.2,
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
                     child: Column(
                       children: [
                         Text('Sender Name'),

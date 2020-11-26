@@ -1,14 +1,17 @@
 class SearchCityModel {
+  final String id;
   final String name;
 
   SearchCityModel({
+    this.id,
     this.name,
   });
 
   factory SearchCityModel.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
     return SearchCityModel(
-      name: json["name"],
+      id: json["city_id"].toString(),
+      name: json["city_name"].toString(),
     );
   }
 
@@ -18,9 +21,12 @@ class SearchCityModel {
   }
 
   String userAsString() {
-    return '#${this.name}';
+    return '#${this.id} ${this.name}';
   }
 
   @override
-  String toString() => name;
+  // String toString() => name;
+  String toString() {
+    return id;
+  }
 }

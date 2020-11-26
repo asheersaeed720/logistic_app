@@ -34,7 +34,11 @@ class _LoginScreenState extends State<LoginScreen> {
       validator: (value) => value.isEmpty ? "Enter country code" : null,
       onSaved: (value) => _userCredential.password = value,
       initialValue: '966',
-      decoration: buildCountryCodeDropDownDecoration(),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(fontSize: 12),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
     );
 
     final phoneNoField = TextFormField(
@@ -55,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _userCredential.mobileNo = value,
-      decoration: buildInputDecoration("531020000", Icons.phone),
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -70,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onChanged: (text) {
         _userCredential.password = text;
       },
-      decoration: buildInputDecorationPassword(
+      decoration: buildPasswordInputDecoration(
         "Password",
         Icons.lock,
         GestureDetector(
@@ -90,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         FlatButton(
-          padding: EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(0.0),
           child: Text(
             "Forgot password?",
             style: TextStyle(fontSize: 15.0),
@@ -100,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
         FlatButton(
-          padding: EdgeInsets.only(left: 0.0),
+          padding: const EdgeInsets.only(left: 0.0),
           child: Text(
             "Sign up",
             style: TextStyle(fontSize: 15.0),
@@ -125,13 +129,13 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     Image.asset('./assets/images/logo.png'),
-                    SizedBox(height: 40.0),
+                    const SizedBox(height: 40.0),
                     // Row(
                     //   children: [
                     //     Text('asd'),
@@ -152,16 +156,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: passwordField,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     authPvd.isLoading
                         ? AuthIndicator()
                         : longButton(context, 'LOGIN', doLogin),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     forgotLabel
                   ],
                 ),

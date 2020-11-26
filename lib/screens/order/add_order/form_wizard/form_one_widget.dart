@@ -3,6 +3,7 @@ import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
@@ -19,8 +20,6 @@ class FormOneWidget extends StatefulWidget {
 class _FormOneWidgetState extends State<FormOneWidget> {
   final _formKey = GlobalKey<FormState>();
 
-  String _fullName, _city, _district, _mobileNo;
-
   List<String> countries = new List();
 
   Address _address = Address();
@@ -28,24 +27,26 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
+    final authPvd = Provider.of<AuthProvider>(context);
     final orderPvd = Provider.of<OrderProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Form(
             key: _formKey,
             child: Column(
               children: [
                 // SENDER ADDRESS SECTION
-                _buildSenderAddressSection(context, filterPvd, orderPvd),
+                _buildSenderAddressSection(
+                    context, filterPvd, authPvd, authPvd),
 
                 // TIME SECTION
                 _buildTimeSection(context, filterPvd),
 
                 // RECEIVER ADDRESS SECTION
-                _buildReceiverSection(context, filterPvd),
+                _buildReceiverSection(context, filterPvd, authPvd),
 
                 // CASH FROM RECEIVER SECTION
                 _buildCashFromReceiverSection(context),
@@ -76,13 +77,12 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // SENDER ADDRESS SECTION
-  Widget _buildSenderAddressSection(context, filterPvd, orderPvd) {
+  Widget _buildSenderAddressSection(context, filterPvd, orderPvd, authPvd) {
     final fullNameField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _address.senderName = value,
       keyboardType: TextInputType.name,
-      decoration: buildInputDecoration("Fullname", Icons.person),
+      decoration: buildTextFieldInputDecoration("Fullname", Icons.person),
     );
 
     final citiesDropdown = DropdownSearch<SearchCityModel>(
@@ -91,7 +91,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       isFilteredOnline: true,
       showClearButton: true,
       showSearchBox: true,
-      onFind: (String filter) => orderPvd.getCities(filter),
+      onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
         _address.senderCity = data;
       },
@@ -100,19 +100,17 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
 
     final districtField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter district" : null,
       onSaved: (value) => _address.senderDistrict = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
       onSaved: (value) => _address.senderMobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildInputDecoration("Mobile no", Icons.phone),
+      decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
     );
 
     return Column(
@@ -136,15 +134,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           )
         else if (filterPvd.addressFilterBtn2 == true)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Column(
               children: [
                 fullNameField,
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
                 citiesDropdown,
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
                 districtField,
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
                 mobileNoField,
               ],
             ),
@@ -171,7 +169,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               ),
             ],
           ),
-        SizedBox(height: 18),
+        const SizedBox(height: 18),
       ],
     );
   }
@@ -183,11 +181,11 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       height: 28,
       child: (item?.name == null)
           ? Padding(
-              padding: EdgeInsets.only(top: 6),
+              padding: const EdgeInsets.only(top: 6),
               child: Text('Select City'),
             )
           : Padding(
-              padding: EdgeInsets.only(top: 6),
+              padding: const EdgeInsets.only(top: 6),
               child: Text(item.name),
             ),
     );
@@ -244,44 +242,46 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             'From 12 to 3',
             'From 3 to 6',
           ),
-        SizedBox(height: 18),
+        const SizedBox(height: 18),
       ],
     );
   }
 
   // RECEIVER SECTION
-  Widget _buildReceiverSection(context, filterPvd) {
+  Widget _buildReceiverSection(context, filterPvd, authPvd) {
     final fullNameField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
-      onSaved: (value) => _fullName = value,
+      onSaved: (value) => _address.receiverName = value,
       keyboardType: TextInputType.name,
-      decoration: buildInputDecoration("Receiver name", Icons.person),
+      decoration: buildTextFieldInputDecoration("Receiver name", Icons.person),
     );
 
-    final cityDropDownField = TextFormField(
-      autofocus: false,
-      validator: (value) => value.isEmpty ? "Please type a City" : null,
-      onSaved: (value) => _city = value,
-      keyboardType: TextInputType.name,
-      initialValue: 'Riyadh',
-      decoration: buildDropDownDecoration(Icons.arrow_drop_down),
+    final citiesDropdown = DropdownSearch<SearchCityModel>(
+      searchBoxController: TextEditingController(),
+      mode: Mode.BOTTOM_SHEET,
+      isFilteredOnline: true,
+      showClearButton: true,
+      showSearchBox: true,
+      onFind: (String filter) => authPvd.getCities(filter),
+      onChanged: (SearchCityModel data) {
+        _address.receiverCity = data;
+      },
+      dropdownBuilder: _customDropDownExample,
+      popupItemBuilder: _customPopupItemBuilderExample,
     );
 
     final districtField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter district" : null,
-      onSaved: (value) => _district = value,
+      onSaved: (value) => _address.receiverDistrict = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
-      autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
-      onSaved: (value) => _mobileNo = value,
+      onSaved: (value) => _address.receiverMobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildInputDecoration("Mobile no", Icons.phone),
+      decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
     );
 
     return Column(
@@ -305,15 +305,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           )
         else if (filterPvd.receiverAddressFilterBtn2 == true)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Column(
               children: [
                 fullNameField,
-                SizedBox(height: 14),
-                cityDropDownField,
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
+                citiesDropdown,
+                const SizedBox(height: 14),
                 districtField,
-                SizedBox(height: 14),
+                const SizedBox(height: 14),
                 mobileNoField,
               ],
             ),
@@ -340,7 +340,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               ),
             ],
           ),
-        SizedBox(height: 18),
+        const SizedBox(height: 18),
       ],
     );
   }
@@ -349,28 +349,27 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 // CASH FROM RECEIVER SECTION
 Widget _buildCashFromReceiverSection(context) {
   final cashOfDeliveryAmount = TextFormField(
-    autofocus: false,
     validator: (value) => value.isEmpty ? "Please enter amount" : null,
     // onSaved: (value) => _name = value,
     keyboardType: TextInputType.name,
     initialValue: '0',
-    decoration: buildInputDecoration('Amount', Icons.money),
+    decoration: buildTextFieldInputDecoration('Amount', Icons.money),
   );
   return Column(
     children: [
       HeadingTitle('Collecting Cash from Receiver'),
       Padding(
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: cashOfDeliveryAmount,
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Text(
           'Note: if this amount is collected we will need to add it to the customer profile. Also, it will be cleared by ADMIN.',
           style: TextStyle(color: Theme.of(context).errorColor),
         ),
       ),
-      SizedBox(height: 18),
+      const SizedBox(height: 18),
     ],
   );
 }
@@ -378,11 +377,10 @@ Widget _buildCashFromReceiverSection(context) {
 // EXTRA INFO SECTION
 Widget _buildExtraInfoSection(context) {
   final referenceNo = TextFormField(
-    autofocus: false,
     // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
     // onSaved: (value) => _name = value,
     keyboardType: TextInputType.name,
-    decoration: buildInputDecoration('Ref No', Icons.tag),
+    decoration: buildTextFieldInputDecoration('Ref No', Icons.tag),
   );
 
   final dummyCeckBox1 = CheckboxListTile(
@@ -406,7 +404,7 @@ Widget _buildExtraInfoSection(context) {
     children: [
       HeadingTitle('Extra Info “Not Mandatory”'),
       Padding(
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
         child: referenceNo,
       ),
       dummyCeckBox1,

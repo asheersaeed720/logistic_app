@@ -18,13 +18,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     // EMAIL ADDRESS
     final emailField = Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
         decoration: InputDecoration(
           fillColor: Colors.grey[200],
           filled: true,
           labelText: 'Change password',
-          contentPadding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+          contentPadding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
         ),
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
@@ -48,7 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       color: Theme.of(context).primaryColor,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.8,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
@@ -80,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0),
@@ -92,16 +92,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Text(
                             'Reset Password',
                             style: Theme.of(context).textTheme.headline1,
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           emailField,
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           changePasswordButton,
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

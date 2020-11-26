@@ -1,49 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:numeric_keyboard/numeric_keyboard.dart';
-import 'package:provider/provider.dart';
+import 'package:pin_input_text_field/pin_input_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   static const String routeName = '/otp';
 
-  const OtpScreen({Key key}) : super(key: key);
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  String text = '';
-
-  void _onKeyboardTap(String value) {
-    setState(() {
-      text = text + value;
-    });
-  }
-
-  Widget otpNumberWidget(int position) {
-    try {
-      return Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 0),
-            borderRadius: const BorderRadius.all(Radius.circular(8))),
-        child: Center(
-            child: Text(
-          text[position],
-          style: TextStyle(color: Colors.black),
-        )),
-      );
-    } catch (e) {
-      return Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 0),
-            borderRadius: const BorderRadius.all(Radius.circular(8))),
-      );
-    }
-  }
+  TextEditingController _pinEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,112 +38,96 @@ class _OtpScreenState extends State<OtpScreen> {
         brightness: Brightness.light,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            'Enter 6 digits verification code sent to your number',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 500),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              otpNumberWidget(0),
-                              otpNumberWidget(1),
-                              otpNumberWidget(2),
-                              otpNumberWidget(3),
-                              otpNumberWidget(4),
-                              otpNumberWidget(5),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    constraints: const BoxConstraints(maxWidth: 500),
-                    child: RaisedButton(
-                      onPressed: () {
-                        // loginStore.validateOtpAndLogin(context, text);
-                        Navigator.of(context).pushNamed(TabsScreen.routeName);
-                      },
-                      color: Theme.of(context).primaryColor,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(14),
-                        ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 8,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Confirm',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.4),
-                              ),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  NumericKeyboard(
-                    onKeyboardTap: _onKeyboardTap,
-                    textColor: Colors.grey,
-                    rightIcon: Icon(
-                      Icons.backspace,
-                      // color: MyColors.primaryColorLight,
-                    ),
-                    rightButtonFn: () {
-                      setState(() {
-                        text = text.substring(0, text.length - 1);
-                      });
-                    },
-                  )
-                ],
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Enter 4 digits verification code sent to your number',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            )
-          ],
+              const SizedBox(height: 30),
+              PinInputTextField(
+                autoFocus: true,
+                inputFormatter: [
+                  LengthLimitingTextInputFormatter(4),
+                ],
+                pinLength: 4,
+                decoration: UnderlineDecoration(
+                  colorBuilder: PinListenColorBuilder(
+                    Theme.of(context).primaryColor,
+                    Colors.grey,
+                  ),
+                ),
+                controller: _pinEditingController,
+                textInputAction: TextInputAction.go,
+                keyboardType: TextInputType.number,
+                textCapitalization: TextCapitalization.characters,
+                onSubmit: (pin) {
+                  debugPrint('submit pin:$pin');
+                },
+                onChanged: (pin) {
+                  debugPrint('onChanged execute. pin:$pin');
+                },
+                enableInteractiveSelection: false,
+              ),
+              const SizedBox(height: 40),
+              _buildConfirmBtn(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConfirmBtn(context) {
+    return Container(
+      // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: RaisedButton(
+        onPressed: () {
+          print('${_pinEditingController.text}');
+          Navigator.of(context).pushNamed(TabsScreen.routeName);
+        },
+        color: Theme.of(context).primaryColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 8,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Confirm',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  color: Theme.of(context).primaryColor.withOpacity(0.4),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

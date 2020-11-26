@@ -9,7 +9,7 @@ class UserAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GridView(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 25.0,
           vertical: 25.0,
         ),
@@ -21,7 +21,7 @@ class UserAccount extends StatelessWidget {
             child: GridTile(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.location_on),
@@ -62,7 +62,7 @@ class UserAccount extends StatelessWidget {
             child: GridTile(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.attach_money_sharp),
@@ -103,7 +103,7 @@ class UserAccount extends StatelessWidget {
             child: GridTile(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.search_sharp),
@@ -144,7 +144,7 @@ class UserAccount extends StatelessWidget {
             child: GridTile(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.lock),
@@ -185,7 +185,7 @@ class UserAccount extends StatelessWidget {
             child: GridTile(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.exit_to_app),

@@ -1,24 +1,26 @@
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 
 class User {
+  String id;
   String firstname;
   String lastName;
   String country = 'Saudi Arabia';
-  SearchCityModel city;
+  SearchCityModel cityId;
   String district;
-  num mobileNo;
+  String mobileNo;
   String password;
   String confirmPassword;
 
   User({
-    firsname,
-    lastName,
-    country,
-    city,
-    district,
-    mobileNo,
-    password,
-    confirmPassword,
+    this.id,
+    this.firstname,
+    this.lastName,
+    this.country,
+    this.cityId,
+    this.district,
+    this.mobileNo,
+    this.password,
+    this.confirmPassword,
   });
 }
 

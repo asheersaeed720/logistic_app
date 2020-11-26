@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
@@ -39,43 +40,20 @@ class AuthProvider with ChangeNotifier {
   //   return _user = await _authService.getUser();
   // }
 
-  login(context, userCredential) async {
-    isLoading = true;
-    await _authService.login(userCredential).then((response) {
-      if (response['status'] != false) {
-        // setUser();
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => OtpScreen()),
-        //   (Route<dynamic> route) => false,
-        // );
-        Navigator.of(context).pushNamed(OtpScreen.routeName);
-      } else {
-        Flushbar(
-          title: "Failed Login",
-          message: response['message'].toString(),
-          duration: Duration(seconds: 3),
-        ).show(context);
-      }
-    });
-    isLoading = false;
-  }
-
-  // signUp(context, name, phone, username, email, password) async {
+  // login(context, userCredential) async {
   //   isLoading = true;
-  //   await _authService
-  //       .signUpUser(name, phone, username, email, password)
-  //       .then((response) {
+  //   await _authService.login(userCredential).then((response) {
   //     if (response['status'] != false) {
-  //       setUser();
+  //       // setUser();
   //       // Navigator.pushAndRemoveUntil(
   //       //   context,
-  //       //   MaterialPageRoute(builder: (context) => HomeScreen()),
+  //       //   MaterialPageRoute(builder: (context) => OtpScreen()),
   //       //   (Route<dynamic> route) => false,
   //       // );
+  //       Navigator.of(context).pushNamed(OtpScreen.routeName);
   //     } else {
   //       Flushbar(
-  //         title: "Registration Login",
+  //         title: "Failed Login",
   //         message: response['message'].toString(),
   //         duration: Duration(seconds: 3),
   //       ).show(context);
@@ -83,6 +61,32 @@ class AuthProvider with ChangeNotifier {
   //   });
   //   isLoading = false;
   // }
+
+  Future<List<SearchCityModel>> getCities(filter) async {
+    return await _authService.getCities(filter);
+  }
+
+  signUp(context, user) async {
+    isLoading = true;
+    await _authService.signUpUser(user).then((response) {
+      if (response['status'] != false) {
+        // setUser();
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomeScreen()),
+        //   (Route<dynamic> route) => false,
+        // );
+        Navigator.of(context).pushNamed(OtpScreen.routeName);
+      } else {
+        Flushbar(
+          title: "Registration Failed",
+          message: response['message'].toString(),
+          duration: Duration(seconds: 3),
+        ).show(context);
+      }
+    });
+    isLoading = false;
+  }
 
   // logOut(context) async {
   //   await _authService.logoutUser(context);

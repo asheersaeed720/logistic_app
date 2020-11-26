@@ -9,7 +9,7 @@ class HeadingTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
       width: MediaQuery.of(context).size.width / 1,
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),

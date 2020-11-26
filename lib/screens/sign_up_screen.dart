@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
@@ -10,6 +11,7 @@ import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -30,15 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final orderPvd = Provider.of<OrderProvider>(context);
-
-    // final canceledField = TextFormField(
-    //   autofocus: false,
-    //   validator: (value) => value.isEmpty ? "Please fill this" : null,
-    //   onSaved: (value) => _user = value,
-    //   keyboardType: TextInputType.name,
-    //   decoration: buildInputDecoration("Canceled", Icons.cancel),
-    // );
+    final authPvd = Provider.of<AuthProvider>(context);
 
     final firstNameField = TextFormField(
       autofocus: false,
@@ -46,7 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
           value.isEmpty ? "Please enter your firstname" : null,
       onSaved: (value) => _user.firstname = value,
       keyboardType: TextInputType.name,
-      decoration: buildInputDecoration("Firstname", Icons.person),
+      decoration: buildTextFieldInputDecoration("Firstname", Icons.person),
     );
 
     final lastNameField = TextFormField(
@@ -54,7 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please enter your lastname" : null,
       onSaved: (value) => _user.lastName = value,
       keyboardType: TextInputType.name,
-      decoration: buildInputDecoration("Lastname", Icons.person),
+      decoration: buildTextFieldInputDecoration("Lastname", Icons.person),
     );
 
     final countryField = TextFormField(
@@ -63,7 +57,7 @@ class _SignupScreenState extends State<SignupScreen> {
       onSaved: (value) => _user.country = value,
       keyboardType: TextInputType.name,
       initialValue: 'Saudi Arabia',
-      decoration: buildDropDownDecoration(Icons.arrow_drop_down),
+      decoration: buildTextFieldInputDecoration("Country", Icons.map),
     );
 
     final citiesDropdown = DropdownSearch<SearchCityModel>(
@@ -72,9 +66,11 @@ class _SignupScreenState extends State<SignupScreen> {
       isFilteredOnline: true,
       showClearButton: true,
       showSearchBox: true,
-      onFind: (String filter) => orderPvd.getCities(filter),
-      onChanged: (SearchCityModel data) {
-        _user.city = data;
+      onFind: (String filter) => authPvd.getCities(filter),
+      onChanged: (SearchCityModel val) {
+        // _user.cityId = val;
+        _user.cityId = val;
+        print(_user.cityId);
       },
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
@@ -85,15 +81,15 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please fill this" : null,
       onSaved: (value) => _user.district = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter No" : null,
-      onSaved: (value) => _user.mobileNo = num.parse(value),
+      onSaved: (value) => _user.mobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildInputDecoration("Mobile", Icons.phone),
+      decoration: buildTextFieldInputDecoration("Mobile", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -108,7 +104,7 @@ class _SignupScreenState extends State<SignupScreen> {
       onChanged: (text) {
         _user.password = text;
       },
-      decoration: buildInputDecorationPassword(
+      decoration: buildPasswordInputDecoration(
         "Password",
         Icons.lock,
         GestureDetector(
@@ -138,7 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
       onChanged: (text) {
         _confirmPassword = text;
       },
-      decoration: buildInputDecorationPassword(
+      decoration: buildPasswordInputDecoration(
         "Confirm Password",
         Icons.lock,
         GestureDetector(
@@ -155,10 +151,11 @@ class _SignupScreenState extends State<SignupScreen> {
     );
 
     var doRegister = () {
-      // if (_formKey.currentState.validate()) {
-      //   _formKey.currentState.save();
-      // }
-      Navigator.of(context).pushNamed(OtpScreen.routeName);
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        authPvd.signUp(context, _user);
+      }
+      // Navigator.of(context).pushNamed(OtpScreen.routeName);
     };
 
     return SafeArea(
@@ -169,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -179,24 +176,26 @@ class _SignupScreenState extends State<SignupScreen> {
                       'Create an Account',
                       style: Theme.of(context).textTheme.headline1,
                     ),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     firstNameField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     lastNameField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     countryField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     citiesDropdown,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     districtField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     mobileNoField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     passwordField,
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     confirmPasswordField,
-                    SizedBox(height: 16.0),
-                    longButton(context, 'SIGNUP', doRegister),
+                    const SizedBox(height: 16.0),
+                    authPvd.isLoading
+                        ? AuthIndicator()
+                        : longButton(context, 'SIGNUP', doRegister),
                   ],
                 ),
               ),
@@ -214,11 +213,11 @@ class _SignupScreenState extends State<SignupScreen> {
       height: 28,
       child: (item?.name == null)
           ? Padding(
-              padding: EdgeInsets.only(top: 6),
+              padding: const EdgeInsets.only(top: 6),
               child: Text('Select City'),
             )
           : Padding(
-              padding: EdgeInsets.only(top: 6),
+              padding: const EdgeInsets.only(top: 6),
               child: Text(item.name),
             ),
     );

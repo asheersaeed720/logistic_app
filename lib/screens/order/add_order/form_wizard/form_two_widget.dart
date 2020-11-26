@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
-import 'package:hani_almutairi_logistic/screens/order_screen/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
@@ -20,14 +20,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Form(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // SENDER & RECEIVER DETAIL SECTION
                 _buildSenderAndReceiverDetail(context),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // DELIVERY COST SECTION
                 _buildDeliveryCostAndCoupon(context),
                 Row(
@@ -72,12 +72,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
       autofocus: false,
       // onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
-      decoration: buildInputDecoration('Coupon', Icons.tag_faces_sharp),
+      decoration:
+          buildTextFieldInputDecoration('Coupon', Icons.tag_faces_sharp),
     );
     return Column(
       children: [
         HeadingTitle('Who will be paying the delivery cost'),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         RadioListTile(
           value: 1,
           groupValue: 1,
@@ -97,10 +98,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
           },
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           child: couponCodeField,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -113,7 +114,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
         Card(
           child: Container(
             width: MediaQuery.of(context).size.width / 2.3,
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
             child: Column(
               children: [
                 Text('Receiver Name'),
@@ -135,7 +136,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
         Card(
           child: Container(
             width: MediaQuery.of(context).size.width / 2.2,
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
             child: Column(
               children: [
                 Text('Sender Name'),

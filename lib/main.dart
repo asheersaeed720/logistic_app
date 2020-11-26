@@ -5,8 +5,6 @@ import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/screens/order_screen/order_success_screen.dart';
-import 'package:hani_almutairi_logistic/screens/order_screen/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 
 import 'package:hani_almutairi_logistic/utils/routes.dart';

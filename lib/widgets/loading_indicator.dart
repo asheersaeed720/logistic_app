@@ -9,7 +9,7 @@ class AuthIndicator extends StatelessWidget {
         CircularProgressIndicator(
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        Text(" ... Authenticating")
+        Text(" ... Please wait")
       ],
     );
   }

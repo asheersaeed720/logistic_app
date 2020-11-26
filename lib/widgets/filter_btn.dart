@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ADD ORDER SCREEN FILTER BTN
 class FilterBtn extends StatelessWidget {
   final filterTitle1;
   final filterTitle2;
@@ -26,14 +27,13 @@ class FilterBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 13),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RaisedButton(
-            padding: EdgeInsets.symmetric(horizontal: 6.5),
+            padding: const EdgeInsets.symmetric(horizontal: 6.5),
             elevation: 0,
-            splashColor: Colors.white,
             onPressed: () {
               activateFilterBtn1();
             },
@@ -52,9 +52,8 @@ class FilterBtn extends StatelessWidget {
             ),
           ),
           RaisedButton(
-            padding: EdgeInsets.symmetric(horizontal: 6.5),
+            padding: const EdgeInsets.symmetric(horizontal: 6.5),
             elevation: 0,
-            splashColor: Colors.white,
             onPressed: () {
               activateFilterBtn2();
             },
@@ -73,9 +72,8 @@ class FilterBtn extends StatelessWidget {
             ),
           ),
           RaisedButton(
-            padding: EdgeInsets.symmetric(horizontal: 6.5),
+            padding: const EdgeInsets.symmetric(horizontal: 6.5),
             elevation: 0,
-            splashColor: Colors.white,
             onPressed: () {
               activateFilterBtn3();
             },
