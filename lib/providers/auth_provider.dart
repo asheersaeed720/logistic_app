@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
-import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
+import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:flushbar/flushbar.dart';
@@ -50,7 +50,7 @@ class AuthProvider with ChangeNotifier {
         //   MaterialPageRoute(builder: (context) => OtpScreen()),
         //   (Route<dynamic> route) => false,
         // );
-        Navigator.of(context).pushNamed(OtpScreen.routeName);
+        Navigator.of(context).pushNamed(TabsScreen.routeName);
       } else {
         Flushbar(
           title: "Failed Login",
@@ -76,7 +76,7 @@ class AuthProvider with ChangeNotifier {
         //   MaterialPageRoute(builder: (context) => HomeScreen()),
         //   (Route<dynamic> route) => false,
         // );
-        Navigator.of(context).pushNamed(OtpScreen.routeName);
+        Navigator.of(context).pushNamed(TabsScreen.routeName);
       } else {
         Flushbar(
           title: "Registration Failed",

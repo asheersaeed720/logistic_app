@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final emailField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter your email" : null,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.emailAddress,
       onSaved: (value) => _userCredential.email = value,
       decoration: buildTextFieldInputDecoration("Email", Icons.email),
     );
