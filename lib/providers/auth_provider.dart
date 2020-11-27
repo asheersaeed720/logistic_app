@@ -40,27 +40,27 @@ class AuthProvider with ChangeNotifier {
   //   return _user = await _authService.getUser();
   // }
 
-  // login(context, userCredential) async {
-  //   isLoading = true;
-  //   await _authService.login(userCredential).then((response) {
-  //     if (response['status'] != false) {
-  //       // setUser();
-  //       // Navigator.pushAndRemoveUntil(
-  //       //   context,
-  //       //   MaterialPageRoute(builder: (context) => OtpScreen()),
-  //       //   (Route<dynamic> route) => false,
-  //       // );
-  //       Navigator.of(context).pushNamed(OtpScreen.routeName);
-  //     } else {
-  //       Flushbar(
-  //         title: "Failed Login",
-  //         message: response['message'].toString(),
-  //         duration: Duration(seconds: 3),
-  //       ).show(context);
-  //     }
-  //   });
-  //   isLoading = false;
-  // }
+  login(context, userCredential) async {
+    isLoading = true;
+    await _authService.login(userCredential).then((response) {
+      if (response['status'] != false) {
+        // setUser();
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OtpScreen()),
+        //   (Route<dynamic> route) => false,
+        // );
+        Navigator.of(context).pushNamed(OtpScreen.routeName);
+      } else {
+        Flushbar(
+          title: "Failed Login",
+          message: response['message']['status'].toString(),
+          duration: Duration(seconds: 3),
+        ).show(context);
+      }
+    });
+    isLoading = false;
+  }
 
   Future<List<SearchCityModel>> getCities(filter) async {
     return await _authService.getCities(filter);
@@ -80,7 +80,7 @@ class AuthProvider with ChangeNotifier {
       } else {
         Flushbar(
           title: "Registration Failed",
-          message: response['message'].toString(),
+          message: response['message']['status'].toString(),
           duration: Duration(seconds: 3),
         ).show(context);
       }

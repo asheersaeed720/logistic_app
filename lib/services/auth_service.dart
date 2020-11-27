@@ -18,6 +18,7 @@ class AuthService {
           headers: {"APP_KEY": '${WebApi.apiKey}'},
         ),
       );
+
       var models = SearchCityModel.fromJsonList(response.data);
       return models;
     } catch (e) {
@@ -25,38 +26,36 @@ class AuthService {
     }
   }
 
-  // Future<Map> login(userCredential) async {
-  //   var result;
+  Future<Map> login(userCredential) async {
+    var result;
 
-  //   final loginData = {
-  //     'user_mobile': userCredential.mobileNo,
-  //     'user_password': userCredential.password,
-  //   };
+    final loginData = {
+      'email': userCredential.email,
+      'password': userCredential.password,
+    };
 
-  //   print(loginData);
+    print(loginData);
 
-  //   var response = await post(
-  //     WebApi.loginURL,
-  //     body: loginData,
-  //     headers: {'api_key': '${WebApi.apiKey}'},
-  //   );
+    var response = await post(
+      WebApi.loginURL,
+      body: loginData,
+      headers: {'APP_KEY': '${WebApi.apiKey}'},
+    );
 
-  //   if (response.statusCode == 200) {
-  //     var responseJson = json.decode(response.body);
-  //     print(responseJson);
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
 
-  //     result = {'status': true, 'message': 'Successful', 'user': responseJson};
-  //     print('If' + '$result');
-  //   } else {
-  //     result = {
-  //       'status': false,
-  //       'message': json.decode(response.body)['error'],
-  //     };
-  //     print('Else' + '$result');
-  //   }
-  //   print('Global' + '$result');
-  //   return result;
-  // }
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+      print(result);
+    }
+    return result;
+  }
 
   Future<Map> signUpUser(user) async {
     var result;
@@ -64,9 +63,9 @@ class AuthService {
     final signUpData = {
       'first_name': user.firstname,
       'last_name': user.lastName,
+      'user_email': user.email,
       'user_mobile': user.mobileNo,
       'user_city_id': user.cityId.toString(),
-      // 'user_city_id': '37420',
       'user_district': user.district,
       'user_password': user.password,
     };

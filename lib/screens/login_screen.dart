@@ -41,29 +41,35 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
-    final phoneNoField = TextFormField(
-      inputFormatters: [
-        new LengthLimitingTextInputFormatter(9),
-      ],
-      autofocus: false,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter a phone number';
-        } else if (_userCredential.mobileNo.length < 9) {
-          return 'Invalid Number';
-        }
-        return null;
-      },
-      onChanged: (text) {
-        _userCredential.mobileNo = text;
-      },
+    // final phoneNoField = TextFormField(
+    //   inputFormatters: [
+    //     new LengthLimitingTextInputFormatter(9),
+    //   ],
+    //   autofocus: false,
+    //   validator: (value) {
+    //     if (value.isEmpty) {
+    //       return 'Please enter a phone number';
+    //     } else if (_userCredential.mobileNo.length < 9) {
+    //       return 'Invalid Number';
+    //     }
+    //     return null;
+    //   },
+    //   onChanged: (text) {
+    //     _userCredential.mobileNo = text;
+    //   },
+    //   keyboardType: TextInputType.number,
+    //   onSaved: (value) => _userCredential.mobileNo = value,
+    //   decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
+    // );
+
+    final emailField = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter your email" : null,
       keyboardType: TextInputType.number,
-      onSaved: (value) => _userCredential.mobileNo = value,
-      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
+      onSaved: (value) => _userCredential.email = value,
+      decoration: buildTextFieldInputDecoration("Email", Icons.email),
     );
 
     final passwordField = TextFormField(
-      autofocus: false,
       obscureText: _obscureText,
       validator: (value) => value.isEmpty ? "Please enter password" : null,
       onSaved: (value) {
@@ -117,11 +123,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     var doLogin = () {
-      // if (_formKey.currentState.validate()) {
-      //   _formKey.currentState.save();
-      //   authPvd.login(context, _userCredential);
-      // }
-      Navigator.of(context).pushNamed(OtpScreen.routeName);
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        authPvd.login(context, _userCredential);
+      }
     };
 
     return SafeArea(
@@ -136,25 +141,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Image.asset('./assets/images/logo.png'),
                     const SizedBox(height: 40.0),
+
                     // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
                     //   children: [
-                    //     Text('asd'),
-                    //     phoneNoField,
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width / 5.3,
+                    //       child: countriesCodeField,
+                    //     ),
+                    //     SizedBox(width: 10),
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width / 1.8,
+                    //       child: phoneNoField,
+                    //     ),
                     //   ],
                     // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width / 5.3,
-                          child: countriesCodeField,
-                        ),
-                        SizedBox(width: 10),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 1.8,
-                          child: phoneNoField,
-                        ),
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: emailField,
                     ),
                     const SizedBox(height: 20.0),
                     Container(

@@ -25,8 +25,7 @@ class SearchCityModel {
   }
 
   @override
-  // String toString() => name;
   String toString() {
-    return id;
+    return id + name;
   }
 }

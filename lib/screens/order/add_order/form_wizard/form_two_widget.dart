@@ -5,6 +5,7 @@ import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart'
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class FormTwoWidget extends StatefulWidget {
@@ -29,35 +30,36 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 _buildSenderAndReceiverDetail(context),
                 const SizedBox(height: 20),
                 // DELIVERY COST SECTION
-                _buildDeliveryCostAndCoupon(context),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RaisedButton(
-                      onPressed: () {
-                        orderPvd.formNavigation();
-                      },
-                      child: Text(
-                        'Back/Edit',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    SizedBox(width: 8.0),
-                    RaisedButton(
-                      onPressed: () {
-                        orderPvd.resetStepFormNo();
-                        Navigator.of(context)
-                            .pushReplacementNamed(OrderSuccess.routeName);
-                      },
-                      child: Text(
-                        'Order Now',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                )
+                _buildDeliveryCostAndCoupon(context, orderPvd),
+                orderPvd.isLoading
+                    ? LoadingIndicator()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RaisedButton(
+                            onPressed: () {
+                              orderPvd.formNavigation();
+                            },
+                            child: Text(
+                              'Back/Edit',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          SizedBox(width: 8.0),
+                          RaisedButton(
+                            onPressed: () {
+                              // orderPvd.resetStepFormNo();
+                              orderPvd.addOrder(context);
+                            },
+                            child: Text(
+                              'Order Now',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
@@ -67,7 +69,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   }
 
   // DELIVERY COST SECTION
-  Widget _buildDeliveryCostAndCoupon(context) {
+  Widget _buildDeliveryCostAndCoupon(context, orderPvd) {
     final couponCodeField = TextFormField(
       autofocus: false,
       // onSaved: (value) => _name = value,
@@ -80,21 +82,21 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
         HeadingTitle('Who will be paying the delivery cost'),
         const SizedBox(height: 6),
         RadioListTile(
-          value: 1,
-          groupValue: 1,
+          value: 'Sender',
+          groupValue: orderPvd.selectedPay,
           title: Text('Sender to pay'),
-          activeColor: Colors.black54,
+          activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            print(currentVal);
+            orderPvd.setSelectedPay(currentVal);
           },
         ),
         RadioListTile(
-          value: 2,
-          groupValue: 2,
+          value: 'Receiver',
+          groupValue: orderPvd.selectedPay,
           title: Text('Receiver to pay'),
-          activeColor: Colors.black54,
+          activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            print(currentVal);
+            orderPvd.setSelectedPay(currentVal);
           },
         ),
         Padding(
@@ -117,10 +119,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
             child: Column(
               children: [
-                Text('Receiver Name'),
-                Text('City'),
-                Text('Country'),
-                Text('Mobile No'),
+                Text('Shakir Afzal'),
+                Text('Al-Madina'),
+                Text('5862135'),
                 RaisedButton(
                   onPressed: () {},
                   child: Text(
@@ -139,10 +140,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
             child: Column(
               children: [
-                Text('Sender Name'),
-                Text('City'),
-                Text('Country'),
-                Text('Mobile No'),
+                Text('Asif Khan'),
+                Text('Riyadh'),
+                Text('59266551'),
                 RaisedButton(
                   elevation: 0,
                   color: Colors.white,

@@ -2,8 +2,10 @@ import 'package:hani_almutairi_logistic/models/search_city.dart';
 
 class User {
   String id;
+
   String firstname;
   String lastName;
+  String email;
   String country = 'Saudi Arabia';
   SearchCityModel cityId;
   String district;
@@ -15,6 +17,7 @@ class User {
     this.id,
     this.firstname,
     this.lastName,
+    this.email,
     this.country,
     this.cityId,
     this.district,
@@ -25,8 +28,8 @@ class User {
 }
 
 class UserCredential {
-  String mobileNo;
+  String email;
   String password;
 
-  UserCredential({this.mobileNo, this.password});
+  UserCredential({this.email, this.password});
 }

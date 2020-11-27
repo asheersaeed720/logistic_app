@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:provider/provider.dart';
 
 class OrderSuccess extends StatelessWidget {
   static const String routeName = '/order-success';
 
   @override
   Widget build(BuildContext context) {
-    final tabPvd = Provider.of<TabProvider>(context);
-
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 36, right: 10, left: 10, bottom: 10),
+        padding:
+            const EdgeInsets.only(top: 36, right: 10, left: 10, bottom: 10),
         child: Column(
           children: [
             Container(
@@ -74,7 +71,8 @@ class OrderSuccess extends StatelessWidget {
                 Card(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.3,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
                     child: Column(
                       children: [
                         Text('Receiver Name'),
@@ -96,7 +94,8 @@ class OrderSuccess extends StatelessWidget {
                 Card(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.2,
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
                     child: Column(
                       children: [
                         Text('Sender Name'),

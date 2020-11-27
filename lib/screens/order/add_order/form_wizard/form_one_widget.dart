@@ -40,13 +40,13 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               children: [
                 // SENDER ADDRESS SECTION
                 _buildSenderAddressSection(
-                    context, filterPvd, authPvd, authPvd),
+                    context, filterPvd, authPvd, orderPvd),
 
                 // TIME SECTION
-                _buildTimeSection(context, filterPvd),
+                _buildTimeSection(context, filterPvd, orderPvd),
 
                 // RECEIVER ADDRESS SECTION
-                _buildReceiverSection(context, filterPvd, authPvd),
+                _buildReceiverSection(context, filterPvd, authPvd, orderPvd),
 
                 // CASH FROM RECEIVER SECTION
                 _buildCashFromReceiverSection(context),
@@ -77,7 +77,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // SENDER ADDRESS SECTION
-  Widget _buildSenderAddressSection(context, filterPvd, orderPvd, authPvd) {
+  Widget _buildSenderAddressSection(context, filterPvd, authPvd, orderPvd) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _address.senderName = value,
@@ -150,22 +150,26 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         else if (filterPvd.addressFilterBtn3 == true)
           Column(
             children: [
-              ListTile(
-                leading: IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.person),
-                ),
-                title: Text('Person name 1'),
-                subtitle: Text('City Name & Number 1'),
+              RadioListTile(
+                value: 'Person name 1',
+                groupValue: orderPvd.selectedAddress,
+                title: Text('Shakir Afzal'),
+                subtitle: Text('Al-Madina 5862135'),
+                activeColor: Theme.of(context).primaryColor,
+                onChanged: (currentVal) {
+                  orderPvd.setSelectedAddress(currentVal);
+                },
               ),
               Divider(),
-              ListTile(
-                leading: IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.person),
-                ),
-                title: Text('Person name 2'),
-                subtitle: Text('City Name & Number 2'),
+              RadioListTile(
+                value: 'Person name 2',
+                groupValue: orderPvd.selectedAddress,
+                title: Text('Jahangir'),
+                subtitle: Text('Test & 5862133'),
+                activeColor: Theme.of(context).primaryColor,
+                onChanged: (currentVal) {
+                  orderPvd.setSelectedAddress(currentVal);
+                },
               ),
             ],
           ),
@@ -210,7 +214,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // TIME SECTION
-  Widget _buildTimeSection(context, filterPvd) {
+  Widget _buildTimeSection(context, filterPvd, orderPvd) {
     return Column(
       children: [
         HeadingTitle('Pickup Prefer Time'),
@@ -248,7 +252,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // RECEIVER SECTION
-  Widget _buildReceiverSection(context, filterPvd, authPvd) {
+  Widget _buildReceiverSection(context, filterPvd, authPvd, orderPvd) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
       onSaved: (value) => _address.receiverName = value,
@@ -321,22 +325,26 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         else if (filterPvd.receiverAddressFilterBtn3 == true)
           Column(
             children: [
-              ListTile(
-                leading: IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.person),
-                ),
-                title: Text('Person name 1'),
-                subtitle: Text('City Name & Number 1'),
+              RadioListTile(
+                value: 'Person name 1',
+                groupValue: orderPvd.selectedAddress,
+                title: Text('Asif Khan'),
+                subtitle: Text('Riyadh & 59266551'),
+                activeColor: Theme.of(context).primaryColor,
+                onChanged: (currentVal) {
+                  orderPvd.setSelectedAddress(currentVal);
+                },
               ),
               Divider(),
-              ListTile(
-                leading: IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.person),
-                ),
+              RadioListTile(
+                value: 'Person name 2',
+                groupValue: orderPvd.selectedAddress,
                 title: Text('Person name 2'),
                 subtitle: Text('City Name & Number 2'),
+                activeColor: Theme.of(context).primaryColor,
+                onChanged: (currentVal) {
+                  orderPvd.setSelectedAddress(currentVal);
+                },
               ),
             ],
           ),
@@ -344,71 +352,71 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       ],
     );
   }
-}
 
 // CASH FROM RECEIVER SECTION
-Widget _buildCashFromReceiverSection(context) {
-  final cashOfDeliveryAmount = TextFormField(
-    validator: (value) => value.isEmpty ? "Please enter amount" : null,
-    // onSaved: (value) => _name = value,
-    keyboardType: TextInputType.name,
-    initialValue: '0',
-    decoration: buildTextFieldInputDecoration('Amount', Icons.money),
-  );
-  return Column(
-    children: [
-      HeadingTitle('Collecting Cash from Receiver'),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-        child: cashOfDeliveryAmount,
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Text(
-          'Note: if this amount is collected we will need to add it to the customer profile. Also, it will be cleared by ADMIN.',
-          style: TextStyle(color: Theme.of(context).errorColor),
+  Widget _buildCashFromReceiverSection(context) {
+    final cashOfDeliveryAmount = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter amount" : null,
+      // onSaved: (value) => _name = value,
+      keyboardType: TextInputType.name,
+      initialValue: '0',
+      decoration: buildTextFieldInputDecoration('Amount', Icons.money),
+    );
+    return Column(
+      children: [
+        HeadingTitle('Collecting Cash from Receiver'),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+          child: cashOfDeliveryAmount,
         ),
-      ),
-      const SizedBox(height: 18),
-    ],
-  );
-}
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            'Note: if this amount is collected we will need to add it to the customer profile. Also, it will be cleared by ADMIN.',
+            style: TextStyle(color: Theme.of(context).errorColor),
+          ),
+        ),
+        const SizedBox(height: 18),
+      ],
+    );
+  }
 
 // EXTRA INFO SECTION
-Widget _buildExtraInfoSection(context) {
-  final referenceNo = TextFormField(
-    // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
-    // onSaved: (value) => _name = value,
-    keyboardType: TextInputType.name,
-    decoration: buildTextFieldInputDecoration('Ref No', Icons.tag),
-  );
+  Widget _buildExtraInfoSection(context) {
+    final referenceNo = TextFormField(
+      // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
+      // onSaved: (value) => _name = value,
+      keyboardType: TextInputType.name,
+      decoration: buildTextFieldInputDecoration('Ref No', Icons.tag),
+    );
 
-  final dummyCeckBox1 = CheckboxListTile(
-    title: Text("Packaging their items with us"),
-    value: true,
-    onChanged: (newVal) {
-      print(newVal);
-    },
-    controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
-  );
+    final dummyCeckBox1 = CheckboxListTile(
+      title: Text("Packaging their items with us"),
+      value: true,
+      onChanged: (newVal) {
+        print(newVal);
+      },
+      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+    );
 
-  final dummyCeckBox2 = CheckboxListTile(
-    title: Text("Adding a fragile sticker to their item"),
-    value: true,
-    onChanged: (newVal) {
-      print(newVal);
-    },
-    controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
-  );
-  return Column(
-    children: [
-      HeadingTitle('Extra Info “Not Mandatory”'),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-        child: referenceNo,
-      ),
-      dummyCeckBox1,
-      dummyCeckBox2,
-    ],
-  );
+    final dummyCeckBox2 = CheckboxListTile(
+      title: Text("Adding a fragile sticker to their item"),
+      value: true,
+      onChanged: (newVal) {
+        print(newVal);
+      },
+      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+    );
+    return Column(
+      children: [
+        HeadingTitle('Extra Info “Not Mandatory”'),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+          child: referenceNo,
+        ),
+        dummyCeckBox1,
+        dummyCeckBox2,
+      ],
+    );
+  }
 }

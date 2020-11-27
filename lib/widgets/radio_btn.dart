@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:provider/provider.dart';
 
 class RadioBtn extends StatelessWidget {
   final radioBtnTitle1;
@@ -9,33 +11,35 @@ class RadioBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderPvd = Provider.of<OrderProvider>(context);
+
     return Column(
       children: [
         RadioListTile(
-          value: 1,
-          groupValue: 1,
+          value: radioBtnTitle1,
+          groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle1'),
-          activeColor: Colors.black54,
+          activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            print(currentVal);
+            orderPvd.setSelectedTime(currentVal);
           },
         ),
         RadioListTile(
-          value: 2,
-          groupValue: 2,
+          value: radioBtnTitle2,
+          groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle2'),
-          activeColor: Colors.black54,
+          activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            print(currentVal);
+            orderPvd.setSelectedTime(currentVal);
           },
         ),
         RadioListTile(
-          value: 3,
-          groupValue: 3,
+          value: radioBtnTitle3,
+          groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle3'),
-          activeColor: Colors.black54,
+          activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            print(currentVal);
+            orderPvd.setSelectedTime(currentVal);
           },
         ),
       ],

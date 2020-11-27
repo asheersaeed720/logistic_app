@@ -51,6 +51,14 @@ class _SignupScreenState extends State<SignupScreen> {
       decoration: buildTextFieldInputDecoration("Lastname", Icons.person),
     );
 
+    final emailField = TextFormField(
+      autofocus: false,
+      validator: (value) => value.isEmpty ? "Please enter your email" : null,
+      onSaved: (value) => _user.email = value,
+      keyboardType: TextInputType.name,
+      decoration: buildTextFieldInputDecoration("Email", Icons.email),
+    );
+
     final countryField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please type a country" : null,
@@ -72,6 +80,12 @@ class _SignupScreenState extends State<SignupScreen> {
         _user.cityId = val;
         print(_user.cityId);
       },
+      // validator: (value) {
+      //   if (value.name.isEmpty) {
+      //     return 'Please select city';
+      //   }
+      // },
+      validator: (value) => _user.cityId == null ? 'Select city' : null,
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
     );
@@ -180,6 +194,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     firstNameField,
                     const SizedBox(height: 16.0),
                     lastNameField,
+                    const SizedBox(height: 16.0),
+                    emailField,
                     const SizedBox(height: 16.0),
                     countryField,
                     const SizedBox(height: 16.0),
