@@ -15,6 +15,153 @@ class UserOrderScreen extends StatefulWidget {
 class _UserOrderScreenState extends State<UserOrderScreen> {
   String _mobileNo, _trackingNo;
 
+  List orderList = [
+    {
+      "order_id": "5",
+      "order_user_id": "28",
+      "order_first_name": "Tester",
+      "order_lastname": "Ultra",
+      "order_email": null,
+      "order_contact": "021212121",
+      "order_country": null,
+      "order_city": "37420",
+      "order_address": "Test chorangi",
+      "order_amount": "",
+      "order_shipping": null,
+      "order_total_amount": null,
+      "order_status": null,
+      "order_date": null
+    },
+    {
+      "order_id": "7",
+      "order_user_id": "28",
+      "order_first_name": "Tester",
+      "order_lastname": "Ultra",
+      "order_email": null,
+      "order_contact": "021212121",
+      "order_country": null,
+      "order_city": "37420",
+      "order_address": "Test chorangi",
+      "order_amount": "",
+      "order_shipping": "",
+      "order_total_amount": "",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 08:58:08"
+    },
+    {
+      "order_id": "8",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:39:10"
+    },
+    {
+      "order_id": "9",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:39:44"
+    },
+    {
+      "order_id": "10",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:40:00"
+    },
+    {
+      "order_id": "11",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:40:52"
+    },
+    {
+      "order_id": "12",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:41:42"
+    },
+    {
+      "order_id": "13",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:42:00"
+    },
+    {
+      "order_id": "14",
+      "order_user_id": "28",
+      "order_first_name": "test1",
+      "order_lastname": "tester",
+      "order_email": null,
+      "order_contact": "123456789",
+      "order_country": null,
+      "order_city": "12457",
+      "order_address": "central khi",
+      "order_amount": "1000",
+      "order_shipping": "200",
+      "order_total_amount": "3000",
+      "order_status": "PROCESSING",
+      "order_date": "2020-11-27 09:42:28"
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
@@ -42,22 +189,24 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               ),
               const SizedBox(height: 14),
               if (filterPvd.orderFilterBtn1 == true)
-                // Container(
-                //   height: 600,
-                //                   child: Column(
-                //     children: [
-                //       // Expanded(
-                //       //   child: ListView.builder(
-                //       //     itemCount: orderList.length,
-                //       //     itemBuilder: (context, i) {
-                //       //       return  ExpansionTile(title: Text('Order no: # ${orderList[i]['order_id']}'),);
-                //       //     },
-                //       //   ),
-                //       // ),
-                //     ],
-                //   ),
-                // )
-                Text('asd')
+                Container(
+                  height: 600,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: orderList.length,
+                          itemBuilder: (context, i) {
+                            return ExpansionTile(
+                              title: Text(
+                                  'Order no: # ${orderList[i]['order_id']}'),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               else if (filterPvd.orderFilterBtn2 == true)
                 Column(
                   children: [
