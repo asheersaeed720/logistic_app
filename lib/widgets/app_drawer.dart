@@ -88,13 +88,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (Route<dynamic> route) => false,
-              );
-              // Navigator.of(context).pushReplacementNamed(AuthTabScreen.routeName);
-              // authPvd.logOut(context);
+              authPvd.logOut(context);
             },
           ),
         ],

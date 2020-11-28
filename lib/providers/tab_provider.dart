@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/add_order/add_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_account.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/user_account.dart';
 
 class TabProvider with ChangeNotifier {
   int _currentTabScreen = 3;

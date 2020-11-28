@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 
 import 'package:http/http.dart';
 
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Future<List<SearchCityModel>> getCities(filter) async {
@@ -44,8 +48,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      print(responseJson);
-
+      saveUser(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {
@@ -70,16 +73,6 @@ class AuthService {
       'user_password': user.password,
     };
 
-    // final signUpData = {
-    //   'first_name': 'Tester',
-    //   'last_name': 'Ultra',
-    //   'user_mobile': '1234656',
-    //   'user_city_id': '37420',
-    //   'user_district': 'Test chorangi',
-    //   'user_password': 'google1234',
-    // };
-    // print('Body Before hit: $signUpData');
-
     var response = await post(
       WebApi.registerURL,
       body: signUpData,
@@ -88,8 +81,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      // saveUser(responseJson);
-      print(responseJson);
+      saveUser(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
       print(result);
     } else {
@@ -103,28 +95,29 @@ class AuthService {
     return result;
   }
 
-  // saveUser(userData) async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   preferences.setString('userData', jsonEncode(userData));
-  //   print(preferences.setString('userData', json.encode(userData)));
-  // }
+  saveUser(userData) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('userData', jsonEncode(userData));
+    print(preferences.setString('userData', json.encode(userData)));
+  }
 
-  // getUser() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   var userData = preferences.getString('userData');
-  //   if (userData != null) {
-  //     Map<String, dynamic> user = json.decode(userData);
-  //     return user;
-  //   }
-  // }
+  getUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var userData = preferences.getString('userData');
+    if (userData != null) {
+      Map<String, dynamic> user = json.decode(userData);
+      print(user);
+      return user;
+    }
+  }
 
-  // logoutUser(context) async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   preferences.remove('userData');
-  //   Navigator.pushAndRemoveUntil(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => AuthTabScreen()),
-  //     (Route<dynamic> route) => false,
-  //   );
-  // }
+  logoutUser(context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('userData');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (Route<dynamic> route) => false,
+    );
+  }
 }

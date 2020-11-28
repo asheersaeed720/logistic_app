@@ -9,14 +9,17 @@ class OrderService {
     var result;
 
     final orderData = {
-      'first_name': 'Shakir',
-      'last_name': 'Afzal',
-      'order_address': 'central khi',
-      'order_contact': '123456789',
-      'order_city': '12457',
-      'order_amount': '1000',
-      'order_shipping': '200',
-      'order_total_amount': '3000',
+      'sender_name': 'asd',
+      'sender_address': 'asd',
+      'sender_contact': '222',
+      'sender_city': '37410',
+      'reciever_name': 'xyz',
+      'reciever_address': 'das',
+      'reciever_contact': '232',
+      'reciever_city': '37410',
+      'order_amount': '155',
+      'order_shipping': '23',
+      'order_total_amount': '23',
     };
 
     var response = await post(
@@ -30,6 +33,33 @@ class OrderService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
+
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+    print('outside $result');
+
+    return result;
+  }
+
+  Future<Map> getOrder(context) async {
+    var result;
+
+    var response = await get(
+      '${WebApi.getOrderURL}/28',
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+        'x-api-key': '${WebApi.xApiKey}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
 
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {

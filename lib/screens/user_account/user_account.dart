@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
+import 'package:provider/provider.dart';
 
 class UserAccount extends StatelessWidget {
   static const String routeName = '/user-account';
 
   @override
   Widget build(BuildContext context) {
+    final authPvd = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: GridView(
         padding: const EdgeInsets.symmetric(
@@ -23,7 +29,9 @@ class UserAccount extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(MyAddresses.routeName);
+                    },
                     icon: Icon(Icons.location_on),
                     color: Colors.white,
                     iconSize: 40,
@@ -187,7 +195,9 @@ class UserAccount extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      authPvd.logOut(context);
+                    },
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,
                     iconSize: 40,

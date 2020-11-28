@@ -52,7 +52,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 _buildCashFromReceiverSection(context),
 
                 // EXTRA INFO SECTION
-                _buildExtraInfoSection(context),
+                _buildExtraInfoSection(context, orderPvd),
 
                 FlatButton(
                   color: Theme.of(context).primaryColor,
@@ -382,7 +382,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
 // EXTRA INFO SECTION
-  Widget _buildExtraInfoSection(context) {
+  Widget _buildExtraInfoSection(context, orderPvd) {
     final referenceNo = TextFormField(
       // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
       // onSaved: (value) => _name = value,
@@ -390,20 +390,20 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       decoration: buildTextFieldInputDecoration('Ref No', Icons.tag),
     );
 
-    final dummyCeckBox1 = CheckboxListTile(
+    final packagingCheckBox = CheckboxListTile(
       title: Text("Packaging their items with us"),
-      value: true,
-      onChanged: (newVal) {
-        print(newVal);
+      value: orderPvd.packageCheckedValue,
+      onChanged: (value) {
+        orderPvd.setpackageCheckedVal(value);
       },
       controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
     );
 
-    final dummyCeckBox2 = CheckboxListTile(
+    final fragileCheckBox = CheckboxListTile(
       title: Text("Adding a fragile sticker to their item"),
-      value: true,
-      onChanged: (newVal) {
-        print(newVal);
+      value: orderPvd.fragileCheckedValue,
+      onChanged: (value) {
+        orderPvd.setFragileCheckedVal(value);
       },
       controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
     );
@@ -414,8 +414,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           child: referenceNo,
         ),
-        dummyCeckBox1,
-        dummyCeckBox2,
+        packagingCheckBox,
+        fragileCheckBox,
       ],
     );
   }

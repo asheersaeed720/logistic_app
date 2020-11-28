@@ -1,3 +1,4 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(new MyApp());
@@ -41,19 +43,16 @@ class MyApp extends StatelessWidget {
         title: 'Hani Almutairi Logistic',
         debugShowCheckedModeBanner: false,
         theme: customTheme,
-        // home: Consumer<AuthProvider>(
-        //   builder: (_, authProvider, __) {
-        //     return FutureBuilder(
-        //       future: authProvider.checkLoginStatus(),
-        //       builder: (context, snapshot) {
-        //         return snapshot.hasData ? HomeScreen() : LoginScreen();
-        //       },
-        //     );
-        //   },
-        // ),
-        home: LoginScreen(),
-        // home: UserOrderScreen(),
-        // initialRoute: '/',
+        home: Consumer<AuthProvider>(
+          builder: (_, authProvider, __) {
+            return FutureBuilder(
+              future: authProvider.checkLoginStatus(),
+              builder: (context, snapshot) {
+                return snapshot.hasData ? TabsScreen() : LoginScreen();
+              },
+            );
+          },
+        ),
         routes: routes,
       ),
     );

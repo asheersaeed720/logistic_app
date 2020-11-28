@@ -49,7 +49,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                           SizedBox(width: 8.0),
                           RaisedButton(
                             onPressed: () {
-                              // orderPvd.resetStepFormNo();
                               orderPvd.addOrder(context);
                             },
                             child: Text(
@@ -65,46 +64,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
           ),
         ),
       ),
-    );
-  }
-
-  // DELIVERY COST SECTION
-  Widget _buildDeliveryCostAndCoupon(context, orderPvd) {
-    final couponCodeField = TextFormField(
-      autofocus: false,
-      // onSaved: (value) => _name = value,
-      keyboardType: TextInputType.name,
-      decoration:
-          buildTextFieldInputDecoration('Coupon', Icons.tag_faces_sharp),
-    );
-    return Column(
-      children: [
-        HeadingTitle('Who will be paying the delivery cost'),
-        const SizedBox(height: 6),
-        RadioListTile(
-          value: 'Sender',
-          groupValue: orderPvd.selectedPay,
-          title: Text('Sender to pay'),
-          activeColor: Theme.of(context).primaryColor,
-          onChanged: (currentVal) {
-            orderPvd.setSelectedPay(currentVal);
-          },
-        ),
-        RadioListTile(
-          value: 'Receiver',
-          groupValue: orderPvd.selectedPay,
-          title: Text('Receiver to pay'),
-          activeColor: Theme.of(context).primaryColor,
-          onChanged: (currentVal) {
-            orderPvd.setSelectedPay(currentVal);
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: couponCodeField,
-        ),
-        const SizedBox(height: 10),
-      ],
     );
   }
 
@@ -157,6 +116,46 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             ),
           ),
         )
+      ],
+    );
+  }
+
+  // DELIVERY COST SECTION
+  Widget _buildDeliveryCostAndCoupon(context, orderPvd) {
+    final couponCodeField = TextFormField(
+      autofocus: false,
+      // onSaved: (value) => _name = value,
+      keyboardType: TextInputType.name,
+      decoration:
+          buildTextFieldInputDecoration('Coupon', Icons.tag_faces_sharp),
+    );
+    return Column(
+      children: [
+        HeadingTitle('Who will be paying the delivery cost'),
+        const SizedBox(height: 6),
+        RadioListTile(
+          value: 'Sender',
+          groupValue: orderPvd.selectedPay,
+          title: Text('Sender to pay'),
+          activeColor: Theme.of(context).primaryColor,
+          onChanged: (currentVal) {
+            orderPvd.setSelectedPay(currentVal);
+          },
+        ),
+        RadioListTile(
+          value: 'Receiver',
+          groupValue: orderPvd.selectedPay,
+          title: Text('Receiver to pay'),
+          activeColor: Theme.of(context).primaryColor,
+          onChanged: (currentVal) {
+            orderPvd.setSelectedPay(currentVal);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+          child: couponCodeField,
+        ),
+        const SizedBox(height: 10),
       ],
     );
   }

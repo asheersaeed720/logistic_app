@@ -20,31 +20,32 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // bool _isLoggedIn = false;
-  // bool get isLoggedIn => _isLoggedIn;
-  // set isLoggedIn(bool isUserExist) {
-  //   _isLoggedIn = isUserExist;
-  //   notifyListeners();
-  // }
+  bool _isLoggedIn = false;
+  bool get isLoggedIn => _isLoggedIn;
+  set isLoggedIn(bool isUserExist) {
+    _isLoggedIn = isUserExist;
+    notifyListeners();
+  }
 
-  // // user
+  // user
   // Map<String, dynamic> _user = {};
-  // Map get user => _user;
-  // setUser() async {
-  //   _user = await _authService.getUser();
-  //   isLoggedIn = _user == null ? false : true;
-  //   notifyListeners();
-  // }
+  Map _user = {};
+  Map get user => _user;
+  setUser() async {
+    _user = await _authService.getUser();
+    isLoggedIn = _user == null ? false : true;
+    notifyListeners();
+  }
 
-  // checkLoginStatus() async {
-  //   return _user = await _authService.getUser();
-  // }
+  checkLoginStatus() async {
+    return _user = await _authService.getUser();
+  }
 
   login(context, userCredential) async {
     isLoading = true;
     await _authService.login(userCredential).then((response) {
       if (response['status'] != false) {
-        // setUser();
+        setUser();
         // Navigator.pushAndRemoveUntil(
         //   context,
         //   MaterialPageRoute(builder: (context) => OtpScreen()),
@@ -70,7 +71,7 @@ class AuthProvider with ChangeNotifier {
     isLoading = true;
     await _authService.signUpUser(user).then((response) {
       if (response['status'] != false) {
-        // setUser();
+        setUser();
         // Navigator.pushAndRemoveUntil(
         //   context,
         //   MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -88,8 +89,8 @@ class AuthProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  // logOut(context) async {
-  //   await _authService.logoutUser(context);
-  //   notifyListeners();
-  // }
+  logOut(context) async {
+    await _authService.logoutUser(context);
+    notifyListeners();
+  }
 }

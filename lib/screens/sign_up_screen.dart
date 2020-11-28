@@ -76,15 +76,9 @@ class _SignupScreenState extends State<SignupScreen> {
       showSearchBox: true,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel val) {
-        // _user.cityId = val;
         _user.cityId = val;
         print(_user.cityId);
       },
-      // validator: (value) {
-      //   if (value.name.isEmpty) {
-      //     return 'Please select city';
-      //   }
-      // },
       validator: (value) => _user.cityId == null ? 'Select city' : null,
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,

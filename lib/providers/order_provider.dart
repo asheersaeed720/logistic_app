@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/services/order_service.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/services/web_api.dart';
+import 'package:http/http.dart';
 
 class OrderProvider with ChangeNotifier {
   OrderService _orderService = OrderService();
@@ -33,6 +39,20 @@ class OrderProvider with ChangeNotifier {
   String get selectedPay => _selectedPay;
   set selectedPay(String val) {
     _selectedPay = val;
+    notifyListeners();
+  }
+
+  bool _packageCheckedValue = false;
+  bool get packageCheckedValue => _packageCheckedValue;
+  set packageCheckedValue(bool value) {
+    _packageCheckedValue = value;
+    notifyListeners();
+  }
+
+  bool _fragileCheckedValue = false;
+  bool get fragileCheckedValue => _fragileCheckedValue;
+  set fragileCheckedValue(bool value) {
+    _fragileCheckedValue = value;
     notifyListeners();
   }
 
@@ -66,6 +86,16 @@ class OrderProvider with ChangeNotifier {
     print(selectedPay);
   }
 
+  setpackageCheckedVal(bool checkedVal) {
+    packageCheckedValue = checkedVal;
+    print(packageCheckedValue);
+  }
+
+  setFragileCheckedVal(bool checkedVal) {
+    fragileCheckedValue = checkedVal;
+    print(fragileCheckedValue);
+  }
+
   addOrder(context) async {
     isLoading = true;
     await _orderService.addUserOrder(context).then((response) {
@@ -92,6 +122,41 @@ class OrderProvider with ChangeNotifier {
         ).show(context);
       }
     });
+    isLoading = false;
+  }
+
+  Future<List<Order>> getUserOrder(userId) async {
+    try {
+      var response = await get(
+        '${WebApi.getOrderURL}/$userId',
+        headers: {
+          'APP-KEY': WebApi.apiKey,
+          'x-api-key': WebApi.xApiKey,
+        },
+      );
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  delUserOrder(String orderId, userId) async {
+    isLoading = true;
+    try {
+      delete(
+        '${WebApi.addOrderURL}/$orderId',
+        headers: {
+          'APP-KEY': WebApi.apiKey,
+          'x-api-key': WebApi.xApiKey,
+        },
+      ).then((value) {
+        getUserOrder(userId);
+      });
+    } catch (e) {
+      throw (e);
+    }
     isLoading = false;
   }
 }

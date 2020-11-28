@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/models/order.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class UserOrderScreen extends StatefulWidget {
@@ -15,156 +19,11 @@ class UserOrderScreen extends StatefulWidget {
 class _UserOrderScreenState extends State<UserOrderScreen> {
   String _mobileNo, _trackingNo;
 
-  List orderList = [
-    {
-      "order_id": "5",
-      "order_user_id": "28",
-      "order_first_name": "Tester",
-      "order_lastname": "Ultra",
-      "order_email": null,
-      "order_contact": "021212121",
-      "order_country": null,
-      "order_city": "37420",
-      "order_address": "Test chorangi",
-      "order_amount": "",
-      "order_shipping": null,
-      "order_total_amount": null,
-      "order_status": null,
-      "order_date": null
-    },
-    {
-      "order_id": "7",
-      "order_user_id": "28",
-      "order_first_name": "Tester",
-      "order_lastname": "Ultra",
-      "order_email": null,
-      "order_contact": "021212121",
-      "order_country": null,
-      "order_city": "37420",
-      "order_address": "Test chorangi",
-      "order_amount": "",
-      "order_shipping": "",
-      "order_total_amount": "",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 08:58:08"
-    },
-    {
-      "order_id": "8",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:39:10"
-    },
-    {
-      "order_id": "9",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:39:44"
-    },
-    {
-      "order_id": "10",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:40:00"
-    },
-    {
-      "order_id": "11",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:40:52"
-    },
-    {
-      "order_id": "12",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:41:42"
-    },
-    {
-      "order_id": "13",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:42:00"
-    },
-    {
-      "order_id": "14",
-      "order_user_id": "28",
-      "order_first_name": "test1",
-      "order_lastname": "tester",
-      "order_email": null,
-      "order_contact": "123456789",
-      "order_country": null,
-      "order_city": "12457",
-      "order_address": "central khi",
-      "order_amount": "1000",
-      "order_shipping": "200",
-      "order_total_amount": "3000",
-      "order_status": "PROCESSING",
-      "order_date": "2020-11-27 09:42:28"
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
+    final orderPvd = Provider.of<OrderProvider>(context);
+    final user = Provider.of<AuthProvider>(context).user;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -189,22 +48,144 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               ),
               const SizedBox(height: 14),
               if (filterPvd.orderFilterBtn1 == true)
+                // Container(
+                //   height: 600,
+                //   child: Column(
+                //     children: [
+                //       Expanded(
+                //         child: ListView.builder(
+                //           itemCount: orderList.length,
+                //           itemBuilder: (context, i) {
+                //             return ExpansionTile(
+                //               title: Text(
+                //                   'Order no: # ${orderList[i]['order_id']}'),
+                //             );
+                //           },
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // )
                 Container(
-                  height: 600,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: orderList.length,
-                          itemBuilder: (context, i) {
-                            return ExpansionTile(
-                              title: Text(
-                                  'Order no: # ${orderList[i]['order_id']}'),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                  // height: 600,
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: FutureBuilder<List<Order>>(
+                    future: orderPvd.getUserOrder(user['user_id']),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Order> orders = snapshot.data;
+                        return ListView.builder(
+                            itemCount: orders.length,
+                            itemBuilder: (context, i) {
+                              return ExpansionTile(
+                                // key: ,
+                                initiallyExpanded: false,
+                                // leading: CircleAvatar(
+                                //   radius: 22.0,
+                                //   backgroundImage: AssetImage(
+                                //       './assets/images/student_pic.png'),
+                                //   backgroundColor:
+                                //       Theme.of(context).accentColor,
+                                // ),
+                                title: Text(
+                                  'Order no: # ${orders[i].orderId}',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 6, bottom: 10),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Sender Detail',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                                '${orders[i].orderSenderName}'),
+                                            Text(
+                                                '${orders[i].orderSenderCity}'),
+                                            Text(
+                                                '${orders[i].orderSenderAddress}'),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 6, bottom: 10),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Receiver Detail',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                                '${orders[i].orderRecieverName}'),
+                                            Text(
+                                                '${orders[i].orderRecieverCity}'),
+                                            Text(
+                                                '${orders[i].orderRecieverAddress}'),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'Order Status ${orders[i].orderStatus}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(height: 8),
+                                  IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (dialogContext) => AlertDialog(
+                                          title: Text('Order Cancel!'),
+                                          content: Text(
+                                              'Are you sure, You want to cancel order?'),
+                                          actions: [
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('No'),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () async {
+                                                orderPvd.delUserOrder(
+                                                    orders[i].orderId,
+                                                    user['user_id']);
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                          elevation: 20,
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(Icons.delete),
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                ],
+                              );
+                            });
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('No Order Found!'));
+                      }
+                      return LoadingIndicator();
+                    },
                   ),
                 )
               else if (filterPvd.orderFilterBtn2 == true)
