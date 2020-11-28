@@ -20,6 +20,7 @@ class OrderService {
       'order_amount': '155',
       'order_shipping': '23',
       'order_total_amount': '23',
+      'order_time': '2020-11-28 06:20:06',
     };
 
     var response = await post(
