@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
@@ -27,8 +30,6 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // user
-  // Map<String, dynamic> _user = {};
   Map _user = {};
   Map get user => _user;
   setUser() async {
@@ -41,17 +42,16 @@ class AuthProvider with ChangeNotifier {
     return _user = await _authService.getUser();
   }
 
-  login(context, userCredential) async {
+  Future<List<SearchCityModel>> getCities(filter) async {
+    return await _authService.getCities(filter);
+  }
+
+  getOtp(context, userCredential) async {
     isLoading = true;
-    await _authService.login(userCredential).then((response) {
+    await _authService.getUserOtp(userCredential).then((response) {
       if (response['status'] != false) {
-        setUser();
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => OtpScreen()),
-        //   (Route<dynamic> route) => false,
-        // );
-        Navigator.of(context).pushNamed(TabsScreen.routeName);
+        Navigator.of(context)
+            .pushNamed(OtpScreen.routeName, arguments: userCredential);
       } else {
         Flushbar(
           title: "Failed Login",
@@ -63,29 +63,44 @@ class AuthProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  Future<List<SearchCityModel>> getCities(filter) async {
-    return await _authService.getCities(filter);
-  }
-
-  signUp(context, user) async {
+  login(context, userCredential, key) async {
     isLoading = true;
-    await _authService.signUpUser(user).then((response) {
+    await _authService.loginUser(userCredential, key).then((response) {
       if (response['status'] != false) {
         setUser();
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => HomeScreen()),
-        //   (Route<dynamic> route) => false,
-        // );
-        Navigator.of(context).pushNamed(TabsScreen.routeName);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => TabsScreen()),
+          (Route<dynamic> route) => false,
+        );
       } else {
         Flushbar(
-          title: "Registration Failed",
+          title: "Failed Login",
           message: response['message']['status'].toString(),
           duration: Duration(seconds: 3),
         ).show(context);
       }
     });
+    isLoading = false;
+    // runApp(MyApp());
+  }
+
+  signUp(context, user) async {
+    isLoading = true;
+    var response = await _authService.signUpUser(user);
+    if (response['status'] != false) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      Flushbar(
+        title: "Registration Failed",
+        message: response['message']['status'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
     isLoading = false;
   }
 

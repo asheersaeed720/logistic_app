@@ -53,7 +53,10 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: FilterProvider(),
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: TabProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Hani Almutairi Logistic',

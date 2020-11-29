@@ -9,6 +9,8 @@ import 'package:hani_almutairi_logistic/screens/user_account/addresses/receiver_
 import 'package:hani_almutairi_logistic/screens/user_account/addresses/sender_addresses.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/user_account.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_one_widget.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_two_widget.dart';
 
 final routes = {
   // LoginScreen.routeName: (context) => LoginScreen(),
@@ -19,6 +21,8 @@ final routes = {
   UserAccount.routeName: (context) => UserAccount(),
   OtpScreen.routeName: (context) => OtpScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+  FormOneWidget.routeName: (context) => FormOneWidget(),
+  FormTwoWidget.routeName: (context) => FormTwoWidget(),
   OrderSuccess.routeName: (context) => OrderSuccess(),
   SenderAddresses.routeName: (context) => SenderAddresses(),
   ReceiverAddresses.routeName: (context) => ReceiverAddresses(),

@@ -6,6 +6,11 @@ class OrderSuccess extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orderData =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+
+    final orderId = orderData['orderId'];
+
     return Scaffold(
       body: Padding(
         padding:
@@ -21,7 +26,7 @@ class OrderSuccess extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'Your Order No: 213646',
+                  'Your Order No: $orderId',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -102,14 +107,14 @@ class OrderSuccess extends StatelessWidget {
                         Text('City'),
                         Text('Country'),
                         Text('Mobile No'),
-                        RaisedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Invoice',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: Theme.of(context).primaryColor,
-                        )
+                        // RaisedButton(
+                        //   onPressed: () {},
+                        //   child: Text(
+                        //     'Invoice',
+                        //     style: TextStyle(color: Colors.white),
+                        //   ),
+                        //   color: Theme.of(context).primaryColor,
+                        // )
                       ],
                     ),
                   ),

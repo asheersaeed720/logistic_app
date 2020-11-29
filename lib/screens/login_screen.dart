@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
+import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
@@ -28,18 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
-
-    final countriesCodeField = TextFormField(
-      autofocus: false,
-      validator: (value) => value.isEmpty ? "Enter country code" : null,
-      onSaved: (value) => _userCredential.password = value,
-      initialValue: '966',
-      decoration: InputDecoration(
-        labelStyle: TextStyle(fontSize: 12),
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-      ),
-    );
+    final tabPvd = Provider.of<TabProvider>(context);
 
     // final phoneNoField = TextFormField(
     //   inputFormatters: [
@@ -66,7 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
       validator: (value) => value.isEmpty ? "Please enter your email" : null,
       keyboardType: TextInputType.emailAddress,
       onSaved: (value) => _userCredential.email = value,
-      decoration: buildTextFieldInputDecoration("Email", Icons.email),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'email')}", Icons.email),
     );
 
     final passwordField = TextFormField(
@@ -81,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _userCredential.password = text;
       },
       decoration: buildPasswordInputDecoration(
-        "Password",
+        "${getTranslatedValue(context, 'password')}",
         Icons.lock,
         GestureDetector(
           onTap: () {
@@ -102,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FlatButton(
           padding: const EdgeInsets.all(0.0),
           child: Text(
-            "Forgot password?",
+            "${getTranslatedValue(context, 'forgot_password?')}",
             style: TextStyle(fontSize: 15.0),
           ),
           onPressed: () {
@@ -112,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FlatButton(
           padding: const EdgeInsets.only(left: 0.0),
           child: Text(
-            "Sign up",
+            "${getTranslatedValue(context, 'sign_up')}",
             style: TextStyle(fontSize: 15.0),
           ),
           onPressed: () {
@@ -125,12 +118,48 @@ class _LoginScreenState extends State<LoginScreen> {
     var doLogin = () {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        authPvd.login(context, _userCredential);
+        authPvd.getOtp(context, _userCredential);
       }
     };
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: DropdownButton(
+                onChanged: (Language language) {
+                  tabPvd.changeLanguage(context, language);
+                },
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Theme.of(context).primaryColor,
+                ),
+                items: Language.languageList()
+                    .map<DropdownMenuItem<Language>>(
+                      (lang) => DropdownMenuItem(
+                        value: lang,
+                        child: GestureDetector(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${lang.flag}'),
+                              Text('${lang.name}'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
         body: Center(
           child: SingleChildScrollView(
             child: Container(
@@ -168,7 +197,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20.0),
                     authPvd.isLoading
                         ? AuthIndicator()
-                        : longButton(context, 'LOGIN', doLogin),
+                        : longButton(context,
+                            '${getTranslatedValue(context, 'login')}', doLogin),
                     const SizedBox(height: 10.0),
                     forgotLabel
                   ],

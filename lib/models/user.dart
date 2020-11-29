@@ -30,6 +30,7 @@ class User {
 class UserCredential {
   String email;
   String password;
+  String key;
 
-  UserCredential({this.email, this.password});
+  UserCredential({this.email, this.password, this.key});
 }

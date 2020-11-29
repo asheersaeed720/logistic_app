@@ -1,3 +1,5 @@
+import 'package:flushbar/flushbar.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
@@ -11,16 +13,17 @@ import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/radio_btn.dart';
 import 'package:provider/provider.dart';
+import './form_two_widget.dart';
 
 class FormOneWidget extends StatefulWidget {
+  static const String routeName = '/add-order-form-one';
+
   @override
   _FormOneWidgetState createState() => _FormOneWidgetState();
 }
 
 class _FormOneWidgetState extends State<FormOneWidget> {
   final _formKey = GlobalKey<FormState>();
-
-  List<String> countries = new List();
 
   Address _address = Address();
 
@@ -61,10 +64,28 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
+                    if (!_formKey.currentState.validate()) {
+                      Flushbar(
+                        title: "Field Missing",
+                        message:
+                            'You missing sender or receiver address fields',
+                        duration: Duration(seconds: 3),
+                      ).show(context);
+                    } else {
                       _formKey.currentState.save();
-                      print(_address.senderCity);
-                      orderPvd.formNavigation();
+                      Navigator.of(context).pushNamed(
+                        FormTwoWidget.routeName,
+                        arguments: {
+                          'senderName': _address.senderName,
+                          'senderCity': _address.senderCity,
+                          'senderDistrict': _address.senderDistrict,
+                          'senderMobile': _address.senderMobileNo,
+                          'receiverName': _address.receiverName,
+                          'receiverCity': _address.receiverCity,
+                          'receiverDistrict': _address.receiverDistrict,
+                          'receiverMobile': _address.receiverMobileNo,
+                        },
+                      );
                     }
                   },
                 ),
@@ -82,7 +103,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _address.senderName = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration("Fullname", Icons.person),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'full_Name')}", Icons.person),
     );
 
     final citiesDropdown = DropdownSearch<SearchCityModel>(
@@ -103,23 +125,25 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       validator: (value) => value.isEmpty ? "Please enter district" : null,
       onSaved: (value) => _address.senderDistrict = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
       onSaved: (value) => _address.senderMobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
     );
 
     return Column(
       children: [
-        HeadingTitle('Sender Address'),
+        HeadingTitle("${getTranslatedValue(context, 'sender_address')}"),
         FilterBtn(
-          'My address',
-          'New Address',
-          'Saved Addresses',
+          "${getTranslatedValue(context, 'my_address')}",
+          "${getTranslatedValue(context, 'new_address')}",
+          "${getTranslatedValue(context, 'saved_address')}",
           filterPvd.addressFilterBtn1,
           filterPvd.addressFilterBtn2,
           filterPvd.addressFilterBtn3,
@@ -129,7 +153,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         ),
         if (filterPvd.addressFilterBtn1 == true)
           Text(
-            'Note: Your Default address which was submitted \n when you created account.',
+            // 'Note: Your Default address which was submitted \n when you created account.',
+            "${getTranslatedValue(context, 'note_your_default')}",
             style: TextStyle(color: Theme.of(context).errorColor, fontSize: 15),
           )
         else if (filterPvd.addressFilterBtn2 == true)
@@ -219,9 +244,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       children: [
         HeadingTitle('Pickup Prefer Time'),
         FilterBtn(
-          'Nearest',
-          'Today',
-          'Tomorrow',
+          "${getTranslatedValue(context, 'nearest')}",
+          "${getTranslatedValue(context, 'today')}",
+          "${getTranslatedValue(context, 'tomorrow')}",
           filterPvd.timeFilterBtn1,
           filterPvd.timeFilterBtn2,
           filterPvd.timeFilterBtn3,
@@ -236,15 +261,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           )
         else if (filterPvd.timeFilterBtn2 == true)
           RadioBtn(
-            'From 9 to 12',
-            'From 12 to 3',
-            'From 3 to 6',
+            "${getTranslatedValue(context, 'from_9_to_12')}",
+            "${getTranslatedValue(context, 'from_12_to_3')}",
+            "${getTranslatedValue(context, 'from_3_to_6')}",
           )
         else if (filterPvd.timeFilterBtn3 == true)
           RadioBtn(
-            'From 9 to 12',
-            'From 12 to 3',
-            'From 3 to 6',
+            "${getTranslatedValue(context, 'from_9_to_12')}",
+            "${getTranslatedValue(context, 'from_12_to_3')}",
+            "${getTranslatedValue(context, 'from_3_to_6')}",
           ),
         const SizedBox(height: 18),
       ],
@@ -257,7 +282,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
       onSaved: (value) => _address.receiverName = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration("Receiver name", Icons.person),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'receiver_name')}", Icons.person),
     );
 
     final citiesDropdown = DropdownSearch<SearchCityModel>(
@@ -278,23 +304,25 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       validator: (value) => value.isEmpty ? "Please enter district" : null,
       onSaved: (value) => _address.receiverDistrict = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
       onSaved: (value) => _address.receiverMobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
     );
 
     return Column(
       children: [
         HeadingTitle('Receiver Address'),
         FilterBtn(
-          'My address',
-          'New Address',
-          'Saved Addresses',
+          "${getTranslatedValue(context, 'my_address')}",
+          "${getTranslatedValue(context, 'new_address')}",
+          "${getTranslatedValue(context, 'saved_address')}",
           filterPvd.receiverAddressFilterBtn1,
           filterPvd.receiverAddressFilterBtn2,
           filterPvd.receiverAddressFilterBtn3,
@@ -360,7 +388,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       // onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
       initialValue: '0',
-      decoration: buildTextFieldInputDecoration('Amount', Icons.money),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'cod_amounts')}", Icons.money),
     );
     return Column(
       children: [
@@ -372,7 +401,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
-            'Note: if this amount is collected we will need to add it to the customer profile. Also, it will be cleared by ADMIN.',
+            "${getTranslatedValue(context, 'note_if_this_amount')}",
             style: TextStyle(color: Theme.of(context).errorColor),
           ),
         ),
@@ -387,11 +416,13 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
       // onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration('Ref No', Icons.tag),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, '#_reference_number')}", Icons.tag),
     );
 
     final packagingCheckBox = CheckboxListTile(
-      title: Text("Packaging their items with us"),
+      title: Text(
+          "${getTranslatedValue(context, 'packaging_their_items_with_us')}"),
       value: orderPvd.packageCheckedValue,
       onChanged: (value) {
         orderPvd.setpackageCheckedVal(value);
@@ -400,7 +431,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
 
     final fragileCheckBox = CheckboxListTile(
-      title: Text("Adding a fragile sticker to their item"),
+      title: Text(
+          "${getTranslatedValue(context, 'adding_a_fragile_sticker_to_their_item')}"),
       value: orderPvd.fragileCheckedValue,
       onChanged: (value) {
         orderPvd.setFragileCheckedVal(value);
@@ -409,7 +441,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
     return Column(
       children: [
-        HeadingTitle('Extra Info “Not Mandatory”'),
+        HeadingTitle(
+            "${getTranslatedValue(context, 'extra_info_not_mandatory')}"),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           child: referenceNo,

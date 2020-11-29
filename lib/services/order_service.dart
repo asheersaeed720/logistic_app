@@ -1,34 +1,48 @@
 import 'dart:convert';
 
+import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:http/http.dart';
 
 import 'package:hani_almutairi_logistic/services/web_api.dart';
 
 class OrderService {
-  Future<Map> addUserOrder(context) async {
+  Future<Map> addUserOrder(
+    context,
+    user,
+    senderName,
+    senderCity,
+    senderDistrict,
+    senderMobile,
+    receiverName,
+    receiverCity,
+    receiverDistrict,
+    receiverMobile,
+  ) async {
     var result;
 
     final orderData = {
-      'sender_name': 'asd',
-      'sender_address': 'asd',
-      'sender_contact': '222',
-      'sender_city': '37410',
-      'reciever_name': 'xyz',
-      'reciever_address': 'das',
-      'reciever_contact': '232',
-      'reciever_city': '37410',
+      'sender_name': '$senderName',
+      'sender_address': '$senderDistrict',
+      'sender_contact': '$senderMobile',
+      'sender_city': '$senderCity',
+      'reciever_name': '$receiverName',
+      'reciever_address': '$receiverDistrict',
+      'reciever_contact': '$receiverMobile',
+      'reciever_city': '$receiverCity',
       'order_amount': '155',
       'order_shipping': '23',
       'order_total_amount': '23',
       'order_time': '2020-11-28 06:20:06',
     };
 
+    print('Before hit: $orderData');
+
     var response = await post(
-      '${WebApi.addOrderURL}/28',
+      '${WebApi.addOrderURL}/${user['user_id']}',
       body: orderData,
       headers: {
         'APP_KEY': '${WebApi.apiKey}',
-        'x-api-key': '${WebApi.xApiKey}',
+        'x-api-key': user['token'],
       },
     );
 
@@ -42,7 +56,6 @@ class OrderService {
         'message': json.decode(response.body),
       };
     }
-    print('outside $result');
 
     return result;
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hani_almutairi_logistic/models/user.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
+import 'package:provider/provider.dart';
 
 class OtpScreen extends StatefulWidget {
   static const String routeName = '/otp';
@@ -15,9 +19,14 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authPvd = Provider.of<AuthProvider>(context);
+
+    final userCredential = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(10),
@@ -31,10 +40,13 @@ class _OtpScreenState extends State<OtpScreen> {
               size: 16,
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: authPvd.isLoading
+              ? null
+              : () {
+                  Navigator.of(context).pop();
+                },
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
         brightness: Brightness.light,
       ),
       body: SafeArea(
@@ -77,7 +89,9 @@ class _OtpScreenState extends State<OtpScreen> {
                 enableInteractiveSelection: false,
               ),
               const SizedBox(height: 40),
-              _buildConfirmBtn(context),
+              authPvd.isLoading
+                  ? LoadingIndicator()
+                  : _buildConfirmBtn(context, authPvd, userCredential),
             ],
           ),
         ),
@@ -85,14 +99,14 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  Widget _buildConfirmBtn(context) {
+  Widget _buildConfirmBtn(context, authPvd, userCredential) {
     return Container(
       // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       constraints: const BoxConstraints(maxWidth: 500),
       child: RaisedButton(
         onPressed: () {
           print('${_pinEditingController.text}');
-          Navigator.of(context).pushNamed(TabsScreen.routeName);
+          authPvd.login(context, userCredential, _pinEditingController.text);
         },
         color: Theme.of(context).primaryColor,
         shape: const RoundedRectangleBorder(

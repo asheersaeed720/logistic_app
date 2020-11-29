@@ -19,22 +19,14 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 80, horizontal: 10),
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage('./assets/images/header.jpg'),
               ),
             ),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(
-                'https://www.worldfuturecouncil.org/wp-content/uploads/2020/02/dummy-profile-pic-300x300-1.png',
-              ),
-            ),
-            accountName: Text('Furqan'),
-            accountEmail: Text('966 323 56462'),
-            // accountName: Text('${authPvd.user['user'][0]['username']}'),
-            // accountEmail: Text('${authPvd.user['user'][0]['email']}'),
           ),
           ListTile(
             leading: Icon(Icons.track_changes_rounded),

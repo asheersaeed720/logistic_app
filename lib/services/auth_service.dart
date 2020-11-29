@@ -30,7 +30,7 @@ class AuthService {
     }
   }
 
-  Future<Map> login(userCredential) async {
+  Future<Map> getUserOtp(userCredential) async {
     var result;
 
     final loginData = {
@@ -38,7 +38,35 @@ class AuthService {
       'password': userCredential.password,
     };
 
-    print(loginData);
+    var response = await post(
+      WebApi.loginGetkeyURL,
+      body: loginData,
+      headers: {'APP_KEY': '${WebApi.apiKey}'},
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+    return result;
+  }
+
+  Future<Map> loginUser(userCredential, key) async {
+    var result;
+
+    final loginData = {
+      'email': userCredential.email,
+      'password': userCredential.password,
+      'key': key,
+    };
+
+    print('Before hit: $loginData');
 
     var response = await post(
       WebApi.loginURL,
@@ -55,7 +83,6 @@ class AuthService {
         'status': false,
         'message': json.decode(response.body),
       };
-      print(result);
     }
     return result;
   }
@@ -81,15 +108,12 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      saveUser(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
-      print(result);
     } else {
       result = {
         'status': false,
         'message': json.decode(response.body),
       };
-      print(result);
     }
 
     return result;
@@ -98,14 +122,13 @@ class AuthService {
   saveUser(userData) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('userData', jsonEncode(userData));
-    print(preferences.setString('userData', json.encode(userData)));
   }
 
   getUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var userData = preferences.getString('userData');
     if (userData != null) {
-      Map<String, dynamic> user = json.decode(userData);
+      Map user = json.decode(userData);
       print(user);
       return user;
     }

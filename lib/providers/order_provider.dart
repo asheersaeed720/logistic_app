@@ -96,9 +96,33 @@ class OrderProvider with ChangeNotifier {
     print(fragileCheckedValue);
   }
 
-  addOrder(context) async {
+  addOrder(
+    context,
+    user,
+    senderName,
+    senderCity,
+    senderDistrict,
+    senderMobile,
+    receiverName,
+    receiverCity,
+    receiverDistrict,
+    receiverMobile,
+  ) async {
     isLoading = true;
-    await _orderService.addUserOrder(context).then((response) {
+    await _orderService
+        .addUserOrder(
+      context,
+      user,
+      senderName,
+      senderCity,
+      senderDistrict,
+      senderMobile,
+      receiverName,
+      receiverCity,
+      receiverDistrict,
+      receiverMobile,
+    )
+        .then((response) {
       if (response['status'] == true) {
         Fluttertoast.showToast(
           msg: "Your Order has been Placed",
@@ -109,10 +133,13 @@ class OrderProvider with ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        stepFormNo = 1;
-        Navigator.of(context).pushNamed(
+        // stepFormNo = 1;
+        print(response['user']);
+        Navigator.of(context).pushReplacementNamed(
           OrderSuccess.routeName,
-          arguments: {},
+          arguments: {
+            'orderId': response['user']['orderid'],
+          },
         );
       } else {
         Flushbar(

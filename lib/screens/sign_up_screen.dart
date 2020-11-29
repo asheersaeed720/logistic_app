@@ -1,10 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
+import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
@@ -33,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
+    final tabPvd = Provider.of<TabProvider>(context);
 
     final firstNameField = TextFormField(
       autofocus: false,
@@ -40,7 +44,8 @@ class _SignupScreenState extends State<SignupScreen> {
           value.isEmpty ? "Please enter your firstname" : null,
       onSaved: (value) => _user.firstname = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration("Firstname", Icons.person),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'firstname')}", Icons.person),
     );
 
     final lastNameField = TextFormField(
@@ -48,7 +53,8 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please enter your lastname" : null,
       onSaved: (value) => _user.lastName = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration("Lastname", Icons.person),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'lastname')}", Icons.person),
     );
 
     final emailField = TextFormField(
@@ -56,7 +62,8 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please enter your email" : null,
       onSaved: (value) => _user.email = value,
       keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration("Email", Icons.email),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'email')}", Icons.email),
     );
 
     final countryField = TextFormField(
@@ -89,7 +96,8 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please fill this" : null,
       onSaved: (value) => _user.district = value,
       keyboardType: TextInputType.streetAddress,
-      decoration: buildTextFieldInputDecoration("District", Icons.location_on),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
     final mobileNoField = TextFormField(
@@ -97,7 +105,8 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please enter No" : null,
       onSaved: (value) => _user.mobileNo = value,
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration("Mobile", Icons.phone),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -113,7 +122,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _user.password = text;
       },
       decoration: buildPasswordInputDecoration(
-        "Password",
+        "${getTranslatedValue(context, 'password')}",
         Icons.lock,
         GestureDetector(
           onTap: () {
@@ -143,7 +152,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _confirmPassword = text;
       },
       decoration: buildPasswordInputDecoration(
-        "Confirm Password",
+        "${getTranslatedValue(context, 'confirm_password')}",
         Icons.lock,
         GestureDetector(
           onTap: () {
@@ -169,7 +178,40 @@ class _SignupScreenState extends State<SignupScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Register'),
+          // backgroundColor: Colors.white,
+          // elevation: 0,
+          title: Text('${getTranslatedValue(context, 'register')}'),
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: DropdownButton(
+                onChanged: (Language language) {
+                  tabPvd.changeLanguage(context, language);
+                },
+                underline: SizedBox(),
+                icon: Icon(
+                  Icons.language,
+                  color: Colors.white,
+                ),
+                items: Language.languageList()
+                    .map<DropdownMenuItem<Language>>(
+                      (lang) => DropdownMenuItem(
+                        value: lang,
+                        child: GestureDetector(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('${lang.flag}'),
+                              Text('${lang.name}'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -205,7 +247,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: 16.0),
                     authPvd.isLoading
                         ? AuthIndicator()
-                        : longButton(context, 'SIGNUP', doRegister),
+                        : longButton(
+                            context,
+                            '${getTranslatedValue(context, 'sign_up')}',
+                            doRegister),
                   ],
                 ),
               ),

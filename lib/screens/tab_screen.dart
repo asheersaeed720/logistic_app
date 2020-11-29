@@ -20,24 +20,22 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  void _changeLanguage(Language language) {
-    Locale _temp;
-    switch (language.languageCode) {
-      case 'en':
-        _temp = Locale(language.languageCode, 'US');
-        break;
-      case 'ar':
-        _temp = Locale(language.languageCode, 'SA');
-        break;
+  // void _changeLanguage(Language language) {
+  //   Locale _temp;
+  //   switch (language.languageCode) {
+  //     case 'en':
+  //       _temp = Locale(language.languageCode, 'US');
+  //       break;
+  //     case 'ar':
+  //       _temp = Locale(language.languageCode, 'SA');
+  //       break;
 
-      default:
-        _temp = Locale(language.languageCode, 'US');
-    }
-    MyApp.setLocale(context, _temp);
-    print(language.languageCode);
-  }
-
-  int _currentTabScreen = 3;
+  //     default:
+  //       _temp = Locale(language.languageCode, 'US');
+  //   }
+  //   MyApp.setLocale(context, _temp);
+  //   print(language.languageCode);
+  // }
 
   String _tabTittle;
 
@@ -48,6 +46,7 @@ class _TabsScreenState extends State<TabsScreen> {
     AddOrderScreen(),
   ];
 
+  int _currentTabScreen = 3;
   onTabTapped(int index) {
     setState(() {
       _currentTabScreen = index;
@@ -79,6 +78,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tabPvd = Provider.of<TabProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_tabTittle ?? getTranslatedValue(context, 'add_order')),
@@ -87,7 +88,7 @@ class _TabsScreenState extends State<TabsScreen> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: DropdownButton(
               onChanged: (Language language) {
-                _changeLanguage(language);
+                tabPvd.changeLanguage(context, language);
               },
               underline: SizedBox(),
               icon: Icon(
