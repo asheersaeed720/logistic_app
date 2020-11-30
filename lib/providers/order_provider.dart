@@ -21,8 +21,6 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
-
   String _selectedSenderAddress;
   String get selectedSenderAddress => _selectedSenderAddress;
   set selectedSenderAddress(String val) {
@@ -183,13 +181,14 @@ class OrderProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  Future<List<Order>> getUserOrder(userId) async {
+  Future<List<Order>> getUserOrder(user) async {
     try {
       var response = await get(
-        '${WebApi.getOrderURL}/$userId',
+        // '${WebApi.getOrderURL}/$userId',
+        '${WebApi.getOrderURL}',
         headers: {
           'APP-KEY': WebApi.apiKey,
-          'x-api-key': WebApi.xApiKey,
+          'x-api-key': user['token'],
         },
       );
       var responseJson = json.decode(response.body);
@@ -200,21 +199,20 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  delUserOrder(String orderId, userId) async {
-    isLoading = true;
+  delUserOrder(
+      String orderId, user, Function reloadStart, Function reloadEnd) async {
+    reloadStart();
     try {
       delete(
         '${WebApi.addOrderURL}/$orderId',
         headers: {
           'APP-KEY': WebApi.apiKey,
-          'x-api-key': WebApi.xApiKey,
+          'x-api-key': user['token'],
         },
-      ).then((value) {
-        getUserOrder(userId);
-      });
+      );
     } catch (e) {
       throw (e);
     }
-    isLoading = false;
+    reloadEnd();
   }
 }
