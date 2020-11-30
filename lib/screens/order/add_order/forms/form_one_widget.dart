@@ -1,5 +1,4 @@
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 
@@ -32,6 +31,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
   Address _address = Address();
 
+  bool active = false;
+
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
@@ -59,24 +60,27 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 //   builder: (context, snapshot) {
                 //     if (snapshot.hasData) {
                 //       List<UserAddress> userAddresses = snapshot.data;
+
                 //       return userAddresses.isEmpty
                 //           ? Column(
                 //               children: [
                 //                 RaisedButton(
                 //                   color: Theme.of(context).primaryColor,
                 //                   onPressed: () {
-                //                     Navigator.of(context).pushNamed(MyAddresses.routeName);
+                //                     active = true;
+                //                     Navigator.of(context)
+                //                         .pushNamed(MyAddresses.routeName);
                 //                   },
                 //                   child: Text(
                 //                     'Add Receiver Address',
                 //                     style: TextStyle(color: Colors.white),
                 //                   ),
                 //                 ),
-                //                 SizedBox(height: 16),
+                //                 SizedBox(height: 20),
                 //               ],
                 //             )
                 //           : _buildReceiverSection(
-                //               context, filterPvd, authPvd, orderPvd);
+                //               context, filterPvd, authPvd, orderPvd, userPvd);
                 //     } else if (snapshot.hasError) {
                 //       return Center(
                 //         // child: Text('No Receiver Addresses Found!'))
@@ -100,7 +104,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 FlatButton(
                   color: Theme.of(context).primaryColor,
                   child: Text(
-                    'Next >',
+                    // 'Next >',
+                    "${getTranslatedValue(context, 'next')} >",
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
@@ -302,7 +307,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   Widget _buildTimeSection(context, filterPvd, orderPvd) {
     return Column(
       children: [
-        HeadingTitle('Pickup Prefer Time'),
+        HeadingTitle("${getTranslatedValue(context, 'pickup_prefer_time')}"),
         FilterBtn(
           "${getTranslatedValue(context, 'nearest')}",
           "${getTranslatedValue(context, 'today')}",
@@ -316,7 +321,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         ),
         if (filterPvd.timeFilterBtn1 == true)
           Text(
-            'Note: Nearest time',
+            // 'Note: Nearest time',
+            "${getTranslatedValue(context, 'note_nearest_time')}",
             style: TextStyle(color: Theme.of(context).errorColor),
           )
         else if (filterPvd.timeFilterBtn2 == true)
@@ -378,7 +384,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
     return Column(
       children: [
-        HeadingTitle('Receiver Address'),
+        HeadingTitle("${getTranslatedValue(context, 'receiver_address')}"),
         FilterBtn(
           "${getTranslatedValue(context, 'my_address')}",
           "${getTranslatedValue(context, 'new_address')}",
@@ -454,16 +460,18 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 // CASH FROM RECEIVER SECTION
   Widget _buildCashFromReceiverSection(context) {
     final cashOfDeliveryAmount = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter amount" : null,
+      // validator: (value) => value.isEmpty ? "Please enter amount" : null,
       onSaved: (value) => _address.collectionCashFromReceiver = value,
       keyboardType: TextInputType.name,
-      initialValue: '0',
+      // initialValue: '0',
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'cod_amounts')}", Icons.money),
     );
     return Column(
       children: [
-        HeadingTitle('Collecting Cash from Receiver'),
+        HeadingTitle(
+            // 'Collecting Cash from Receiver',
+            "${getTranslatedValue(context, 'collecting_cash_from_receiver')}"),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
           child: cashOfDeliveryAmount,

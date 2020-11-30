@@ -1,3 +1,4 @@
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,7 +31,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.track_changes_rounded),
-            title: Text('Track my shipment'),
+            title: Text("${getTranslatedValue(context, 'track_my_shipment')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -38,7 +39,8 @@ class AppDrawer extends StatelessWidget {
           Divider(color: Colors.grey),
           ListTile(
             leading: Icon(Icons.call),
-            title: Text('Call us “Static page”'),
+            // title: Text('Call us “Static page”'),
+            title: Text("${getTranslatedValue(context, 'call_us')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -47,6 +49,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.location_city_rounded),
             title: Text('Cities. It will be drop list or display list'),
+            // title: Text("${getTranslatedValue(context, 'track_my_shipment')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -54,7 +57,9 @@ class AppDrawer extends StatelessWidget {
           Divider(color: Colors.grey),
           ListTile(
             leading: Icon(Icons.featured_play_list),
-            title: Text('Terms and Conditions'),
+            // title: Text('Terms and Conditions'),
+            title:
+                Text("${getTranslatedValue(context, 'terms_and_Conditions')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -62,7 +67,8 @@ class AppDrawer extends StatelessWidget {
           Divider(color: Colors.grey),
           ListTile(
             leading: Icon(Icons.policy),
-            title: Text('Privacy'),
+            // title: Text('Privacy'),
+            title: Text("${getTranslatedValue(context, 'privacy')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -70,7 +76,8 @@ class AppDrawer extends StatelessWidget {
           Divider(color: Colors.grey),
           ListTile(
             leading: Icon(Icons.web_asset_outlined),
-            title: Text('Company website'),
+            // title: Text('Company website'),
+            title: Text("${getTranslatedValue(context, 'company_Website')}"),
             onTap: () {
               Navigator.pop(context);
             },
@@ -78,6 +85,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
+            // title: Text("${getTranslatedValue(context, 'track_my_shipment')}"),
             onTap: () {
               Navigator.pop(context);
               authPvd.logOut(context);

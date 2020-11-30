@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
@@ -20,11 +21,13 @@ class MyAddresses extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             tabs: [
-              Tab(text: 'Sender Addresses'),
-              Tab(text: 'Receiver Addresses'),
+              // Tab(text: 'Sender Addresses'),
+              // Tab(text: 'Receiver Addresses'),
+              Tab(text: "${getTranslatedValue(context, 'sender_address')}"),
+              Tab(text: "${getTranslatedValue(context, 'receiver_address')}"),
             ],
           ),
-          title: Text('My Addresses'),
+          title: Text("${getTranslatedValue(context, 'my_addresses')}"),
         ),
         body: TabBarView(
           children: [

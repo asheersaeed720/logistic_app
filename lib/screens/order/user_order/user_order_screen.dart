@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
@@ -34,9 +35,9 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               _filterBtn(
                 context,
                 '  All Order',
-                'Mobile no',
-                'Receiver',
-                'Sender',
+                "${getTranslatedValue(context, 'mobile')}",
+                "${getTranslatedValue(context, 'receiver')}",
+                "${getTranslatedValue(context, 'sender')}",
                 filterPvd.orderFilterBtn1,
                 filterPvd.orderFilterBtn2,
                 filterPvd.orderFilterBtn3,
@@ -182,7 +183,12 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                               );
                             });
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('No Order Found!'));
+                        return Center(
+                          child: Text(
+                            // 'No Order Found!',
+                            "${getTranslatedValue(context, 'no_order_found')}",
+                          ),
+                        );
                       }
                       return LoadingIndicator();
                     },
@@ -191,7 +197,10 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               else if (filterPvd.orderFilterBtn2 == true)
                 Column(
                   children: [
-                    HeadingTitle('Search by Mobile & Tracking no'),
+                    HeadingTitle(
+                      // search_by_mobile_and_tracking_number
+                      "${getTranslatedValue(context, 'search_by_mobile_and_tracking_number')}",
+                    ),
                     const SizedBox(height: 22),
                     _buildSearchByMobile(context),
                   ],
@@ -201,9 +210,12 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                   children: [
                     HeadingTitle('Receiver'),
                     FilterBtn(
-                      'New orders (1)',
-                      'Not delivered (4)',
-                      'Finished orders \n           (0)',
+                      // 'New orders (1)',
+                      // 'Not delivered (4)',
+                      // 'Finished orders \n           (0)',
+                      "${getTranslatedValue(context, 'new_orders')}",
+                      "${getTranslatedValue(context, 'not_delivered')}",
+                      "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
                       filterPvd.orderStatusFilterBtn3,
@@ -218,9 +230,12 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                   children: [
                     HeadingTitle('Sender'),
                     FilterBtn(
-                      'New orders (1)',
-                      'Not delivered (4)',
-                      'Finished orders \n           (0)',
+                      // 'New orders (1)',
+                      // 'Not delivered (4)',
+                      // 'Finished orders \n           (0)',
+                      "${getTranslatedValue(context, 'new_orders')}",
+                      "${getTranslatedValue(context, 'not_delivered')}",
+                      "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
                       filterPvd.orderStatusFilterBtn3,

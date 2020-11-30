@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
@@ -6,6 +7,7 @@ import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
@@ -81,7 +83,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                               print(senderName);
                             },
                             child: Text(
-                              'Back/Edit',
+                              // 'Back/Edit',
+                              "${getTranslatedValue(context, 'back/edit')}",
                               style: TextStyle(color: Colors.white),
                             ),
                             color: Theme.of(context).primaryColor,
@@ -112,7 +115,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                               }
                             },
                             child: Text(
-                              'Order Now',
+                              // 'Order Now',
+                              "${getTranslatedValue(context, 'order_now')}",
                               style: TextStyle(color: Colors.white),
                             ),
                             color: Theme.of(context).primaryColor,
@@ -166,7 +170,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                       RaisedButton(
                         onPressed: () {},
                         child: Text(
-                          'Invoice',
+                          "${getTranslatedValue(context, 'invoice')}",
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Theme.of(context).primaryColor,
@@ -187,36 +191,62 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<UserAddress> userAddresses = snapshot.data;
-              return Card(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2.2,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                  child: Column(
-                    children: [
-                      receiverName != null
-                          ? Text('$receiverName')
-                          : Text('${userAddresses[0].fullname}'),
-                      receiverCity != null
-                          ? Text('$receiverCity')
-                          : Text('${userAddresses[0].city}'),
-                      receiverMobile != null
-                          ? Text('$receiverMobile')
-                          : Text('${userAddresses[0].mobile}'),
-                      RaisedButton(
-                        elevation: 0,
-                        color: Colors.white,
-                        onPressed: () {},
-                        child: Text(
-                          '',
-                          style: TextStyle(color: Colors.white),
+              return userAddresses.isEmpty
+                  ? Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.2,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 6),
+                        child: Column(
+                          children: [
+                            Text('You did not add receiver address'),
+                            RaisedButton(
+                              elevation: 0,
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(MyAddresses.routeName);
+                              },
+                              child: Text(
+                                'Add receiver address',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              // color: Theme.of(context).primaryColor,
+                            )
+                          ],
                         ),
-                        // color: Theme.of(context).primaryColor,
-                      )
-                    ],
-                  ),
-                ),
-              );
+                      ),
+                    )
+                  : Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.2,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 6),
+                        child: Column(
+                          children: [
+                            receiverName != null
+                                ? Text('$receiverName')
+                                : Text('${userAddresses[0].fullname}' ?? ''),
+                            receiverCity != null
+                                ? Text('$receiverCity')
+                                : Text('${userAddresses[0].city}'),
+                            receiverMobile != null
+                                ? Text('$receiverMobile')
+                                : Text('${userAddresses[0].mobile}'),
+                            RaisedButton(
+                              elevation: 0,
+                              color: Colors.white,
+                              onPressed: () {},
+                              child: Text(
+                                '',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              // color: Theme.of(context).primaryColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
             } else if (snapshot.hasError) {
               return Center(child: Text('No Receiver Addresses Found!'));
               // return snapshot.error;
@@ -234,26 +264,27 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
       autofocus: false,
       // onSaved: (value) => _name = value,
       keyboardType: TextInputType.name,
-      decoration:
-          buildTextFieldInputDecoration('Coupon', Icons.tag_faces_sharp),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'coupon')}", Icons.tag_faces_sharp),
     );
     return Column(
       children: [
-        HeadingTitle('Who will be paying the delivery cost'),
+        HeadingTitle(
+            "${getTranslatedValue(context, 'who_will_be_paying_the_delievery')}"),
         const SizedBox(height: 6),
         RadioListTile(
-          value: 'Sender',
+          value: "${getTranslatedValue(context, 'sender')}",
           groupValue: orderPvd.selectedPay,
-          title: Text('Sender to pay'),
+          title: Text("${getTranslatedValue(context, 'sender_to_pay')}"),
           activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
             orderPvd.setSelectedPay(currentVal);
           },
         ),
         RadioListTile(
-          value: 'Receiver',
+          value: "${getTranslatedValue(context, 'receiver')}",
           groupValue: orderPvd.selectedPay,
-          title: Text('Receiver to pay'),
+          title: Text("${getTranslatedValue(context, 'receiver_to_pay')}"),
           activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
             orderPvd.setSelectedPay(currentVal);

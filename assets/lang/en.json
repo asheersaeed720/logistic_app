@@ -30,13 +30,13 @@
     "receiver_address": "Receiver Address",
     "collecting_cash_from_receiver": "Collecting Cash From Receiver",
     "note_if_this_amount": "Note: if this amount is collected we will need to add it to the customer profile. Also, it will be cleared by admin",
-    "extra_info_not_mandatory'": "Extra info 'Not Mandatory'",
+    "extra_info_not_mandatory": "Extra info Not Mandatory",
     "#_reference_number": "# Reference Number",
     "packaging_their_items_with_us": "Packaging their items with us",
     "adding_a_fragile_sticker_to_their_item": "Adding a fragile sticker to their item",
     "next": "Next",
     "invoice": "Invoice",
-    "who_will_be_paying_the_delievery": "Who will be paying the delievery",
+    "who_will_be_paying_the_delievery": "Who will be paying the delivery cost",
     "sender_to_pay": "Sender to pay",
     "receiver_to_pay": "Receiver to pay",
     "coupon": "Coupon",
@@ -55,7 +55,7 @@
     "receiver_name": "Receiver Name",
     "my_addresses": "My Addresses",
     "cod_amounts": "COD amounts",
-    "reports_for": "Reports For",
+    "reports_for": "Reports for all \n orders and COD",
     "password_change": "Password Change",
     "this_is_notification_screen": "This is notification Screen",
     "no_order_found": "No order found",
@@ -67,5 +67,6 @@
     "new_orders": "New Orders",
     "not_delivered": "Not Delivered",
     "finished_orders": "Finished Orders",
-    "english": "English"
+    "english": "English",
+    "enter_number_without_code": "Enter number without code"
 }

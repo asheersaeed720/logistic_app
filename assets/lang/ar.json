@@ -30,7 +30,7 @@
     "receiver_address": "عنوان المستلم",
     "collecting_cash_from_receiver": "تحصيل النقود من المستلم",
     "note_if_this_amount": "ملاحظة: إذا تم جمع هذا المبلغ ، فسنحتاج إلى إضافته إلى ملف تعريف العميل. أيضا ، سيتم مسحها من قبل المسؤول",
-    "extra_info_not_mandatory": "معلومات إضافية 'غير إلزامي",
+    "extra_info_not_mandatory": "معلومات إضافية غير إلزامي",
     "#_reference_number": "# رقم المرجع",
     "packaging_their_items_with_us": "تغليف أغراضهم معنا",
     "adding_a_fragile_sticker_to_their_item": "إضافة ملصق هش لعنصرهم",
@@ -67,5 +67,6 @@
     "new_orders": "طلبات جديدة",
     "not_delivered": "لم يتم تسليمها",
     "finished_orders": "الطلبات المنتهية",
-    "english": "الإنجليزية"
+    "english": "الإنجليزية",
+    "enter_number_without_code": "أدخل الرقم بدون رمز"
 }

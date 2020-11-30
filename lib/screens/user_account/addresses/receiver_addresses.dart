@@ -43,7 +43,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel val) {
         _address.receiverCity = val;
-        print(_address.senderCity);
+        print(_address.receiverCity);
       },
       validator: (value) =>
           _address.receiverCity == null ? 'Select city' : null,

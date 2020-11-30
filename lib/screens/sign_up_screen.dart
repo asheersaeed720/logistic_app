@@ -71,7 +71,8 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) => value.isEmpty ? "Please type a country" : null,
       onSaved: (value) => _user.country = value,
       keyboardType: TextInputType.name,
-      initialValue: 'Saudi Arabia',
+      // initialValue: 'Saudi Arabia',
+      initialValue: "${getTranslatedValue(context, 'saudi_arabia')}",
       decoration: buildTextFieldInputDecoration("Country", Icons.map),
     );
 
@@ -103,10 +104,13 @@ class _SignupScreenState extends State<SignupScreen> {
     final mobileNoField = TextFormField(
       autofocus: false,
       validator: (value) => value.isEmpty ? "Please enter No" : null,
-      onSaved: (value) => _user.mobileNo = value,
+      onSaved: (value) => _user.mobileNo = '966 + $value',
       keyboardType: TextInputType.number,
       decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
+          "${getTranslatedValue(context, 'enter_number_without_code')}",
+          Icons.phone),
+      // decoration: buildTextFieldInputDecoration(
+      //     "Enter number without code", Icons.phone),
     );
 
     final passwordField = TextFormField(

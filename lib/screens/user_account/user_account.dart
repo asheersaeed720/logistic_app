@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
@@ -52,7 +54,7 @@ class UserAccount extends StatelessWidget {
               footer: GridTileBar(
                 backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'My \n Addresses',
+                  "${getTranslatedValue(context, 'my_account')}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -93,7 +95,8 @@ class UserAccount extends StatelessWidget {
               footer: GridTileBar(
                 backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'COD \n Amounts',
+                  // 'COD \n Amounts',
+                  "${getTranslatedValue(context, 'cod_amounts')}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -134,7 +137,8 @@ class UserAccount extends StatelessWidget {
               footer: GridTileBar(
                 backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'Reports for all \n orders and COD',
+                  // 'Reports for all \n orders and COD',
+                  "${getTranslatedValue(context, 'reports_for')}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13.0,
@@ -154,7 +158,10 @@ class UserAccount extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(ChangePasswordScreen.routeName);
+                    },
                     icon: Icon(Icons.lock),
                     color: Colors.white,
                     iconSize: 40,
@@ -175,7 +182,8 @@ class UserAccount extends StatelessWidget {
               footer: GridTileBar(
                 backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  'Password \n Change',
+                  // 'Password \n Change',
+                  "${getTranslatedValue(context, 'change_password')}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13.0,

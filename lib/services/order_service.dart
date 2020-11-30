@@ -27,27 +27,25 @@ class OrderService {
     var result;
 
     final orderData = {
-      'sender_name': '$senderName',
-      'sender_address': '$senderDistrict',
-      'sender_contact': '$senderMobile',
-      'sender_city': '$senderCity',
-      'reciever_name': '$receiverName',
-      'reciever_address': '$receiverDistrict',
-      'reciever_contact': '$receiverMobile',
-      'reciever_city': '$receiverCity',
+      'sender_name': senderName.toString(),
+      'sender_address': senderDistrict.toString(),
+      'sender_contact': senderMobile.toString(),
+      'sender_city': senderCity.toString(),
+      'reciever_name': receiverName.toString(),
+      'reciever_address': receiverDistrict.toString(),
+      'reciever_contact': receiverMobile.toString(),
+      'reciever_city': receiverCity.toString(),
       'order_amount': '155',
       'order_shipping': '23',
       'order_total_amount': '23',
-      'order_pickup_time': '$selectedTime',
-      'order_collection_cash': '$collectionCashFromReceiver',
-      'order_ref_no': '$refNo',
-      'order_packaging': '$packageCheckedValue',
-      'order_fragile': '$fragileCheckedValue',
-      'order_payer': '$whoWillPlay',
+      'order_pickup_time': selectedTime.toString(),
+      'order_collection_cash': collectionCashFromReceiver.toString(),
+      'order_ref_no': refNo.toString(),
+      'order_packaging': packageCheckedValue.toString(),
+      'order_fragile': fragileCheckedValue.toString(),
+      'order_payer': whoWillPlay.toString(),
       'order_coupon': '',
     };
-
-    print(orderData);
 
     var response = await post(
       // '${WebApi.addOrderURL}/${user['user_id']}',

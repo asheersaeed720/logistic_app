@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 
 class NotificationScreen extends StatelessWidget {
   static const String routeName = '/notification';
@@ -7,7 +8,9 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('This is notification Screen!'),
+        child: Text(
+          "${getTranslatedValue(context, 'this_is_notification_screen')}",
+        ),
       ),
     );
   }

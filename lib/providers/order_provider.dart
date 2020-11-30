@@ -21,6 +21,8 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
+
   String _selectedSenderAddress;
   String get selectedSenderAddress => _selectedSenderAddress;
   set selectedSenderAddress(String val) {
@@ -142,18 +144,31 @@ class OrderProvider with ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+        print(response['user']['data']);
         Navigator.of(context).pushReplacementNamed(
           OrderSuccess.routeName,
           arguments: {
+            // 'orderId': response['user']['orderid'],
+            // 'senderName': senderName,
+            // 'senderCity': senderCity,
+            // 'senderDistrict': senderDistrict,
+            // 'senderMobile': senderMobile,
+            // 'receiverName': receiverName,
+            // 'receiverCity': receiverCity,
+            // 'receiverDistrict': receiverDistrict,
+            // 'receiverMobile': receiverMobile,
+            // 'refNo': refNo,
             'orderId': response['user']['orderid'],
-            'senderName': senderName,
-            'senderCity': senderCity,
-            'senderDistrict': senderDistrict,
-            'senderMobile': senderMobile,
-            'receiverName': receiverName,
-            'receiverCity': receiverCity,
-            'receiverDistrict': receiverDistrict,
-            'receiverMobile': receiverMobile,
+            'senderName': response['user']['data']['order_sender_name'],
+            'senderCity': response['user']['data']['order_sender_city'],
+            'senderDistrict': response['user']['data']['order_sender_address'],
+            'senderMobile': response['user']['data']['order_sender_contact'],
+            'receiverName': response['user']['data']['order_reciever_name'],
+            'receiverCity': response['user']['data']['order_reciever_city'],
+            'receiverDistrict': response['user']['data']
+                ['order_reciever_address'],
+            'receiverMobile': response['user']['data']
+                ['order_reciever_contact'],
             'refNo': refNo,
           },
         );
