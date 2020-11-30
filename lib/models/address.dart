@@ -9,6 +9,8 @@ class Address {
       receiverMobileNo;
   SearchCityModel senderCity;
   SearchCityModel receiverCity;
+  String refNo;
+  String collectionCashFromReceiver;
 
   Address({
     this.senderName,
@@ -19,5 +21,7 @@ class Address {
     this.receiverCity,
     this.receiverDistrict,
     this.receiverMobileNo,
+    this.refNo,
+    this.collectionCashFromReceiver,
   });
 }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
+import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
-import './form_one_widget.dart';
 
 class FormTwoWidget extends StatefulWidget {
   static const String routeName = '/add-order-form-two';
@@ -25,6 +26,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   Widget build(BuildContext context) {
     final orderPvd = Provider.of<OrderProvider>(context);
     final user = Provider.of<AuthProvider>(context).user;
+    final userPvd = Provider.of<UserProvider>(context);
 
     final formOneDetails =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
@@ -37,6 +39,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final receiverCity = formOneDetails['receiverCity'];
     final receiverDistrict = formOneDetails['receiverDistrict'];
     final receiverMobile = formOneDetails['receiverMobile'];
+    final collectionCashFromReceiver =
+        formOneDetails['collectionCashFromReceiver'];
+    final refNo = formOneDetails['refNo'];
+    final packageCheckedValue = formOneDetails['packageCheckedValue'];
+    final fragileCheckedValue = formOneDetails['fragileCheckedValue'];
+    final selectedTime = formOneDetails['selectedTime'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -48,7 +56,17 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // SENDER & RECEIVER DETAIL SECTION
-                _buildSenderAndReceiverDetail(context),
+                _buildSenderAndReceiverDetail(
+                  context,
+                  user,
+                  userPvd,
+                  senderName,
+                  senderCity,
+                  senderMobile,
+                  receiverName,
+                  receiverCity,
+                  receiverMobile,
+                ),
                 const SizedBox(height: 20),
                 // DELIVERY COST SECTION
                 _buildDeliveryCostAndCoupon(context, orderPvd),
@@ -84,6 +102,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   receiverCity,
                                   receiverDistrict,
                                   receiverMobile,
+                                  collectionCashFromReceiver,
+                                  refNo,
+                                  packageCheckedValue,
+                                  fragileCheckedValue,
+                                  selectedTime,
+                                  orderPvd.selectedPay,
                                 );
                               }
                             },
@@ -104,54 +128,102 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   }
 
   // SENDER & RECEIVER DETAIL SECTION
-  Widget _buildSenderAndReceiverDetail(context) {
+  Widget _buildSenderAndReceiverDetail(
+    context,
+    user,
+    userPvd,
+    senderName,
+    senderCity,
+    senderMobile,
+    receiverName,
+    receiverCity,
+    receiverMobile,
+  ) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Card(
-          child: Container(
-            width: MediaQuery.of(context).size.width / 2.3,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
-            child: Column(
-              children: [
-                Text('Shakir Afzal'),
-                Text('Al-Madina'),
-                Text('5862135'),
-                RaisedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Invoice',
-                    style: TextStyle(color: Colors.white),
+        FutureBuilder<List<UserAddress>>(
+          future: userPvd.getSenderAddresses(user),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // List<UserAddress> userAddresses = snapshot.data;
+              List<UserAddress> userAddresses = snapshot.data;
+              return Card(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.3,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+                  child: Column(
+                    children: [
+                      senderName != null
+                          ? Text('$senderName')
+                          : Text('${userAddresses[0].fullname}'),
+                      senderCity != null
+                          ? Text('$senderCity')
+                          : Text('${userAddresses[0].city}'),
+                      senderMobile != null
+                          ? Text('$senderMobile')
+                          : Text('${userAddresses[0].mobile}'),
+                      RaisedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Invoice',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ],
                   ),
-                  color: Theme.of(context).primaryColor,
-                )
-              ],
-            ),
-          ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(child: Text('No Sender Addresses Found!'));
+              // return snapshot.error;
+            }
+            return LoadingIndicator();
+          },
         ),
-        Card(
-          child: Container(
-            width: MediaQuery.of(context).size.width / 2.2,
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-            child: Column(
-              children: [
-                Text('Asif Khan'),
-                Text('Riyadh'),
-                Text('59266551'),
-                RaisedButton(
-                  elevation: 0,
-                  color: Colors.white,
-                  onPressed: () {},
-                  child: Text(
-                    '',
-                    style: TextStyle(color: Colors.white),
+        FutureBuilder<List<UserAddress>>(
+          future: userPvd.getReceiverAddresses(user),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<UserAddress> userAddresses = snapshot.data;
+              return Card(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                  child: Column(
+                    children: [
+                      receiverName != null
+                          ? Text('$receiverName')
+                          : Text('${userAddresses[0].fullname}'),
+                      receiverCity != null
+                          ? Text('$receiverCity')
+                          : Text('${userAddresses[0].city}'),
+                      receiverMobile != null
+                          ? Text('$receiverMobile')
+                          : Text('${userAddresses[0].mobile}'),
+                      RaisedButton(
+                        elevation: 0,
+                        color: Colors.white,
+                        onPressed: () {},
+                        child: Text(
+                          '',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        // color: Theme.of(context).primaryColor,
+                      )
+                    ],
                   ),
-                  // color: Theme.of(context).primaryColor,
-                )
-              ],
-            ),
-          ),
-        )
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(child: Text('No Receiver Addresses Found!'));
+              // return snapshot.error;
+            }
+            return LoadingIndicator();
+          },
+        ),
       ],
     );
   }

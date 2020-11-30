@@ -2,8 +2,12 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
+import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/providers/user_provider.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses/test_receiver.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ReceiverAddresses extends StatefulWidget {
@@ -21,11 +25,12 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
+    final userPvd = Provider.of<UserProvider>(context);
 
     final receiverName = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter your fullname" : null,
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => _address.senderName = value,
+      keyboardType: TextInputType.name,
+      onSaved: (value) => _address.receiverName = value,
       decoration: buildTextFieldInputDecoration("fullname", Icons.person),
     );
 
@@ -37,10 +42,11 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
       showSearchBox: true,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel val) {
-        _address.senderCity = val;
+        _address.receiverCity = val;
         print(_address.senderCity);
       },
-      validator: (value) => _address.senderCity == null ? 'Select city' : null,
+      validator: (value) =>
+          _address.receiverCity == null ? 'Select city' : null,
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
     );
@@ -48,7 +54,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
     final receiverDistrict = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter your district" : null,
       keyboardType: TextInputType.streetAddress,
-      onSaved: (value) => _address.senderName = value,
+      onSaved: (value) => _address.receiverDistrict = value,
       decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
@@ -56,94 +62,141 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
       validator: (value) =>
           value.isEmpty ? "Please enter your mobile no" : null,
       keyboardType: TextInputType.number,
-      onSaved: (value) => _address.senderName = value,
+      onSaved: (value) => _address.receiverMobileNo = value,
       decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
     );
 
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-        child: Column(
-          children: [
-            Card(
-              elevation: 1,
-              child: ListTile(
-                title: Text('Farzana Khan'),
-                subtitle: Text('Al-Madina'),
-                trailing: Text('5482165468'),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: FutureBuilder<List<UserAddress>>(
+              future: userPvd.getReceiverAddresses(authPvd.user),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<UserAddress> userAddresses = snapshot.data;
+                  return userAddresses.isEmpty
+                      ? Center(child: Text('No Receiver Addresses Found!'))
+                      : ListView.builder(
+                          itemCount: userAddresses.length,
+                          itemBuilder: (context, i) {
+                            return Card(
+                              elevation: 1,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: ListTile(
+                                  title: Text('${userAddresses[i].fullname}',
+                                      style: TextStyle(fontSize: 16)),
+                                  // subtitle: Text('${userAddresses[i].city}'),
+                                  // trailing: Text('${userAddresses[i].mobile}'),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${userAddresses[i].city}'),
+                                      Text('${userAddresses[i].mobile}'),
+                                    ],
+                                  ),
+                                  trailing: GestureDetector(
+                                    onTap: () {
+                                      //ADD FUNCTION
+                                      userPvd.delUserAddress(
+                                          userAddresses[i].id, authPvd.user);
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Theme.of(context).errorColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('No Receiver Addresses Found!'));
+                  // return snapshot.error;
+                }
+                return LoadingIndicator();
+              },
             ),
-            Card(
-              elevation: 1,
-              child: ListTile(
-                title: Text('Zain Chugtai'),
-                subtitle: Text('Al-riyadh'),
-                trailing: Text('5482165568'),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          // Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Stack(
-                  overflow: Overflow.visible,
-                  children: <Widget>[
-                    Positioned(
-                      right: -40.0,
-                      top: -40.0,
-                      child: InkResponse(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: CircleAvatar(
-                          child: Icon(Icons.close),
-                          backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Stack(
+                    overflow: Overflow.visible,
+                    children: <Widget>[
+                      Positioned(
+                        right: -40.0,
+                        top: -40.0,
+                        child: InkResponse(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: CircleAvatar(
+                            child: Icon(Icons.close),
+                            backgroundColor: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          receiverName,
-                          SizedBox(height: 10),
-                          receiverCitiesDropdown,
-                          SizedBox(height: 10),
-                          receiverDistrict,
-                          SizedBox(height: 10),
-                          receiverMobileNo,
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                  }
-                                },
-                                child: Text(
-                                  "Add Address",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                color: Theme.of(context).primaryColor),
-                          )
-                        ],
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            receiverName,
+                            SizedBox(height: 10),
+                            receiverCitiesDropdown,
+                            SizedBox(height: 10),
+                            receiverDistrict,
+                            SizedBox(height: 10),
+                            receiverMobileNo,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      userPvd.addReceiverAddress(
+                                          context, _address, authPvd.user);
+                                    }
+                                  },
+                                  child: Text(
+                                    "Add Address",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  color: Theme.of(context).primaryColor),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-        child: Icon(Icons.add),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          child: Icon(Icons.add),
+        ),
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: Theme.of(context).primaryColor,
+        //   onPressed: () {
+        //     Navigator.of(context).push(
+        //       MaterialPageRoute(
+        //         builder: (context) => TestReceiverAddress(),
+        //       ),
+        //     );
+        //   },
+        //   child: Icon(Icons.add),
+        // ),
       ),
     );
   }

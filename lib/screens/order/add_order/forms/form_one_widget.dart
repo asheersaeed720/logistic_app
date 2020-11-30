@@ -1,16 +1,21 @@
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
+import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/providers/user_provider.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:hani_almutairi_logistic/widgets/radio_btn.dart';
 import 'package:provider/provider.dart';
 import './form_two_widget.dart';
@@ -32,6 +37,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final filterPvd = Provider.of<FilterProvider>(context);
     final authPvd = Provider.of<AuthProvider>(context);
     final orderPvd = Provider.of<OrderProvider>(context);
+    final userPvd = Provider.of<UserProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -43,13 +49,47 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               children: [
                 // SENDER ADDRESS SECTION
                 _buildSenderAddressSection(
-                    context, filterPvd, authPvd, orderPvd),
+                    context, filterPvd, authPvd, orderPvd, userPvd),
 
                 // TIME SECTION
                 _buildTimeSection(context, filterPvd, orderPvd),
 
+                // FutureBuilder<List<UserAddress>>(
+                //   future: userPvd.getReceiverAddresses(authPvd.user),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       List<UserAddress> userAddresses = snapshot.data;
+                //       return userAddresses.isEmpty
+                //           ? Column(
+                //               children: [
+                //                 RaisedButton(
+                //                   color: Theme.of(context).primaryColor,
+                //                   onPressed: () {
+                //                     Navigator.of(context).pushNamed(MyAddresses.routeName);
+                //                   },
+                //                   child: Text(
+                //                     'Add Receiver Address',
+                //                     style: TextStyle(color: Colors.white),
+                //                   ),
+                //                 ),
+                //                 SizedBox(height: 16),
+                //               ],
+                //             )
+                //           : _buildReceiverSection(
+                //               context, filterPvd, authPvd, orderPvd);
+                //     } else if (snapshot.hasError) {
+                //       return Center(
+                //         // child: Text('No Receiver Addresses Found!'))
+                //         child: snapshot.error,
+                //       );
+                //     }
+                //     return LoadingIndicator();
+                //   },
+                // ),
+
                 // RECEIVER ADDRESS SECTION
-                _buildReceiverSection(context, filterPvd, authPvd, orderPvd),
+                _buildReceiverSection(
+                    context, filterPvd, authPvd, orderPvd, userPvd),
 
                 // CASH FROM RECEIVER SECTION
                 _buildCashFromReceiverSection(context),
@@ -84,6 +124,12 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                           'receiverCity': _address.receiverCity,
                           'receiverDistrict': _address.receiverDistrict,
                           'receiverMobile': _address.receiverMobileNo,
+                          'collectionCashFromReceiver':
+                              _address.collectionCashFromReceiver,
+                          'refNo': _address.refNo,
+                          'packageCheckedValue': orderPvd.packageCheckedValue,
+                          'fragileCheckedValue': orderPvd.fragileCheckedValue,
+                          'selectedTime': orderPvd.selectedTime
                         },
                       );
                     }
@@ -98,7 +144,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // SENDER ADDRESS SECTION
-  Widget _buildSenderAddressSection(context, filterPvd, authPvd, orderPvd) {
+  Widget _buildSenderAddressSection(
+      context, filterPvd, authPvd, orderPvd, userPvd) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _address.senderName = value,
@@ -173,30 +220,43 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           )
         else if (filterPvd.addressFilterBtn3 == true)
-          Column(
-            children: [
-              RadioListTile(
-                value: 'Person name 1',
-                groupValue: orderPvd.selectedAddress,
-                title: Text('Shakir Afzal'),
-                subtitle: Text('Al-Madina 5862135'),
-                activeColor: Theme.of(context).primaryColor,
-                onChanged: (currentVal) {
-                  orderPvd.setSelectedAddress(currentVal);
-                },
-              ),
-              Divider(),
-              RadioListTile(
-                value: 'Person name 2',
-                groupValue: orderPvd.selectedAddress,
-                title: Text('Jahangir'),
-                subtitle: Text('Test & 5862133'),
-                activeColor: Theme.of(context).primaryColor,
-                onChanged: (currentVal) {
-                  orderPvd.setSelectedAddress(currentVal);
-                },
-              ),
-            ],
+          Container(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: FutureBuilder<List<UserAddress>>(
+              future: userPvd.getSenderAddresses(authPvd.user),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<UserAddress> userAddresses = snapshot.data;
+                  return userAddresses.isEmpty
+                      ? Center(
+                          child: Text('No Sender Address'),
+                        )
+                      : ListView.builder(
+                          itemCount: userAddresses.length,
+                          itemBuilder: (context, i) {
+                            return RadioListTile(
+                              value:
+                                  '${userAddresses[i].fullname} ${userAddresses[i].mobile}',
+                              groupValue: orderPvd.selectedSenderAddress,
+                              title: Text('${userAddresses[i].fullname}'),
+                              subtitle: Text(
+                                  '${userAddresses[i].city} ${userAddresses[i].mobile}'),
+                              activeColor: Theme.of(context).primaryColor,
+                              onChanged: (currentVal) {
+                                orderPvd.setSelectedSenderAddress(currentVal);
+                              },
+                            );
+                          },
+                        );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    // child: Text('No Receiver Addresses Found!'))
+                    child: snapshot.error,
+                  );
+                }
+                return LoadingIndicator();
+              },
+            ),
           ),
         const SizedBox(height: 18),
       ],
@@ -277,7 +337,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // RECEIVER SECTION
-  Widget _buildReceiverSection(context, filterPvd, authPvd, orderPvd) {
+  Widget _buildReceiverSection(context, filterPvd, authPvd, orderPvd, userPvd) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
       onSaved: (value) => _address.receiverName = value,
@@ -331,10 +391,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateReceiverAddressFilterBtn3,
         ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
-          Text(
-            'Note: Address Receiver Address <add button soon>',
-            style: TextStyle(color: Theme.of(context).errorColor, fontSize: 15),
-          )
+          Text('')
         else if (filterPvd.receiverAddressFilterBtn2 == true)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
@@ -351,30 +408,43 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           )
         else if (filterPvd.receiverAddressFilterBtn3 == true)
-          Column(
-            children: [
-              RadioListTile(
-                value: 'Person name 1',
-                groupValue: orderPvd.selectedAddress,
-                title: Text('Asif Khan'),
-                subtitle: Text('Riyadh & 59266551'),
-                activeColor: Theme.of(context).primaryColor,
-                onChanged: (currentVal) {
-                  orderPvd.setSelectedAddress(currentVal);
-                },
-              ),
-              Divider(),
-              RadioListTile(
-                value: 'Person name 2',
-                groupValue: orderPvd.selectedAddress,
-                title: Text('Person name 2'),
-                subtitle: Text('City Name & Number 2'),
-                activeColor: Theme.of(context).primaryColor,
-                onChanged: (currentVal) {
-                  orderPvd.setSelectedAddress(currentVal);
-                },
-              ),
-            ],
+          Container(
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: FutureBuilder<List<UserAddress>>(
+              future: userPvd.getReceiverAddresses(authPvd.user),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<UserAddress> userAddresses = snapshot.data;
+                  return userAddresses.isEmpty
+                      ? Center(
+                          child: Text('No Receiver Address'),
+                        )
+                      : ListView.builder(
+                          itemCount: userAddresses.length,
+                          itemBuilder: (context, i) {
+                            return RadioListTile(
+                              value:
+                                  '${userAddresses[i].fullname} ${userAddresses[i].mobile}',
+                              groupValue: orderPvd.selectedReceiverAddress,
+                              title: Text('${userAddresses[i].fullname}'),
+                              subtitle: Text(
+                                  '${userAddresses[i].city} ${userAddresses[i].mobile}'),
+                              activeColor: Theme.of(context).primaryColor,
+                              onChanged: (currentVal) {
+                                orderPvd.setSelectedReceiverAddress(currentVal);
+                              },
+                            );
+                          },
+                        );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    // child: Text('No Receiver Addresses Found!'))
+                    child: snapshot.error,
+                  );
+                }
+                return LoadingIndicator();
+              },
+            ),
           ),
         const SizedBox(height: 18),
       ],
@@ -385,7 +455,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   Widget _buildCashFromReceiverSection(context) {
     final cashOfDeliveryAmount = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter amount" : null,
-      // onSaved: (value) => _name = value,
+      onSaved: (value) => _address.collectionCashFromReceiver = value,
       keyboardType: TextInputType.name,
       initialValue: '0',
       decoration: buildTextFieldInputDecoration(
@@ -414,7 +484,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   Widget _buildExtraInfoSection(context, orderPvd) {
     final referenceNo = TextFormField(
       // validator: (value) => value.isEmpty ? "Please enter ref no" : null,
-      // onSaved: (value) => _name = value,
+      onSaved: (value) => _address.refNo = value,
       keyboardType: TextInputType.name,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, '#_reference_number')}", Icons.tag),

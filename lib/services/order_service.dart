@@ -17,6 +17,12 @@ class OrderService {
     receiverCity,
     receiverDistrict,
     receiverMobile,
+    collectionCashFromReceiver,
+    refNo,
+    packageCheckedValue,
+    fragileCheckedValue,
+    selectedTime,
+    whoWillPlay,
   ) async {
     var result;
 
@@ -32,13 +38,20 @@ class OrderService {
       'order_amount': '155',
       'order_shipping': '23',
       'order_total_amount': '23',
-      'order_time': '2020-11-28 06:20:06',
+      'order_pickup_time': '$selectedTime',
+      'order_collection_cash': '$collectionCashFromReceiver',
+      'order_ref_no': '$refNo',
+      'order_packaging': '$packageCheckedValue',
+      'order_fragile': '$fragileCheckedValue',
+      'order_payer': '$whoWillPlay',
+      'order_coupon': '',
     };
 
-    print('Before hit: $orderData');
+    print(orderData);
 
     var response = await post(
-      '${WebApi.addOrderURL}/${user['user_id']}',
+      // '${WebApi.addOrderURL}/${user['user_id']}',
+      '${WebApi.addOrderURL}',
       body: orderData,
       headers: {
         'APP_KEY': '${WebApi.apiKey}',
@@ -55,6 +68,7 @@ class OrderService {
         'status': false,
         'message': json.decode(response.body),
       };
+      print(json.decode(response.body));
     }
 
     return result;

@@ -9,4 +9,7 @@ class WebApi {
   static const String getCitiesURL = baseURL + '/locations/cities';
   static const String addOrderURL = baseURL + '/Orders/order';
   static const String getOrderURL = baseURL + '/Orders/orders';
+  static const String getUserAddressesURL = baseURL + '/Users/addresses';
+  static const String addUserAddressesURL = baseURL + '/Users/address';
+  static const String delUserAddressesURL = baseURL + '/Users/address';
 }

@@ -21,10 +21,17 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedAddress = 'Person name 1';
-  String get selectedAddress => _selectedAddress;
-  set selectedAddress(String val) {
-    _selectedAddress = val;
+  String _selectedSenderAddress;
+  String get selectedSenderAddress => _selectedSenderAddress;
+  set selectedSenderAddress(String val) {
+    _selectedSenderAddress = val;
+    notifyListeners();
+  }
+
+  String _selectedReceiverAddress;
+  String get selectedReceiverAddress => _selectedReceiverAddress;
+  set selectedReceiverAddress(String val) {
+    _selectedReceiverAddress = val;
     notifyListeners();
   }
 
@@ -56,24 +63,14 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  int _stepFormNo = 1;
-  int get stepFormNo => _stepFormNo;
-  set stepFormNo(int indexVal) {
-    _stepFormNo = indexVal;
-    notifyListeners();
+  setSelectedSenderAddress(String selectedValue) {
+    selectedSenderAddress = selectedValue;
+    print(selectedSenderAddress);
   }
 
-  formNavigation() {
-    if (stepFormNo == 1) {
-      stepFormNo = 2;
-    } else {
-      stepFormNo = 1;
-    }
-  }
-
-  setSelectedAddress(String selectedValue) {
-    selectedAddress = selectedValue;
-    print(selectedAddress);
+  setSelectedReceiverAddress(String selectedValue) {
+    selectedReceiverAddress = selectedValue;
+    print(selectedReceiverAddress);
   }
 
   setSelectedTime(String selectedValue) {
@@ -107,6 +104,12 @@ class OrderProvider with ChangeNotifier {
     receiverCity,
     receiverDistrict,
     receiverMobile,
+    collectionCashFromReceiver,
+    refNo,
+    packageCheckedValue,
+    fragileCheckedValue,
+    selectedTime,
+    whoWillPlay,
   ) async {
     isLoading = true;
     await _orderService
@@ -121,6 +124,12 @@ class OrderProvider with ChangeNotifier {
       receiverCity,
       receiverDistrict,
       receiverMobile,
+      collectionCashFromReceiver,
+      refNo,
+      packageCheckedValue,
+      fragileCheckedValue,
+      selectedTime,
+      whoWillPlay,
     )
         .then((response) {
       if (response['status'] == true) {
@@ -133,12 +142,19 @@ class OrderProvider with ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        // stepFormNo = 1;
-        print(response['user']);
         Navigator.of(context).pushReplacementNamed(
           OrderSuccess.routeName,
           arguments: {
             'orderId': response['user']['orderid'],
+            'senderName': senderName,
+            'senderCity': senderCity,
+            'senderDistrict': senderDistrict,
+            'senderMobile': senderMobile,
+            'receiverName': receiverName,
+            'receiverCity': receiverCity,
+            'receiverDistrict': receiverDistrict,
+            'receiverMobile': receiverMobile,
+            'refNo': refNo,
           },
         );
       } else {

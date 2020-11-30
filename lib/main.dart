@@ -6,6 +6,7 @@ import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 
@@ -56,6 +57,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: TabProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: UserProvider(),
         ),
       ],
       child: MaterialApp(
