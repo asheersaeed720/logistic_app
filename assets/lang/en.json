@@ -57,7 +57,7 @@
     "cod_amounts": "COD amounts",
     "reports_for": "Reports for all \n orders and COD",
     "password_change": "Password Change",
-    "this_is_notification_screen": "This is notification Screen",
+    "no_notifications_found": "No notifications found",
     "no_order_found": "No order found",
     "receiver": "Receiver",
     "sender": "Sender",
@@ -68,5 +68,6 @@
     "not_delivered": "Not Delivered",
     "finished_orders": "Finished Orders",
     "english": "English",
-    "enter_number_without_code": "Enter number without code"
+    "new_password": "New Password",
+    "old_password": "Old Password"
 }

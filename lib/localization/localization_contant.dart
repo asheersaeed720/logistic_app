@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hani_almutairi_logistic/localization/demo_localization.dart';
+import 'package:hani_almutairi_logistic/localization/localization.dart';
 
 String getTranslatedValue(BuildContext context, String key) {
-  return DemoLocalizations.of(context).getTranslatedValue(key);
+  return AppLocalizations.of(context).getTranslatedValue(key);
 }

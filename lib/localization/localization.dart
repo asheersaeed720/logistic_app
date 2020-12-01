@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DemoLocalizations {
+class AppLocalizations {
   final Locale locale;
-  DemoLocalizations(this.locale);
+  AppLocalizations(this.locale);
 
-  static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   Map<String, String> _localizedValues;
@@ -26,13 +26,13 @@ class DemoLocalizations {
     return _localizedValues[key];
   }
 
-  static const LocalizationsDelegate<DemoLocalizations> delegate =
-      _DemoLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 }
 
-class _DemoLocalizationsDelegate
-    extends LocalizationsDelegate<DemoLocalizations> {
-  const _DemoLocalizationsDelegate();
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
   @override
   bool isSupported(Locale locale) {
     return [
@@ -42,8 +42,8 @@ class _DemoLocalizationsDelegate
   }
 
   @override
-  Future<DemoLocalizations> load(Locale locale) async {
-    DemoLocalizations localizations = new DemoLocalizations(locale);
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations localizations = new AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }
@@ -52,5 +52,5 @@ class _DemoLocalizationsDelegate
   // bool shouldReload(covariant LocalizationsDelegate<DemoLocalizations> old) {
   // throw UnimplementedError();
   @override
-  bool shouldReload(_DemoLocalizationsDelegate old) => false;
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
 }

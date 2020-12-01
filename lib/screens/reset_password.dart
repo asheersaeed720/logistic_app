@@ -6,54 +6,26 @@ import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
-  static const String routeName = '/change-password';
+class ResetPasswordScreen extends StatefulWidget {
+  static const String routeName = '/reset-password';
 
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = new GlobalKey<FormState>();
 
   String oldPasswordVal;
   String passwordVal;
   String confirmPasswordVal;
+  num _forgotPasswordKey;
 
   bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
-
-    // OLD PASSWORD
-    final oldPassword = TextFormField(
-      obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? "Please enter old password" : null,
-      onSaved: (value) {
-        setState(() {
-          oldPasswordVal = value;
-        });
-      },
-      onChanged: (text) {
-        oldPasswordVal = text;
-      },
-      decoration: buildPasswordInputDecoration(
-        // "Old Password",
-        "${getTranslatedValue(context, 'old_password')}",
-        Icons.lock,
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          child: new Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
-          ),
-        ),
-      ),
-    );
 
     // CHANGE PASSWORD
     final newPassword = TextFormField(
@@ -114,6 +86,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
     );
 
+    final keyTextfield = TextFormField(
+      maxLength: 4,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_forgotPasswordKey < 5) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _forgotPasswordKey = num.parse(text);
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _forgotPasswordKey = num.parse(value),
+      decoration: buildTextFieldInputDecoration("e.g 2546", Icons.lock_open),
+    );
+
     final changePasswordBtn = Material(
       elevation: 4.0,
       borderRadius: BorderRadius.circular(6.0),
@@ -124,8 +115,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            authPvd.changePassword(
-                context, authPvd.user, oldPasswordVal, passwordVal);
+            authPvd.forgotPassword(context, passwordVal, _forgotPasswordKey);
             // _formKey.currentState.reset();
           }
         },
@@ -177,18 +167,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           Container(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: oldPassword,
+                            child: newPassword,
                           ),
-                          const SizedBox(height: 20),
-                          Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: newPassword),
                           const SizedBox(height: 20),
                           Container(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
                             child: confirmNewPassword,
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: keyTextfield,
                           ),
                           const SizedBox(height: 20),
                           authPvd.isLoading

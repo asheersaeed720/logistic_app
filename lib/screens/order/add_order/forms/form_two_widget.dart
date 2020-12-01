@@ -24,6 +24,8 @@ class FormTwoWidget extends StatefulWidget {
 class _FormTwoWidgetState extends State<FormTwoWidget> {
   final _formKey = GlobalKey<FormState>();
 
+  String _couponCode;
+
   @override
   Widget build(BuildContext context) {
     final orderPvd = Provider.of<OrderProvider>(context);
@@ -47,6 +49,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final packageCheckedValue = formOneDetails['packageCheckedValue'];
     final fragileCheckedValue = formOneDetails['fragileCheckedValue'];
     final selectedTime = formOneDetails['selectedTime'];
+    // test
+    final selectedSenderAddress = formOneDetails['selectedSenderAddress'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -111,6 +115,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   fragileCheckedValue,
                                   selectedTime,
                                   orderPvd.selectedPay,
+                                  _couponCode,
                                 );
                               }
                             },
@@ -261,8 +266,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   // DELIVERY COST SECTION
   Widget _buildDeliveryCostAndCoupon(context, orderPvd) {
     final couponCodeField = TextFormField(
-      autofocus: false,
-      // onSaved: (value) => _name = value,
+      onSaved: (value) => _couponCode = value,
       keyboardType: TextInputType.name,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'coupon')}", Icons.tag_faces_sharp),

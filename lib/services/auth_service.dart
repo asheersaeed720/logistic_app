@@ -46,7 +46,6 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      print(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {
@@ -66,7 +65,7 @@ class AuthService {
       'key': key,
     };
 
-    print('Before hit: $loginData');
+    // print('Before hit: $loginData');
 
     var response = await post(
       WebApi.loginURL,
@@ -142,5 +141,84 @@ class AuthService {
       MaterialPageRoute(builder: (context) => LoginScreen()),
       (Route<dynamic> route) => false,
     );
+  }
+
+  Future<Map> changeUserPassword(user, oldPasswordVal, passwordVal) async {
+    var result;
+
+    var response = await put(
+      WebApi.changePasswordURL +
+          '/${user['user_id']}?password=$passwordVal&oldpassword=$oldPasswordVal',
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+        'x-api-key': '${user['token']}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body).toString(),
+      };
+      print(json.decode(response.body));
+    }
+    return result;
+  }
+
+  Future<Map> getUserForgotPasswordKey(userCredential) async {
+    var result;
+
+    var response = await post(
+      WebApi.getforgotPasswordKeyURL,
+      body: {'email': userCredential.email},
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body)['message'].toString(),
+      };
+      print(json.decode(response.body));
+    }
+    return result;
+  }
+
+  Future<Map> userForgotPassword(password, key) async {
+    var result;
+
+    var response = await post(
+      WebApi.forgotPasswordURL,
+      body: {
+        'key': '$key',
+        'newpassword': '$password',
+      },
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body)['message'].toString(),
+      };
+      print(json.decode(response.body));
+    }
+    return result;
   }
 }

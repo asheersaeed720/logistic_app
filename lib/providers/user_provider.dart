@@ -57,57 +57,57 @@ class UserProvider with ChangeNotifier {
 
   addSenderAddress(context, senderAddress, user) async {
     isLoading = true;
-    await _userService
-        .addUserSenderAddress(context, senderAddress, user)
-        .then((response) {
-      if (response['status'] == true) {
-        Fluttertoast.showToast(
-          msg: "Your address has been Added",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black87,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        print(response['user']);
-        // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
-      } else {
-        Flushbar(
-          title: "Failed",
-          message: response['message']['message'].toString(),
-          duration: Duration(seconds: 3),
-        ).show(context);
-      }
-    });
+    final response =
+        await _userService.addUserSenderAddress(context, senderAddress, user);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Your address has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response['user']);
+      // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
     isLoading = false;
   }
 
   addReceiverAddress(context, receiverAddress, user) async {
     isLoading = true;
-    await _userService
-        .addUserReceiverAddress(context, receiverAddress, user)
-        .then((response) {
-      if (response['status'] == true) {
-        Fluttertoast.showToast(
-          msg: "Receiver address has been Added",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black87,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        print(response['user']);
-        // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
-      } else {
-        Flushbar(
-          title: "Failed",
-          message: response['message']['message'].toString(),
-          duration: Duration(seconds: 3),
-        ).show(context);
-      }
-    });
+    final response = await _userService.addUserReceiverAddress(
+        context, receiverAddress, user);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Receiver address has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response['user']);
+      // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
     isLoading = false;
   }
 

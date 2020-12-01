@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/localization/demo_localization.dart';
+import 'package:hani_almutairi_logistic/localization/localization.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
@@ -15,74 +15,66 @@ import '../main.dart';
 class TabsScreen extends StatefulWidget {
   static const String routeName = '/tabs';
 
+  // final activeTabIndex;
+
+  // TabsScreen({Key key, this.activeTabIndex}) : super(key: key);
+
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  // void _changeLanguage(Language language) {
-  //   Locale _temp;
-  //   switch (language.languageCode) {
-  //     case 'en':
-  //       _temp = Locale(language.languageCode, 'US');
-  //       break;
-  //     case 'ar':
-  //       _temp = Locale(language.languageCode, 'SA');
-  //       break;
+  // String _tabTittle;
 
-  //     default:
-  //       _temp = Locale(language.languageCode, 'US');
+  // final List<Widget> childrenTab = [
+  //   UserAccount(),
+  //   NotificationScreen(),
+  //   UserOrderScreen(),
+  //   AddOrderScreen(),
+  // ];
+
+  // int _currentTabScreen = 3;
+  // onTabTapped(int index) {
+  //   setState(() {
+  //     _currentTabScreen = index;
+  //   });
+
+  //   switch (index) {
+  //     case 0:
+  //       {
+  //         _tabTittle = getTranslatedValue(context, 'my_account');
+  //       }
+  //       break;
+  //     case 1:
+  //       {
+  //         _tabTittle = getTranslatedValue(context, 'notifications');
+  //       }
+  //       break;
+  //     case 2:
+  //       {
+  //         _tabTittle = getTranslatedValue(context, 'my_orders');
+  //       }
+  //       break;
+  //     case 3:
+  //       {
+  //         _tabTittle = getTranslatedValue(context, 'add_order');
+  //       }
+  //       break;
   //   }
-  //   MyApp.setLocale(context, _temp);
-  //   print(language.languageCode);
   // }
-
-  String _tabTittle;
-
-  final List<Widget> childrenTab = [
-    UserAccount(),
-    NotificationScreen(),
-    UserOrderScreen(),
-    AddOrderScreen(),
-  ];
-
-  int _currentTabScreen = 3;
-  onTabTapped(int index) {
-    setState(() {
-      _currentTabScreen = index;
-    });
-
-    switch (index) {
-      case 0:
-        {
-          _tabTittle = getTranslatedValue(context, 'my_account');
-        }
-        break;
-      case 1:
-        {
-          _tabTittle = getTranslatedValue(context, 'notifications');
-        }
-        break;
-      case 2:
-        {
-          _tabTittle = getTranslatedValue(context, 'my_orders');
-        }
-        break;
-      case 3:
-        {
-          _tabTittle = getTranslatedValue(context, 'add_order');
-        }
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final tabPvd = Provider.of<TabProvider>(context);
+    // final tabArg =
+    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+
+    // _tabTittle = getTranslatedValue(context, 'add_order');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tabTittle ?? getTranslatedValue(context, 'add_order')),
+        // title: Text(_tabTittle ?? getTranslatedValue(context, 'add_order')),
+        title: Text(tabPvd.tabTittle),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
@@ -115,17 +107,17 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
-      body: childrenTab[_currentTabScreen],
+      body: tabPvd.childrenTab[tabPvd.currentTabScreen],
       drawer: AppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentTabScreen,
+        onTap: tabPvd.onTabTapped,
+        currentIndex: tabPvd.currentTabScreen,
         selectedItemColor: Theme.of(context).primaryColor,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              _currentTabScreen == 0
+              tabPvd.currentTabScreen == 0
                   ? Icons.account_circle
                   : Icons.account_circle_outlined,
               size: 24.0,
@@ -134,7 +126,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              _currentTabScreen == 1
+              tabPvd.currentTabScreen == 1
                   ? Icons.notifications
                   : Icons.notifications_outlined,
               size: 24.0,
@@ -143,7 +135,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              _currentTabScreen == 2
+              tabPvd.currentTabScreen == 2
                   ? Icons.folder
                   : Icons.folder_open_outlined,
               size: 24.0,
@@ -152,7 +144,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              _currentTabScreen == 3
+              tabPvd.currentTabScreen == 3
                   ? Icons.delivery_dining
                   : Icons.delivery_dining,
               size: 24.0,

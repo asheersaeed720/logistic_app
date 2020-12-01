@@ -101,16 +101,39 @@ class _SignupScreenState extends State<SignupScreen> {
           "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
+    // final mobileNoField = TextFormField(
+    //   maxLength: 8,
+    //   autofocus: false,
+    //   validator: (value) => value.isEmpty ? "Please enter No" : null,
+    //   onSaved: (value) => _user.mobileNo = '966$value',
+    //   keyboardType: TextInputType.number,
+    //   decoration: buildTextFieldInputDecoration(
+    //       "${getTranslatedValue(context, 'enter_number_without_code')}",
+    //       Icons.phone),
+    //   // decoration: buildTextFieldInputDecoration(
+    //   //     "Enter number without code", Icons.phone),
+    // );
+
     final mobileNoField = TextFormField(
+      // inputFormatters: [
+      //   new LengthLimitingTextInputFormatter(9),
+      // ],
+      maxLength: 9,
       autofocus: false,
-      validator: (value) => value.isEmpty ? "Please enter No" : null,
-      onSaved: (value) => _user.mobileNo = '966 + $value',
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_user.mobileNo.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _user.mobileNo = text;
+      },
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'enter_number_without_code')}",
-          Icons.phone),
-      // decoration: buildTextFieldInputDecoration(
-      //     "Enter number without code", Icons.phone),
+      onSaved: (value) => _user.mobileNo = value,
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(

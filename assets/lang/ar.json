@@ -8,8 +8,8 @@
     "login": "تسجيل الدخول",
     "forgot_password?": "هل نسيت كلمة المرور؟",
     "sign_up": "سجل",
-    "reset_password?": "إعادة تعيين كلمة المرور",
-    "change_password?": "غير كلمة السر",
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "change_password": "غير كلمة السر",
     "register": "تسجيل",
     "firstname": "الاسم الاول",
     "lastname": "الكنية",
@@ -57,7 +57,7 @@
     "cod_amounts": "مبالغ COD",
     "reports_for": "تقارير عن",
     "password_change": "تغيير كلمة السر",
-    "this_is_notification_screen": "هذه شاشة الإخطار",
+    "no_notifications_found": "لم يتم العثور على إخطارات",
     "no_order_found": "لم يتم العثور على طلب",
     "receiver": "المتلقي",
     "sender": "مرسل",
@@ -68,5 +68,6 @@
     "not_delivered": "لم يتم تسليمها",
     "finished_orders": "الطلبات المنتهية",
     "english": "الإنجليزية",
-    "enter_number_without_code": "أدخل الرقم بدون رمز"
+    "new_password": "كلمة سر جديدة",
+    "old_password": "كلمة المرور القديمة"
 }

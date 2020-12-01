@@ -21,9 +21,16 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedSenderAddress;
-  String get selectedSenderAddress => _selectedSenderAddress;
-  set selectedSenderAddress(String val) {
+  // String _selectedSenderAddress;
+  // String get selectedSenderAddress => _selectedSenderAddress;
+  // set selectedSenderAddress(String val) {
+  //   _selectedSenderAddress = val;
+  //   notifyListeners();
+  // }
+
+  List _selectedSenderAddress;
+  List get selectedSenderAddress => _selectedSenderAddress;
+  set selectedSenderAddress(List val) {
     _selectedSenderAddress = val;
     notifyListeners();
   }
@@ -63,9 +70,12 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setSelectedSenderAddress(String selectedValue) {
-    selectedSenderAddress = selectedValue;
-    print(selectedSenderAddress);
+  setSelectedSenderAddress(selectedValue) {
+    // Map valueMap = jsonDecode(selectedValue);
+    // // var ab = json.decode('[$selectedValue]');
+    // // print(ab[1]);
+    // // selectedSenderAddress = ab;
+    print(selectedValue);
   }
 
   setSelectedReceiverAddress(String selectedValue) {
@@ -94,26 +104,6 @@ class OrderProvider with ChangeNotifier {
   }
 
   addOrder(
-    context,
-    user,
-    senderName,
-    senderCity,
-    senderDistrict,
-    senderMobile,
-    receiverName,
-    receiverCity,
-    receiverDistrict,
-    receiverMobile,
-    collectionCashFromReceiver,
-    refNo,
-    packageCheckedValue,
-    fragileCheckedValue,
-    selectedTime,
-    whoWillPlay,
-  ) async {
-    isLoading = true;
-    await _orderService
-        .addUserOrder(
       context,
       user,
       senderName,
@@ -130,54 +120,62 @@ class OrderProvider with ChangeNotifier {
       fragileCheckedValue,
       selectedTime,
       whoWillPlay,
-    )
-        .then((response) {
-      if (response['status'] == true) {
-        Fluttertoast.showToast(
-          msg: "Your Order has been Placed",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black87,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        print(response['user']['data']);
-        Navigator.of(context).pushReplacementNamed(
-          OrderSuccess.routeName,
-          arguments: {
-            // 'orderId': response['user']['orderid'],
-            // 'senderName': senderName,
-            // 'senderCity': senderCity,
-            // 'senderDistrict': senderDistrict,
-            // 'senderMobile': senderMobile,
-            // 'receiverName': receiverName,
-            // 'receiverCity': receiverCity,
-            // 'receiverDistrict': receiverDistrict,
-            // 'receiverMobile': receiverMobile,
-            // 'refNo': refNo,
-            'orderId': response['user']['orderid'],
-            'senderName': response['user']['data']['order_sender_name'],
-            'senderCity': response['user']['data']['order_sender_city'],
-            'senderDistrict': response['user']['data']['order_sender_address'],
-            'senderMobile': response['user']['data']['order_sender_contact'],
-            'receiverName': response['user']['data']['order_reciever_name'],
-            'receiverCity': response['user']['data']['order_reciever_city'],
-            'receiverDistrict': response['user']['data']
-                ['order_reciever_address'],
-            'receiverMobile': response['user']['data']
-                ['order_reciever_contact'],
-            'refNo': refNo,
-          },
-        );
-      } else {
-        Flushbar(
-          title: "Order Failed",
-          message: response['message']['message'].toString(),
-          duration: Duration(seconds: 3),
-        ).show(context);
-      }
-    });
+      couponCode) async {
+    isLoading = true;
+    final response = await _orderService.addUserOrder(
+        context,
+        user,
+        senderName,
+        senderCity,
+        senderDistrict,
+        senderMobile,
+        receiverName,
+        receiverCity,
+        receiverDistrict,
+        receiverMobile,
+        collectionCashFromReceiver,
+        refNo,
+        packageCheckedValue,
+        fragileCheckedValue,
+        selectedTime,
+        whoWillPlay,
+        couponCode);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Your Order has been Placed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response['user']['data']);
+      Navigator.of(context).pushReplacementNamed(
+        OrderSuccess.routeName,
+        arguments: {
+          'orderId': response['user']['orderid'],
+          'senderName': response['user']['data']['order_sender_name'],
+          'senderCity': response['user']['data']['order_sender_city'],
+          'senderDistrict': response['user']['data']['order_sender_address'],
+          'senderMobile': response['user']['data']['order_sender_contact'],
+          'receiverName': response['user']['data']['order_reciever_name'],
+          'receiverCity': response['user']['data']['order_reciever_city'],
+          'receiverDistrict': response['user']['data']
+              ['order_reciever_address'],
+          'receiverMobile': response['user']['data']['order_reciever_contact'],
+          'refNo': refNo,
+        },
+      );
+    } else {
+      Flushbar(
+        title: "Order Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
     isLoading = false;
   }
 
@@ -186,6 +184,25 @@ class OrderProvider with ChangeNotifier {
       var response = await get(
         // '${WebApi.getOrderURL}/$userId',
         '${WebApi.getOrderURL}',
+        headers: {
+          'APP-KEY': WebApi.apiKey,
+          // 'x-api-key': user['token'],
+          'x-api-key': 'f51adea8f02ca1a66033a443b4574b15'
+        },
+      );
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
+    try {
+      var response = await get(
+        // '${WebApi.getOrderURL}/$userId',
+        '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
         headers: {
           'APP-KEY': WebApi.apiKey,
           'x-api-key': user['token'],
@@ -200,8 +217,9 @@ class OrderProvider with ChangeNotifier {
   }
 
   delUserOrder(
-      String orderId, user, Function reloadStart, Function reloadEnd) async {
-    reloadStart();
+    String orderId,
+    user,
+  ) async {
     try {
       delete(
         '${WebApi.addOrderURL}/$orderId',
@@ -213,6 +231,5 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       throw (e);
     }
-    reloadEnd();
   }
 }

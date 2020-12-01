@@ -1,4 +1,5 @@
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
+import 'package:hani_almutairi_logistic/screens/reset_password.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
@@ -22,6 +23,7 @@ final routes = {
   UserAccount.routeName: (context) => UserAccount(),
   OtpScreen.routeName: (context) => OtpScreen(),
   ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
+  ResetPasswordScreen.routeName: (context) => ResetPasswordScreen(),
   FormOneWidget.routeName: (context) => FormOneWidget(),
   FormTwoWidget.routeName: (context) => FormTwoWidget(),
   OrderSuccess.routeName: (context) => OrderSuccess(),

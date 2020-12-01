@@ -4,6 +4,7 @@ import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_item.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
@@ -18,21 +19,9 @@ class UserOrderScreen extends StatefulWidget {
 }
 
 class _UserOrderScreenState extends State<UserOrderScreen> {
+  // final GlobalKey<AppExpansionTileState> expansionTile = new GlobalKey();
+
   String _mobileNo, _trackingNo;
-
-  bool reloadOrders = false;
-
-  void reloadStart() {
-    setState(() {
-      reloadOrders = true;
-    });
-  }
-
-  void reloadEnd() {
-    setState(() {
-      reloadOrders = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,174 +29,118 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     final orderPvd = Provider.of<OrderProvider>(context);
     final user = Provider.of<AuthProvider>(context).user;
 
-    return reloadOrders
-        ? LoadingIndicator()
-        : Scaffold(
-            body: SingleChildScrollView(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                child: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+          child: Column(
+            children: [
+              _filterBtn(
+                context,
+                '  All Order',
+                "${getTranslatedValue(context, 'mobile')}",
+                "${getTranslatedValue(context, 'receiver')}",
+                "${getTranslatedValue(context, 'sender')}",
+                filterPvd.orderFilterBtn1,
+                filterPvd.orderFilterBtn2,
+                filterPvd.orderFilterBtn3,
+                filterPvd.orderFilterBtn4,
+                filterPvd.activateOrderFilterBtn1,
+                filterPvd.activateOrderFilterBtn2,
+                filterPvd.activateOrderFilterBtn3,
+                filterPvd.activateOrderFilterBtn4,
+              ),
+              const SizedBox(height: 14),
+              if (filterPvd.orderFilterBtn1 == true)
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: FutureBuilder<List<Order>>(
+                    future: orderPvd.getUserOrder(user),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Order> orders = snapshot.data;
+                        return ListView.builder(
+                          itemCount: orders.length,
+                          itemBuilder: (context, i) => UserOrderItem(
+                            orders[i].orderId,
+                            orders[i].orderSenderName,
+                            orders[i].orderSenderContact,
+                            orders[i].orderSenderCity,
+                            orders[i].orderSenderAddress,
+                            orders[i].orderRecieverName,
+                            orders[i].orderRecieverContact,
+                            orders[i].orderRecieverCity,
+                            orders[i].orderRecieverAddress,
+                            orders[i].orderStatus,
+                            orders[i].orderRefNo,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            // 'No Order Found!',
+                            "${getTranslatedValue(context, 'no_order_found')}",
+                          ),
+                        );
+                      }
+                      return LoadingIndicator();
+                    },
+                  ),
+                )
+              else if (filterPvd.orderFilterBtn2 == true)
+                Column(
                   children: [
-                    _filterBtn(
-                      context,
-                      '  All Order',
-                      "${getTranslatedValue(context, 'mobile')}",
-                      "${getTranslatedValue(context, 'receiver')}",
-                      "${getTranslatedValue(context, 'sender')}",
-                      filterPvd.orderFilterBtn1,
-                      filterPvd.orderFilterBtn2,
-                      filterPvd.orderFilterBtn3,
-                      filterPvd.orderFilterBtn4,
-                      filterPvd.activateOrderFilterBtn1,
-                      filterPvd.activateOrderFilterBtn2,
-                      filterPvd.activateOrderFilterBtn3,
-                      filterPvd.activateOrderFilterBtn4,
+                    HeadingTitle(
+                      // search_by_mobile_and_tracking_number
+                      "${getTranslatedValue(context, 'search_by_mobile_and_tracking_number')}",
                     ),
-                    const SizedBox(height: 14),
-                    if (filterPvd.orderFilterBtn1 == true)
-                      // Container(
-                      //   height: 600,
-                      //   child: Column(
-                      //     children: [
-                      //       Expanded(
-                      //         child: ListView.builder(
-                      //           itemCount: orderList.length,
-                      //           itemBuilder: (context, i) {
-                      //             return ExpansionTile(
-                      //               title: Text(
-                      //                   'Order no: # ${orderList[i]['order_id']}'),
-                      //             );
-                      //           },
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // )
+                    const SizedBox(height: 22),
+                    _buildSearchByMobile(context),
+                  ],
+                )
+              else if (filterPvd.orderFilterBtn3 == true)
+                Column(
+                  children: [
+                    HeadingTitle('Receiver'),
+                    FilterBtn(
+                      // 'New orders (1)',
+                      // 'Not delivered (4)',
+                      // 'Finished orders \n           (0)',
+                      "${getTranslatedValue(context, 'new_orders')}",
+                      "${getTranslatedValue(context, 'not_delivered')}",
+                      "${getTranslatedValue(context, 'finished_orders')}",
+                      filterPvd.orderStatusFilterBtn1,
+                      filterPvd.orderStatusFilterBtn2,
+                      filterPvd.orderStatusFilterBtn3,
+                      filterPvd.activateOrderStatusFilterBtn1,
+                      filterPvd.activateOrderStatusFilterBtn2,
+                      filterPvd.activateOrderStatusFilterBtn3,
+                    ),
+                    if (filterPvd.orderStatusFilterBtn1 == true)
                       Container(
-                        // height: 600,
-                        height: MediaQuery.of(context).size.height * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
-                          future: orderPvd.getUserOrder(user),
+                          future:
+                              orderPvd.getFilterUserOrder(user, 'PROCESSING'),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               List<Order> orders = snapshot.data;
                               return ListView.builder(
-                                  itemCount: orders.length,
-                                  itemBuilder: (context, i) {
-                                    return ExpansionTile(
-                                      // key: ,
-                                      initiallyExpanded: false,
-                                      // leading: CircleAvatar(
-                                      //   radius: 22.0,
-                                      //   backgroundImage: AssetImage(
-                                      //       './assets/images/student_pic.png'),
-                                      //   backgroundColor:
-                                      //       Theme.of(context).accentColor,
-                                      // ),
-                                      title: Text(
-                                        'Order no: # ${orders[i].orderId}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 6, bottom: 10),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    'Sender Detail',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                      '${orders[i].orderSenderName}'),
-                                                  Text(
-                                                      '${orders[i].orderSenderCity}'),
-                                                  Text(
-                                                      '${orders[i].orderSenderAddress}'),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 6, bottom: 10),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    'Receiver Detail',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                      '${orders[i].orderRecieverName}'),
-                                                  Text(
-                                                      '${orders[i].orderRecieverCity}'),
-                                                  Text(
-                                                      '${orders[i].orderRecieverAddress}'),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          'Order Status ${orders[i].orderStatus}',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(height: 8),
-                                        IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (dialogContext) =>
-                                                  AlertDialog(
-                                                title: Text('Order Cancel!'),
-                                                content: Text(
-                                                    'Are you sure, You want to cancel order?'),
-                                                actions: [
-                                                  FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.of(
-                                                              dialogContext)
-                                                          .pop();
-                                                    },
-                                                    child: Text('No'),
-                                                  ),
-                                                  FlatButton(
-                                                    onPressed: () async {
-                                                      orderPvd.delUserOrder(
-                                                        orders[i].orderId,
-                                                        user,
-                                                        reloadStart,
-                                                        reloadEnd,
-                                                      );
-                                                      Navigator.of(
-                                                              dialogContext)
-                                                          .pop();
-                                                    },
-                                                    child: Text('Yes'),
-                                                  ),
-                                                ],
-                                                elevation: 20,
-                                              ),
-                                            );
-                                          },
-                                          icon: Icon(Icons.delete),
-                                          color: Theme.of(context).errorColor,
-                                        ),
-                                      ],
-                                    );
-                                  });
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderContact,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverContact,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderStatus,
+                                  orders[i].orderRefNo,
+                                ),
+                              );
                             } else if (snapshot.hasError) {
                               return Center(
                                 child: Text(
@@ -220,62 +153,105 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                           },
                         ),
                       )
-                    else if (filterPvd.orderFilterBtn2 == true)
-                      Column(
-                        children: [
-                          HeadingTitle(
-                            // search_by_mobile_and_tracking_number
-                            "${getTranslatedValue(context, 'search_by_mobile_and_tracking_number')}",
-                          ),
-                          const SizedBox(height: 22),
-                          _buildSearchByMobile(context),
-                        ],
+                    else if (filterPvd.orderStatusFilterBtn2 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getFilterUserOrder(user, 'PENDING'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderContact,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverContact,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderStatus,
+                                  orders[i].orderRefNo,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  // 'No Order Found!',
+                                  "${getTranslatedValue(context, 'no_order_found')}",
+                                ),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
                       )
-                    else if (filterPvd.orderFilterBtn3 == true)
-                      Column(
-                        children: [
-                          HeadingTitle('Receiver'),
-                          FilterBtn(
-                            // 'New orders (1)',
-                            // 'Not delivered (4)',
-                            // 'Finished orders \n           (0)',
-                            "${getTranslatedValue(context, 'new_orders')}",
-                            "${getTranslatedValue(context, 'not_delivered')}",
-                            "${getTranslatedValue(context, 'finished_orders')}",
-                            filterPvd.orderStatusFilterBtn1,
-                            filterPvd.orderStatusFilterBtn2,
-                            filterPvd.orderStatusFilterBtn3,
-                            filterPvd.activateOrderStatusFilterBtn1,
-                            filterPvd.activateOrderStatusFilterBtn2,
-                            filterPvd.activateOrderStatusFilterBtn3,
-                          ),
-                        ],
+                    else if (filterPvd.orderStatusFilterBtn3 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getFilterUserOrder(user, 'COMPLETE'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderContact,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverContact,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderStatus,
+                                  orders[i].orderRefNo,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  // 'No Order Found!',
+                                  "${getTranslatedValue(context, 'no_order_found')}",
+                                ),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
                       )
-                    else if (filterPvd.orderFilterBtn4 == true)
-                      Column(
-                        children: [
-                          HeadingTitle('Sender'),
-                          FilterBtn(
-                            // 'New orders (1)',
-                            // 'Not delivered (4)',
-                            // 'Finished orders \n           (0)',
-                            "${getTranslatedValue(context, 'new_orders')}",
-                            "${getTranslatedValue(context, 'not_delivered')}",
-                            "${getTranslatedValue(context, 'finished_orders')}",
-                            filterPvd.orderStatusFilterBtn1,
-                            filterPvd.orderStatusFilterBtn2,
-                            filterPvd.orderStatusFilterBtn3,
-                            filterPvd.activateOrderStatusFilterBtn1,
-                            filterPvd.activateOrderStatusFilterBtn2,
-                            filterPvd.activateOrderStatusFilterBtn3,
-                          ),
-                        ],
-                      ),
+                  ],
+                )
+              else if (filterPvd.orderFilterBtn4 == true)
+                Column(
+                  children: [
+                    HeadingTitle('Sender'),
+                    FilterBtn(
+                      // 'New orders (1)',
+                      // 'Not delivered (4)',
+                      // 'Finished orders \n           (0)',
+                      "${getTranslatedValue(context, 'new_orders')}",
+                      "${getTranslatedValue(context, 'not_delivered')}",
+                      "${getTranslatedValue(context, 'finished_orders')}",
+                      filterPvd.orderStatusFilterBtn1,
+                      filterPvd.orderStatusFilterBtn2,
+                      filterPvd.orderStatusFilterBtn3,
+                      filterPvd.activateOrderStatusFilterBtn1,
+                      filterPvd.activateOrderStatusFilterBtn2,
+                      filterPvd.activateOrderStatusFilterBtn3,
+                    ),
                   ],
                 ),
-              ),
-            ),
-          );
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildSearchByMobile(BuildContext context) {

@@ -9,7 +9,7 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          "${getTranslatedValue(context, 'this_is_notification_screen')}",
+          "${getTranslatedValue(context, 'no_notifications_found')}",
         ),
       ),
     );

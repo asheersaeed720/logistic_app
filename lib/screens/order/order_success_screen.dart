@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
@@ -16,6 +17,7 @@ class OrderSuccess extends StatelessWidget {
 
     final user = Provider.of<AuthProvider>(context).user;
     final userPvd = Provider.of<UserProvider>(context);
+    final tabPvd = Provider.of<TabProvider>(context);
 
     final orderId = orderData['orderId'];
     final senderName = orderData['senderName'];
@@ -29,9 +31,12 @@ class OrderSuccess extends StatelessWidget {
     final refNo = orderData['refNo'];
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Order Success'),
+      ),
       body: Padding(
         padding:
-            const EdgeInsets.only(top: 36, right: 10, left: 10, bottom: 10),
+            const EdgeInsets.only(top: 26, right: 10, left: 10, bottom: 10),
         child: Column(
           children: [
             Container(
@@ -62,8 +67,8 @@ class OrderSuccess extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
               ),
               child: Center(
-                child: refNo == null
-                    ? Text('Your did not your ref no')
+                child: refNo == ''
+                    ? Text('Your did not enter your # ref no')
                     : Column(
                         children: [
                           Text(
@@ -138,91 +143,19 @@ class OrderSuccess extends StatelessWidget {
                     ),
                   ),
                 ),
-                // FutureBuilder<List<UserAddress>>(
-                //   future: userPvd.getSenderAddresses(user),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       // List<UserAddress> userAddresses = snapshot.data;
-                //       List<UserAddress> userAddresses = snapshot.data;
-                //       return Card(
-                //         child: Container(
-                //           width: MediaQuery.of(context).size.width / 2.3,
-                //           padding: const EdgeInsets.symmetric(
-                //               vertical: 16, horizontal: 6),
-                //           child: Column(
-                //             children: [
-                //               senderName != null
-                //                   ? Text('$senderName')
-                //                   : Text('${userAddresses[0].fullname}'),
-                //               senderCity != null
-                //                   ? Text('$senderCity')
-                //                   : Text('${userAddresses[0].city}'),
-                //               senderMobile != null
-                //                   ? Text('$senderMobile')
-                //                   : Text('${userAddresses[0].mobile}'),
-                //               RaisedButton(
-                //                 onPressed: () {},
-                //                 child: Text(
-                //                   'Invoice',
-                //                   style: TextStyle(color: Colors.white),
-                //                 ),
-                //                 color: Theme.of(context).primaryColor,
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //       );
-                //     } else if (snapshot.hasError) {
-                //       return Center(child: Text('No Sender Addresses Found!'));
-                //       // return snapshot.error;
-                //     }
-                //     return LoadingIndicator();
-                //   },
-                // ),
-                // FutureBuilder<List<UserAddress>>(
-                //   future: userPvd.getReceiverAddresses(user),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       List<UserAddress> userAddresses = snapshot.data;
-                //       return Card(
-                //         child: Container(
-                //           width: MediaQuery.of(context).size.width / 2.2,
-                //           padding: const EdgeInsets.symmetric(
-                //               vertical: 12, horizontal: 6),
-                //           child: Column(
-                //             children: [
-                //               receiverName != null
-                //                   ? Text('$receiverName')
-                //                   : Text('${userAddresses[0].fullname}'),
-                //               receiverCity != null
-                //                   ? Text('$receiverCity')
-                //                   : Text('${userAddresses[0].city}'),
-                //               receiverMobile != null
-                //                   ? Text('$receiverMobile')
-                //                   : Text('${userAddresses[0].mobile}'),
-                //               RaisedButton(
-                //                 elevation: 0,
-                //                 color: Colors.white,
-                //                 onPressed: () {},
-                //                 child: Text(
-                //                   '',
-                //                   style: TextStyle(color: Colors.white),
-                //                 ),
-                //                 // color: Theme.of(context).primaryColor,
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //       );
-                //     } else if (snapshot.hasError) {
-                //       return Center(
-                //           child: Text('No Receiver Addresses Found!'));
-                //       // return snapshot.error;
-                //     }
-                //     return LoadingIndicator();
-                //   },
-                // ),
               ],
+            ),
+            SizedBox(height: 20),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () {
+                Navigator.of(context).pop();
+                tabPvd.onTabTapped(2);
+              },
+              child: Text(
+                'View Order History',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

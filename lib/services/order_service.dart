@@ -23,6 +23,7 @@ class OrderService {
     fragileCheckedValue,
     selectedTime,
     whoWillPlay,
+    couponCode,
   ) async {
     var result;
 
@@ -44,7 +45,7 @@ class OrderService {
       'order_packaging': packageCheckedValue.toString(),
       'order_fragile': fragileCheckedValue.toString(),
       'order_payer': whoWillPlay.toString(),
-      'order_coupon': '',
+      'order_coupon': couponCode.toString(),
     };
 
     var response = await post(

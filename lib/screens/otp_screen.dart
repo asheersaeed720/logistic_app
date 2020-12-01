@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -23,76 +24,83 @@ class _OtpScreenState extends State<OtpScreen> {
 
     final userCredential = ModalRoute.of(context).settings.arguments;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: authPvd.isLoading
+          ? null
+          : () async {
+              return false;
+            },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: Theme.of(context).primaryColor,
-            ),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 16,
-            ),
-          ),
-          onPressed: authPvd.isLoading
-              ? null
-              : () {
-                  Navigator.of(context).pop();
-                },
-        ),
-        elevation: 0,
-        brightness: Brightness.light,
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Enter 4 digits verification code sent to your number',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(height: 30),
-              PinInputTextField(
-                autoFocus: true,
-                inputFormatter: [
-                  LengthLimitingTextInputFormatter(4),
-                ],
-                pinLength: 4,
-                decoration: UnderlineDecoration(
-                  colorBuilder: PinListenColorBuilder(
-                    Theme.of(context).primaryColor,
-                    Colors.grey,
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 16,
+              ),
+            ),
+            onPressed: authPvd.isLoading
+                ? null
+                : () {
+                    Navigator.of(context).pop();
+                  },
+          ),
+          elevation: 0,
+          brightness: Brightness.light,
+        ),
+        body: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Enter 4 digits verification code sent to your email & number',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                controller: _pinEditingController,
-                textInputAction: TextInputAction.go,
-                keyboardType: TextInputType.number,
-                textCapitalization: TextCapitalization.characters,
-                onSubmit: (pin) {
-                  debugPrint('submit pin:$pin');
-                },
-                onChanged: (pin) {
-                  debugPrint('onChanged execute. pin:$pin');
-                },
-                enableInteractiveSelection: false,
-              ),
-              const SizedBox(height: 40),
-              authPvd.isLoading
-                  ? LoadingIndicator()
-                  : _buildConfirmBtn(context, authPvd, userCredential),
-            ],
+                const SizedBox(height: 30),
+                PinInputTextField(
+                  autoFocus: true,
+                  inputFormatter: [
+                    LengthLimitingTextInputFormatter(4),
+                  ],
+                  pinLength: 4,
+                  decoration: UnderlineDecoration(
+                    colorBuilder: PinListenColorBuilder(
+                      Theme.of(context).primaryColor,
+                      Colors.grey,
+                    ),
+                  ),
+                  controller: _pinEditingController,
+                  textInputAction: TextInputAction.go,
+                  keyboardType: TextInputType.number,
+                  textCapitalization: TextCapitalization.characters,
+                  onSubmit: (pin) {
+                    debugPrint('submit pin:$pin');
+                  },
+                  onChanged: (pin) {
+                    debugPrint('onChanged execute. pin:$pin');
+                  },
+                  enableInteractiveSelection: false,
+                ),
+                const SizedBox(height: 40),
+                authPvd.isLoading
+                    ? LoadingIndicator()
+                    : _buildConfirmBtn(context, authPvd, userCredential),
+              ],
+            ),
           ),
         ),
       ),
