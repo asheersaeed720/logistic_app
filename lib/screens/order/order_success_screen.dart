@@ -19,16 +19,16 @@ class OrderSuccess extends StatelessWidget {
     final userPvd = Provider.of<UserProvider>(context);
     final tabPvd = Provider.of<TabProvider>(context);
 
-    final orderId = orderData['orderId'];
-    final senderName = orderData['senderName'];
-    final senderCity = orderData['senderCity'];
-    final senderDistrict = orderData['senderDistrict'];
-    final senderMobile = orderData['senderMobile'];
-    final receiverName = orderData['receiverName'];
-    final receiverCity = orderData['receiverCity'];
-    final receiverDistrict = orderData['receiverDistrict'];
-    final receiverMobile = orderData['receiverMobile'];
-    final refNo = orderData['refNo'];
+    // final orderId = orderData['orderId'];
+    // final senderName = orderData['senderName'];
+    // final senderCity = orderData['senderCity'];
+    // final senderDistrict = orderData['senderDistrict'];
+    // final senderMobile = orderData['senderMobile'];
+    // final receiverName = orderData['receiverName'];
+    // final receiverCity = orderData['receiverCity'];
+    // final receiverDistrict = orderData['receiverDistrict'];
+    // final receiverMobile = orderData['receiverMobile'];
+    // final refNo = orderData['refNo'];
 
     return Scaffold(
       appBar: AppBar(
@@ -36,19 +36,20 @@ class OrderSuccess extends StatelessWidget {
       ),
       body: Padding(
         padding:
-            const EdgeInsets.only(top: 26, right: 10, left: 10, bottom: 10),
+            const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
         child: Column(
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 1,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                color: Colors.lightGreen,
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: Center(
                 child: Text(
-                  'Your Order No: $orderId',
+                  // 'Your Order No: $orderId',
+                  'Your Order No: 21325',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -58,39 +59,50 @@ class OrderSuccess extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width / 1,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.red[200],
-                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
+              // child: Center(
+              //   child: refNo == ''
+              //       ? Text('Your did not enter your # ref no')
+              //       : Column(
+              //           children: [
+              //             Text(
+              //               'Customer Unique number',
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontWeight: FontWeight.bold,
+              //                 fontSize: 17,
+              //                 letterSpacing: 2,
+              //               ),
+              //             ),
+              //             Text(
+              //               '$refNo',
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontWeight: FontWeight.bold,
+              //                 fontSize: 17,
+              //                 letterSpacing: 2,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              // ),
               child: Center(
-                child: refNo == ''
-                    ? Text('Your did not enter your # ref no')
-                    : Column(
-                        children: [
-                          Text(
-                            'Customer Unique number',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                          Text(
-                            '$refNo',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                        ],
-                      ),
+                child: Text(
+                  'Ref: 132465',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                    letterSpacing: 2,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -104,9 +116,18 @@ class OrderSuccess extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
                     child: Column(
                       children: [
-                        Text('$senderName'),
-                        Text('$senderCity'),
-                        Text('$senderMobile'),
+                        // Text('Name: $senderName'),
+                        // const SizedBox(height: 5),
+                        // Text('City $senderCity'),
+                        // const SizedBox(height: 5),
+                        // Text('Mobile no: $senderMobile'),
+                        // const SizedBox(height: 5),
+                        Text('senderName'),
+                        const SizedBox(height: 5),
+                        Text('senderCity'),
+                        const SizedBox(height: 5),
+                        Text('senderMobile'),
+                        const SizedBox(height: 5),
                         RaisedButton(
                           onPressed: () {},
                           child: Text(
@@ -126,9 +147,18 @@ class OrderSuccess extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
                     child: Column(
                       children: [
-                        Text('$receiverName'),
-                        Text('$receiverCity'),
-                        Text('$receiverMobile'),
+                        // Text('Name: $receiverName'),
+                        // const SizedBox(height: 5),
+                        // Text('City $receiverCity'),
+                        // const SizedBox(height: 5),
+                        // Text('Mobile no: $receiverMobile'),
+                        // const SizedBox(height: 5),
+                        Text('receiverName'),
+                        const SizedBox(height: 5),
+                        Text('receiverCity'),
+                        const SizedBox(height: 5),
+                        Text('receiverMobile'),
+                        const SizedBox(height: 5),
                         RaisedButton(
                           elevation: 0,
                           color: Colors.white,
@@ -145,16 +175,25 @@ class OrderSuccess extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             RaisedButton(
-              color: Theme.of(context).primaryColor,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              elevation: 0,
               onPressed: () {
                 Navigator.of(context).pop();
                 tabPvd.onTabTapped(2);
               },
               child: Text(
                 'View Order History',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
+              ),
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Theme.of(context).primaryColor),
               ),
             ),
           ],

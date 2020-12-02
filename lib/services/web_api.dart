@@ -8,6 +8,7 @@ class WebApi {
   static const String registerURL = baseURL + '/auth/signup';
   static const String getCitiesURL = baseURL + '/locations/cities';
   static const String addOrderURL = baseURL + '/Orders/order';
+  static const String updateOrderURL = baseURL + '/Orders/order_update';
   static const String getOrderURL = baseURL + '/Orders/orders';
 
   static const String getFilterOrdersURL = baseURL + '/Orders/search';

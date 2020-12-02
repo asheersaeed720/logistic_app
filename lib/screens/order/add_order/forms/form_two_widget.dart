@@ -50,7 +50,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final fragileCheckedValue = formOneDetails['fragileCheckedValue'];
     final selectedTime = formOneDetails['selectedTime'];
     // test
-    final selectedSenderAddress = formOneDetails['selectedSenderAddress'];
+    final selectedSenderId = formOneDetails['selectedSenderId'];
+    final selectedReceiverId = formOneDetails['selectedReceiverId'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -116,6 +117,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   selectedTime,
                                   orderPvd.selectedPay,
                                   _couponCode,
+                                  selectedSenderId,
+                                  selectedReceiverId,
                                 );
                               }
                             },

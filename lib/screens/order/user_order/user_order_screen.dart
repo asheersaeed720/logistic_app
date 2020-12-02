@@ -32,8 +32,10 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _filterBtn(
                 context,
@@ -73,6 +75,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                             orders[i].orderRecieverAddress,
                             orders[i].orderStatus,
                             orders[i].orderRefNo,
+                            orders[i].orderDate,
                           ),
                         );
                       } else if (snapshot.hasError) {
@@ -139,6 +142,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                   orders[i].orderRecieverAddress,
                                   orders[i].orderStatus,
                                   orders[i].orderRefNo,
+                                  orders[i].orderDate,
                                 ),
                               );
                             } else if (snapshot.hasError) {
@@ -175,6 +179,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                   orders[i].orderRecieverAddress,
                                   orders[i].orderStatus,
                                   orders[i].orderRefNo,
+                                  orders[i].orderDate,
                                 ),
                               );
                             } else if (snapshot.hasError) {
@@ -211,6 +216,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                   orders[i].orderRecieverAddress,
                                   orders[i].orderStatus,
                                   orders[i].orderRefNo,
+                                  orders[i].orderDate,
                                 ),
                               );
                             } else if (snapshot.hasError) {

@@ -24,6 +24,8 @@ class OrderService {
     selectedTime,
     whoWillPlay,
     couponCode,
+    selectedSenderId,
+    selectedReceiverId,
   ) async {
     var result;
 
@@ -46,7 +48,11 @@ class OrderService {
       'order_fragile': fragileCheckedValue.toString(),
       'order_payer': whoWillPlay.toString(),
       'order_coupon': couponCode.toString(),
+      'sender_ad_id': selectedSenderId.toString(),
+      'reciever_ad_id': selectedReceiverId.toString(),
     };
+
+    print('Before hit Sender: $selectedSenderId Receiver $selectedReceiverId');
 
     var response = await post(
       // '${WebApi.addOrderURL}/${user['user_id']}',
@@ -96,6 +102,35 @@ class OrderService {
       };
     }
     print('outside $result');
+
+    return result;
+  }
+
+  Future<Map> updateUserOrder(context, user, orderId, orderStatus) async {
+    var result;
+
+    var response = await post(
+      '${WebApi.updateOrderURL}/$orderId',
+      body: {
+        'order_status': '$orderStatus',
+      },
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+        'x-api-key': user['token'],
+      },
+    );
+    print(orderStatus);
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
 
     return result;
   }

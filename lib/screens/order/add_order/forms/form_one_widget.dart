@@ -1,4 +1,5 @@
 import 'package:flushbar/flushbar.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
@@ -30,8 +31,22 @@ class FormOneWidget extends StatefulWidget {
 class _FormOneWidgetState extends State<FormOneWidget> {
   final _formKey = GlobalKey<FormState>();
 
-  // Address _address = Address();
   AddOrder _addOrder = AddOrder();
+
+  // String selectedAnserTest;
+
+  // void setSelectedSenderAddress(selectedValue) {
+  //   setState(() {
+  //     _addOrder.senderAdId = selectedValue;
+  //     _addOrder.recieverAdId = selectedValue;
+  //   });
+  //   print(selectedValue);
+  // }
+
+  // void clearRadio() {
+  //   _addOrder.senderAdId = null;
+  //   _addOrder.recieverAdId = null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,168 +85,130 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                   child: FutureBuilder<List<UserAddress>>(
                     future: userPvd.getSenderAddresses(authPvd.user),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          List<UserAddress> userAddresses = snapshot.data;
-                          return userAddresses.isNotEmpty
-                              ? FutureBuilder<List<UserAddress>>(
-                                  future: userPvd
-                                      .getReceiverAddresses(authPvd.user),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      List<UserAddress> userAddresses =
-                                          snapshot.data;
-                                      return userAddresses.isEmpty
-                                          ? Column(
-                                              children: [
-                                                RaisedButton(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pushNamed(MyAddresses
-                                                            .routeName);
-                                                  },
-                                                  child: Text(
-                                                    'Add Receiver Address',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 12),
-                                              ],
-                                            )
-                                          : FlatButton(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              child: Text(
-                                                // 'Next >',
-                                                "${getTranslatedValue(context, 'next')} >",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              onPressed: () {
-                                                if (!_formKey.currentState
-                                                    .validate()) {
-                                                  Flushbar(
-                                                    title: "Field Missing",
-                                                    message:
-                                                        'You missing sender or receiver address fields',
-                                                    duration:
-                                                        Duration(seconds: 3),
-                                                  ).show(context);
-                                                } else {
-                                                  _formKey.currentState.save();
+                      if (snapshot.hasData) {
+                        List<UserAddress> userAddresses = snapshot.data;
+                        return userAddresses.isNotEmpty
+                            ? FutureBuilder<List<UserAddress>>(
+                                future:
+                                    userPvd.getReceiverAddresses(authPvd.user),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<UserAddress> userAddresses =
+                                        snapshot.data;
+                                    return userAddresses.isEmpty
+                                        ? Column(
+                                            children: [
+                                              RaisedButton(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                onPressed: () {
                                                   Navigator.of(context)
-                                                      .pushNamed(
-                                                    FormTwoWidget.routeName,
-                                                    arguments: {
-                                                      'senderName': _addOrder
-                                                          .orderSenderName,
-                                                      'senderCity': _addOrder
-                                                          .orderSenderCity,
-                                                      'senderDistrict': _addOrder
-                                                          .orderSenderAddress,
-                                                      'senderMobile': _addOrder
-                                                          .orderSenderContact,
-                                                      'receiverName': _addOrder
-                                                          .orderRecieverName,
-                                                      'receiverCity': _addOrder
-                                                          .orderRecieverCity,
-                                                      'receiverDistrict': _addOrder
-                                                          .orderRecieverAddress,
-                                                      'receiverMobile': _addOrder
-                                                          .orderRecieverContact,
-                                                      'collectionCashFromReceiver':
-                                                          _addOrder
-                                                              .orderCollectionCash,
-                                                      'refNo':
-                                                          _addOrder.orderRefNo,
-                                                      'packageCheckedValue':
-                                                          orderPvd
-                                                              .packageCheckedValue,
-                                                      'fragileCheckedValue':
-                                                          orderPvd
-                                                              .fragileCheckedValue,
-                                                      'selectedTime':
-                                                          orderPvd.selectedTime,
-                                                      // test
-                                                      'selectedSenderAddress':
-                                                          orderPvd
-                                                              .selectedSenderAddress,
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                            );
-                                    } else if (snapshot.hasError) {
-                                      return Center(
-                                        // child: Text(
-                                        //     'No Receiver Addresses Found!')
-                                        child: Column(
-                                          children: [
-                                            RaisedButton(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              onPressed: () {
-                                                Navigator.of(context).pushNamed(
-                                                    MyAddresses.routeName);
-                                              },
-                                              child: Text(
-                                                'Add Sender Address',
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                                      .pushNamed(MyAddresses
+                                                          .routeName);
+                                                },
+                                                child: Text(
+                                                  'Add Receiver Address',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
                                               ),
+                                              SizedBox(height: 12),
+                                            ],
+                                          )
+                                        : FlatButton(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            child: Text(
+                                              // 'Next >',
+                                              "${getTranslatedValue(context, 'next')} >",
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
-                                            SizedBox(height: 12),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                    return LoadingIndicator();
-                                  },
-                                )
-                              : Column(
-                                  children: [
-                                    RaisedButton(
-                                      color: Theme.of(context).primaryColor,
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushNamed(MyAddresses.routeName);
-                                      },
-                                      child: Text(
-                                        'Add Sender Address',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                  ],
-                                );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Column(
-                            children: [
-                              RaisedButton(
-                                color: Theme.of(context).primaryColor,
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(MyAddresses.routeName);
+                                            onPressed: () {
+                                              if (!_formKey.currentState
+                                                  .validate()) {
+                                                Flushbar(
+                                                  title: "Field Missing",
+                                                  message:
+                                                      'You missing sender or receiver address fields',
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                ).show(context);
+                                              } else {
+                                                _formKey.currentState.save();
+                                                Navigator.of(context).pushNamed(
+                                                  FormTwoWidget.routeName,
+                                                  arguments: {
+                                                    'senderName': _addOrder
+                                                        .orderSenderName,
+                                                    'senderCity': _addOrder
+                                                        .orderSenderCity,
+                                                    'senderDistrict': _addOrder
+                                                        .orderSenderAddress,
+                                                    'senderMobile': _addOrder
+                                                        .orderSenderContact,
+                                                    'receiverName': _addOrder
+                                                        .orderRecieverName,
+                                                    'receiverCity': _addOrder
+                                                        .orderRecieverCity,
+                                                    'receiverDistrict': _addOrder
+                                                        .orderRecieverAddress,
+                                                    'receiverMobile': _addOrder
+                                                        .orderRecieverContact,
+                                                    'collectionCashFromReceiver':
+                                                        _addOrder
+                                                            .orderCollectionCash,
+                                                    'refNo':
+                                                        _addOrder.orderRefNo,
+                                                    'packageCheckedValue':
+                                                        orderPvd
+                                                            .packageCheckedValue,
+                                                    'fragileCheckedValue':
+                                                        orderPvd
+                                                            .fragileCheckedValue,
+                                                    'selectedTime':
+                                                        orderPvd.selectedTime,
+                                                    // test
+                                                    'selectedSenderId': orderPvd
+                                                        .selectedSenderAddress,
+                                                    'selectedReceiverId': orderPvd
+                                                        .selectedReceiverAddress
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          );
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                      // child: snapshot.error,
+                                      child: Text('No Receiver Address'),
+                                    );
+                                  }
+                                  return LoadingIndicator();
                                 },
-                                child: Text(
-                                  'Add Sender Address',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                            ],
-                          )
-                              // child: snapshot.error,
+                              )
+                            : Column(
+                                children: [
+                                  RaisedButton(
+                                    color: Theme.of(context).primaryColor,
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed(MyAddresses.routeName);
+                                    },
+                                    child: Text(
+                                      'Add Sender Address',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  SizedBox(height: 12),
+                                ],
                               );
-                        }
-                      } else {
-                        print(snapshot.connectionState);
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          // child: snapshot.error,
+                          child: Text('No Sender Address'),
+                        );
                       }
-
                       return LoadingIndicator();
                     },
                   ),
@@ -288,7 +265,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'sender_address')}"),
-        FilterBtn(
+        FilterBtnForClearRadioCheck(
           "${getTranslatedValue(context, 'my_address')}",
           "${getTranslatedValue(context, 'new_address')}",
           "${getTranslatedValue(context, 'saved_address')}",
@@ -298,6 +275,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateAddressFilterBtn1,
           filterPvd.activateAddressFilterBtn2,
           filterPvd.activateAddressFilterBtn3,
+          orderPvd.clearSenderSelectedRadioBtn,
         ),
         if (filterPvd.addressFilterBtn1 == true)
           Text(
@@ -336,13 +314,16 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {
                             return RadioListTile(
-                              // value:
-                              //     '${userAddresses[i].fullname} ${userAddresses[i].mobile} ${userAddresses[i].city}',
-                              value: 1,
+                              value: '${userAddresses[i].id}',
                               groupValue: orderPvd.selectedSenderAddress,
                               title: Text('${userAddresses[i].fullname}'),
-                              subtitle: Text(
-                                  '${userAddresses[i].city} ${userAddresses[i].mobile}'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${userAddresses[i].city}'),
+                                  Text('${userAddresses[i].mobile}'),
+                                ],
+                              ),
                               activeColor: Theme.of(context).primaryColor,
                               onChanged: (currentVal) {
                                 orderPvd.setSelectedSenderAddress(currentVal);
@@ -482,7 +463,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'receiver_address')}"),
-        FilterBtn(
+        FilterBtnForClearRadioCheck(
           "${getTranslatedValue(context, 'my_address')}",
           "${getTranslatedValue(context, 'new_address')}",
           "${getTranslatedValue(context, 'saved_address')}",
@@ -492,6 +473,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateReceiverAddressFilterBtn1,
           filterPvd.activateReceiverAddressFilterBtn2,
           filterPvd.activateReceiverAddressFilterBtn3,
+          orderPvd.clearReceiverSelectedRadioBtn,
         ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
           Text('')
@@ -526,12 +508,17 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {
                             return RadioListTile(
-                              value:
-                                  '${userAddresses[i].fullname} ${userAddresses[i].mobile}',
+                              value: '${userAddresses[i].id}',
+                              // groupValue: _addOrder.recieverAdId,
                               groupValue: orderPvd.selectedReceiverAddress,
                               title: Text('${userAddresses[i].fullname}'),
-                              subtitle: Text(
-                                  '${userAddresses[i].city} ${userAddresses[i].mobile}'),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${userAddresses[i].city}'),
+                                  Text('${userAddresses[i].mobile}'),
+                                ],
+                              ),
                               activeColor: Theme.of(context).primaryColor,
                               onChanged: (currentVal) {
                                 orderPvd.setSelectedReceiverAddress(currentVal);

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hani_almutairi_logistic/localization/localization.dart';
+import 'package:hani_almutairi_logistic/localization/localizations.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/language.dart';

@@ -122,6 +122,8 @@ class AddOrder {
   String orderFragile;
   String orderPayer;
   String orderCoupon;
+  String recieverAdId;
+  String senderAdId;
 
   AddOrder({
     this.orderId,
@@ -145,5 +147,7 @@ class AddOrder {
     this.orderFragile,
     this.orderPayer,
     this.orderCoupon,
+    this.recieverAdId,
+    this.senderAdId,
   });
 }

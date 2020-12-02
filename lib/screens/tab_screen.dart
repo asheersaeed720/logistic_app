@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/localization/localization.dart';
+import 'package:hani_almutairi_logistic/localization/localizations.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';

@@ -33,6 +33,7 @@ dependencies:
   fluttertoast: ^7.1.1
   flutter_phoenix: ^0.1.0
   dropdown_search: ^0.4.8
+  grouped_buttons: ^1.0.4
   # easy_localization: ^2.3.3
   shared_preferences: ^0.5.8
   # flutter_form_builder: ^4.0.2

@@ -1,3 +1,9 @@
+import 'package:hani_almutairi_logistic/screens/drawer_screens/call_us_screen.dart';
+import 'package:hani_almutairi_logistic/screens/drawer_screens/company_website_screen.dart';
+import 'package:hani_almutairi_logistic/screens/drawer_screens/drop_list_of_cities_screen.dart';
+import 'package:hani_almutairi_logistic/screens/drawer_screens/privacy_screen.dart';
+import 'package:hani_almutairi_logistic/screens/drawer_screens/terms_conditions_screen.dart';
+import 'package:hani_almutairi_logistic/screens/drawer_screens/track_my_shipment_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/reset_password.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
@@ -31,4 +37,10 @@ final routes = {
   ReceiverAddresses.routeName: (context) => ReceiverAddresses(),
   MyAddresses.routeName: (context) => MyAddresses(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+  CompanyWebsiteScreen.routeName: (context) => CompanyWebsiteScreen(),
+  CallUsScreen.routeName: (context) => CallUsScreen(),
+  DropCitiesListScreen.routeName: (context) => DropCitiesListScreen(),
+  PrivacyScreen.routeName: (context) => PrivacyScreen(),
+  TermsConditionsScreen.routeName: (context) => TermsConditionsScreen(),
+  TrackMyShipmentScreen.routeName: (context) => TrackMyShipmentScreen(),
 };

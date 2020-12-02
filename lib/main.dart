@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:hani_almutairi_logistic/localization/localization.dart';
+import 'package:hani_almutairi_logistic/localization/localizations.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 
@@ -122,13 +123,7 @@ class _MyAppState extends State<MyApp> {
             );
           },
         ),
-        // home: FutureBuilder(
-        //   future: authProvider.checkLoginStatus(),
-        //   builder: (context, snapshot) {
-        //     return snapshot.hasData ? TabsScreen() : LoginScreen();
-        //   },
-        // ),
-
+        // home: OrderSuccess(),
         routes: routes,
       ),
     );

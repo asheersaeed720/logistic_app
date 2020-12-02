@@ -21,16 +21,9 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // String _selectedSenderAddress;
-  // String get selectedSenderAddress => _selectedSenderAddress;
-  // set selectedSenderAddress(String val) {
-  //   _selectedSenderAddress = val;
-  //   notifyListeners();
-  // }
-
-  List _selectedSenderAddress;
-  List get selectedSenderAddress => _selectedSenderAddress;
-  set selectedSenderAddress(List val) {
+  String _selectedSenderAddress;
+  String get selectedSenderAddress => _selectedSenderAddress;
+  set selectedSenderAddress(String val) {
     _selectedSenderAddress = val;
     notifyListeners();
   }
@@ -71,11 +64,16 @@ class OrderProvider with ChangeNotifier {
   }
 
   setSelectedSenderAddress(selectedValue) {
-    // Map valueMap = jsonDecode(selectedValue);
-    // // var ab = json.decode('[$selectedValue]');
-    // // print(ab[1]);
-    // // selectedSenderAddress = ab;
+    selectedSenderAddress = selectedValue;
     print(selectedValue);
+  }
+
+  clearSenderSelectedRadioBtn() {
+    selectedSenderAddress = null;
+  }
+
+  clearReceiverSelectedRadioBtn() {
+    selectedReceiverAddress = null;
   }
 
   setSelectedReceiverAddress(String selectedValue) {
@@ -104,6 +102,28 @@ class OrderProvider with ChangeNotifier {
   }
 
   addOrder(
+    context,
+    user,
+    senderName,
+    senderCity,
+    senderDistrict,
+    senderMobile,
+    receiverName,
+    receiverCity,
+    receiverDistrict,
+    receiverMobile,
+    collectionCashFromReceiver,
+    refNo,
+    packageCheckedValue,
+    fragileCheckedValue,
+    selectedTime,
+    whoWillPlay,
+    couponCode,
+    selectedSenderId,
+    selectedReceiverId,
+  ) async {
+    isLoading = true;
+    final response = await _orderService.addUserOrder(
       context,
       user,
       senderName,
@@ -120,26 +140,10 @@ class OrderProvider with ChangeNotifier {
       fragileCheckedValue,
       selectedTime,
       whoWillPlay,
-      couponCode) async {
-    isLoading = true;
-    final response = await _orderService.addUserOrder(
-        context,
-        user,
-        senderName,
-        senderCity,
-        senderDistrict,
-        senderMobile,
-        receiverName,
-        receiverCity,
-        receiverDistrict,
-        receiverMobile,
-        collectionCashFromReceiver,
-        refNo,
-        packageCheckedValue,
-        fragileCheckedValue,
-        selectedTime,
-        whoWillPlay,
-        couponCode);
+      couponCode,
+      selectedSenderId,
+      selectedReceiverId,
+    );
 
     if (response['status'] == true) {
       Fluttertoast.showToast(
@@ -216,10 +220,35 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  delUserOrder(
-    String orderId,
-    user,
-  ) async {
+  updateOrder(context, user, orderId, orderStatus) async {
+    isLoading = true;
+    final response = await _orderService.updateUserOrder(
+        context, user, orderId, orderStatus);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Your Order has been Updated",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response['user']['data']);
+    } else {
+      Flushbar(
+        title: "Order Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
+    isLoading = false;
+  }
+
+  delUserOrder(test, orderId, user) async {
+    isLoading = true;
     try {
       delete(
         '${WebApi.addOrderURL}/$orderId',
@@ -231,5 +260,6 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       throw (e);
     }
+    isLoading = false;
   }
 }
