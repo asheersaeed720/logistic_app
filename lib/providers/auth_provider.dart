@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
@@ -72,6 +73,7 @@ class AuthProvider with ChangeNotifier {
 
     if (response['status'] != false) {
       setUser();
+      Phoenix.rebirth(context);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => TabsScreen()),

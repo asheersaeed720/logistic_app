@@ -24,7 +24,11 @@ void main() {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(Phoenix(child: MyApp()));
+    runApp(
+      Phoenix(
+        child: MyApp(),
+      ),
+    );
   });
 }
 
@@ -57,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     //   }
     // });
     // _authService.getUser();
-    Phoenix.rebirth(context);
+    // Phoenix.rebirth(context);
   }
 
   @override

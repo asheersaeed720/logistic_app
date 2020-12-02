@@ -46,6 +46,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
+      print(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {
