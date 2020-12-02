@@ -157,7 +157,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
           future: userPvd.getSenderAddresses(user),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              // List<UserAddress> userAddresses = snapshot.data;
               List<UserAddress> userAddresses = snapshot.data;
               return Card(
                 child: Container(
