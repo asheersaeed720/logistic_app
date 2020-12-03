@@ -11,6 +11,7 @@ class UserService {
       'fullname': senderAddress.senderName,
       'city': senderAddress.senderCity.toString(),
       'district': senderAddress.senderDistrict,
+      'address': senderAddress.senderAddress,
       'mobile': senderAddress.senderMobileNo,
       'type': '0',
     };
@@ -48,13 +49,9 @@ class UserService {
       'fullname': receiverAddress.receiverName,
       'city': receiverAddress.receiverCity.toString(),
       'district': receiverAddress.receiverDistrict,
+      'address': receiverAddress.receiverAddress,
       'mobile': receiverAddress.receiverMobileNo,
       'type': '1',
-      // 'fullname': 'Hassan',
-      // 'city': '37410',
-      // 'district': 'testing address send',
-      // 'mobile': '032165465',
-      // 'type': '1',
     };
 
     print('Before hit: $receiverAddressData');

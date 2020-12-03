@@ -1,6 +1,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
+import 'package:hani_almutairi_logistic/models/add_order.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 
@@ -12,7 +13,7 @@ import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
@@ -33,21 +34,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
   AddOrder _addOrder = AddOrder();
 
-  // String selectedAnserTest;
-
-  // void setSelectedSenderAddress(selectedValue) {
-  //   setState(() {
-  //     _addOrder.senderAdId = selectedValue;
-  //     _addOrder.recieverAdId = selectedValue;
-  //   });
-  //   print(selectedValue);
-  // }
-
-  // void clearRadio() {
-  //   _addOrder.senderAdId = null;
-  //   _addOrder.recieverAdId = null;
-  // }
-
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
@@ -56,6 +42,30 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final userPvd = Provider.of<UserProvider>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Delivery outside riyadh \n                 50',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  'Delivery inside riyadh \n                  35',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+            SizedBox(height: 3),
+            Text(
+              'Note: Warning that prices not including VAT',
+              style: TextStyle(color: Colors.red, fontSize: 15),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
@@ -139,27 +149,36 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                                 Navigator.of(context).pushNamed(
                                                   FormTwoWidget.routeName,
                                                   arguments: {
+                                                    'selectedSenderAddressId':
+                                                        orderPvd
+                                                            .selectedSenderAddress,
                                                     'senderName': _addOrder
                                                         .orderSenderName,
                                                     'senderCity': _addOrder
                                                         .orderSenderCity,
-                                                    'senderDistrict': _addOrder
+                                                    'senderAddress': _addOrder
                                                         .orderSenderAddress,
-                                                    'senderMobile': _addOrder
+                                                    'senderDistrict': _addOrder
+                                                        .orderSenderDistrict,
+                                                    'senderContact': _addOrder
                                                         .orderSenderContact,
+
+                                                    // RECEIVER DETAILS
+                                                    'selectedReceiverAddressId':
+                                                        orderPvd
+                                                            .selectedReceiverAddress,
                                                     'receiverName': _addOrder
-                                                        .orderRecieverName,
+                                                        .orderReceiverName,
                                                     'receiverCity': _addOrder
-                                                        .orderRecieverCity,
+                                                        .orderReceiverCity,
+                                                    'receiverAddress': _addOrder
+                                                        .orderReceiverAddress,
                                                     'receiverDistrict': _addOrder
-                                                        .orderRecieverAddress,
-                                                    'receiverMobile': _addOrder
-                                                        .orderRecieverContact,
-                                                    'collectionCashFromReceiver':
-                                                        _addOrder
-                                                            .orderCollectionCash,
-                                                    'refNo':
-                                                        _addOrder.orderRefNo,
+                                                        .orderReceiverDistrict,
+                                                    'receiverContact': _addOrder
+                                                        .orderReceiverContact,
+
+                                                    // EXTRA DETAILS
                                                     'packageCheckedValue':
                                                         orderPvd
                                                             .packageCheckedValue,
@@ -168,16 +187,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                                             .fragileCheckedValue,
                                                     'selectedTime':
                                                         orderPvd.selectedTime,
-                                                    // test
-                                                    'selectedSenderId': orderPvd
-                                                        .selectedSenderAddress,
-                                                    'selectedReceiverId': orderPvd
-                                                        .selectedReceiverAddress
+                                                    'collectionCash': _addOrder
+                                                        .orderCollectionCash,
+                                                    'refNo':
+                                                        _addOrder.orderRefNo,
                                                   },
                                                 );
+                                                print(_addOrder.orderRefNo);
                                               }
-                                            },
-                                          );
+                                            });
                                   } else if (snapshot.hasError) {
                                     return Center(
                                       // child: snapshot.error,
@@ -248,15 +266,24 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
     final districtField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter district" : null,
-      onSaved: (value) => _addOrder.orderSenderAddress = value,
+      onSaved: (value) => _addOrder.orderSenderDistrict = value,
       keyboardType: TextInputType.streetAddress,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
+    final addressField = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter address" : null,
+      onSaved: (value) => _addOrder.orderSenderAddress = value,
+      keyboardType: TextInputType.streetAddress,
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'sender_address')}",
+          Icons.location_on),
+    );
+
     final mobileNoField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
-      onSaved: (value) => _addOrder.orderSenderAddress = value,
+      onSaved: (value) => _addOrder.orderSenderContact = value,
       keyboardType: TextInputType.number,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'mobile')}", Icons.phone),
@@ -293,6 +320,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 citiesDropdown,
                 const SizedBox(height: 14),
                 districtField,
+                const SizedBox(height: 14),
+                addressField,
                 const SizedBox(height: 14),
                 mobileNoField,
               ],
@@ -424,7 +453,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   Widget _buildReceiverSection(context, filterPvd, authPvd, orderPvd, userPvd) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
-      onSaved: (value) => _addOrder.orderRecieverName = value,
+      onSaved: (value) => _addOrder.orderReceiverName = value,
       keyboardType: TextInputType.name,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'receiver_name')}", Icons.person),
@@ -438,7 +467,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       showSearchBox: true,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
-        _addOrder.orderRecieverCity = data;
+        _addOrder.orderReceiverCity = data;
       },
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
@@ -446,15 +475,24 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
     final districtField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter district" : null,
-      onSaved: (value) => _addOrder.orderRecieverAddress = value,
+      onSaved: (value) => _addOrder.orderReceiverDistrict = value,
       keyboardType: TextInputType.streetAddress,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
+    final addressField = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter address" : null,
+      onSaved: (value) => _addOrder.orderReceiverAddress = value,
+      keyboardType: TextInputType.streetAddress,
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'receiver_address')}",
+          Icons.location_on),
+    );
+
     final mobileNoField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
-      onSaved: (value) => _addOrder.orderRecieverContact = value,
+      onSaved: (value) => _addOrder.orderReceiverContact = value,
       keyboardType: TextInputType.number,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'mobile')}", Icons.phone),
@@ -487,6 +525,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 citiesDropdown,
                 const SizedBox(height: 14),
                 districtField,
+                const SizedBox(height: 14),
+                addressField,
                 const SizedBox(height: 14),
                 mobileNoField,
               ],

@@ -1,17 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/main.dart';
+import 'package:hani_almutairi_logistic/models/add_order.dart';
 import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/sender_addresses.dart';
+import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class FormTwoWidget extends StatefulWidget {
@@ -35,23 +41,28 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final formOneDetails =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
 
+    final selectedSenderAddressId = formOneDetails['selectedSenderAddressId'];
     final senderName = formOneDetails['senderName'];
     final senderCity = formOneDetails['senderCity'];
+    final senderAddress = formOneDetails['senderAddress'];
     final senderDistrict = formOneDetails['senderDistrict'];
-    final senderMobile = formOneDetails['senderMobile'];
+    final senderContact = formOneDetails['senderContact'];
+
+    // RECEIVER DETAIL
+    final selectedReceiverAddressId =
+        formOneDetails['selectedReceiverAddressId'];
     final receiverName = formOneDetails['receiverName'];
     final receiverCity = formOneDetails['receiverCity'];
+    final receiverAddress = formOneDetails['receiverAddress'];
     final receiverDistrict = formOneDetails['receiverDistrict'];
-    final receiverMobile = formOneDetails['receiverMobile'];
-    final collectionCashFromReceiver =
-        formOneDetails['collectionCashFromReceiver'];
-    final refNo = formOneDetails['refNo'];
+    final receiverContact = formOneDetails['receiverContact'];
+
+    // EXTRA DETAILS
     final packageCheckedValue = formOneDetails['packageCheckedValue'];
     final fragileCheckedValue = formOneDetails['fragileCheckedValue'];
     final selectedTime = formOneDetails['selectedTime'];
-    // test
-    final selectedSenderId = formOneDetails['selectedSenderId'];
-    final selectedReceiverId = formOneDetails['selectedReceiverId'];
+    final collectionCash = formOneDetails['collectionCash'];
+    final refNo = formOneDetails['refNo'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -62,17 +73,26 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20),
                 // SENDER & RECEIVER DETAIL SECTION
                 _buildSenderAndReceiverDetail(
                   context,
                   user,
                   userPvd,
+                  // SENDER DETIALS
+                  selectedSenderAddressId,
                   senderName,
                   senderCity,
-                  senderMobile,
+                  senderAddress,
+                  senderDistrict,
+                  senderContact,
+                  // RECEIVER DETIALS
+                  selectedReceiverAddressId,
                   receiverName,
                   receiverCity,
-                  receiverMobile,
+                  receiverAddress,
+                  receiverDistrict,
+                  receiverContact,
                 ),
                 const SizedBox(height: 20),
                 // DELIVERY COST SECTION
@@ -102,23 +122,28 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 orderPvd.addOrder(
                                   context,
                                   user,
+                                  // SENDER DETAILS
+                                  selectedSenderAddressId,
                                   senderName,
                                   senderCity,
+                                  senderAddress,
                                   senderDistrict,
-                                  senderMobile,
+                                  senderContact,
+                                  // RECEIVER DETAILS
+                                  selectedReceiverAddressId,
                                   receiverName,
                                   receiverCity,
+                                  receiverAddress,
                                   receiverDistrict,
-                                  receiverMobile,
-                                  collectionCashFromReceiver,
-                                  refNo,
+                                  receiverContact,
+                                  // EXTRA DETAILS
                                   packageCheckedValue,
                                   fragileCheckedValue,
                                   selectedTime,
-                                  orderPvd.selectedPay,
+                                  collectionCash,
+                                  refNo,
+                                  orderPvd.orderPayer,
                                   _couponCode,
-                                  selectedSenderId,
-                                  selectedReceiverId,
                                 );
                               }
                             },
@@ -144,123 +169,206 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     context,
     user,
     userPvd,
+    // SENDER DETIALS
+    selectedSenderAddressId,
     senderName,
     senderCity,
-    senderMobile,
+    senderAddress,
+    senderDistrict,
+    senderContact,
+    // RECEIVER DETIALS
+    selectedReceiverAddressId,
     receiverName,
     receiverCity,
-    receiverMobile,
+    receiverAddress,
+    receiverDistrict,
+    receiverContact,
   ) {
     return Row(
       children: [
-        FutureBuilder<List<UserAddress>>(
-          future: userPvd.getSenderAddresses(user),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<UserAddress> userAddresses = snapshot.data;
-              return Card(
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 2.3,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
-                  child: Column(
-                    children: [
-                      senderName != null
-                          ? Text('$senderName')
-                          : Text('${userAddresses[0].fullname}'),
-                      senderCity != null
-                          ? Text('$senderCity')
-                          : Text('${userAddresses[0].city}'),
-                      senderMobile != null
-                          ? Text('$senderMobile')
-                          : Text('${userAddresses[0].mobile}'),
-                      RaisedButton(
-                        onPressed: () {},
-                        child: Text(
-                          "${getTranslatedValue(context, 'invoice')}",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        color: Theme.of(context).primaryColor,
-                      )
-                    ],
-                  ),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('No Sender Addresses Found!'));
-              // return snapshot.error;
-            }
-            return LoadingIndicator();
-          },
-        ),
-        FutureBuilder<List<UserAddress>>(
-          future: userPvd.getReceiverAddresses(user),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<UserAddress> userAddresses = snapshot.data;
-              return userAddresses.isEmpty
-                  ? Card(
+        selectedSenderAddressId != null
+            ? FutureBuilder<List<UserAddress>>(
+                future:
+                    userPvd.getUserAddressById(user, selectedSenderAddressId),
+                builder: (context, snapshot) {
+                  List<UserAddress> userAddresses = snapshot.data;
+                  if (snapshot.hasData) {
+                    return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.2,
+                        width: MediaQuery.of(context).size.width / 2.3,
                         padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 6),
+                            vertical: 16, horizontal: 6),
                         child: Column(
                           children: [
-                            Text('You did not add receiver address'),
+                            Text('${userAddresses[0].fullname}'),
+                            Text('${userAddresses[0].city}'),
+                            Text('${userAddresses[0].mobile}'),
                             RaisedButton(
-                              elevation: 0,
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(MyAddresses.routeName);
-                              },
-                              child: Text(
-                                'Add receiver address',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              // color: Theme.of(context).primaryColor,
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : Card(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.2,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 6),
-                        child: Column(
-                          children: [
-                            receiverName != null
-                                ? Text('$receiverName')
-                                : Text('${userAddresses[0].fullname}' ?? ''),
-                            receiverCity != null
-                                ? Text('$receiverCity')
-                                : Text('${userAddresses[0].city}'),
-                            receiverMobile != null
-                                ? Text('$receiverMobile')
-                                : Text('${userAddresses[0].mobile}'),
-                            RaisedButton(
-                              elevation: 0,
-                              color: Colors.white,
                               onPressed: () {},
                               child: Text(
-                                '',
+                                "${getTranslatedValue(context, 'invoice')}",
                                 style: TextStyle(color: Colors.white),
                               ),
-                              // color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).primaryColor,
                             )
                           ],
                         ),
                       ),
                     );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('No Receiver Addresses Found!'));
-              // return snapshot.error;
-            }
-            return LoadingIndicator();
-          },
-        ),
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('No Sender Addresses Found!'),
+                    );
+                  }
+                  return LoadingIndicator();
+                },
+              )
+            : FutureBuilder<List<UserAddress>>(
+                future: userPvd.getSenderAddresses(user),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<UserAddress> userAddresses = snapshot.data;
+                    return Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.3,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 6),
+                        child: Column(
+                          children: [
+                            senderName != null
+                                ? Text('$senderName')
+                                : Text('${userAddresses[0].fullname}'),
+                            senderCity != null
+                                ? Text('$senderCity')
+                                : Text('${userAddresses[0].city}'),
+                            senderContact != null
+                                ? Text('$senderContact')
+                                : Text('${userAddresses[0].mobile}'),
+                            RaisedButton(
+                              onPressed: () {},
+                              child: Text(
+                                "${getTranslatedValue(context, 'invoice')}",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('No Sender Addresses Found!'));
+                    // return snapshot.error;
+                  }
+                  return LoadingIndicator();
+                },
+              ),
+        selectedReceiverAddressId != null
+            ? FutureBuilder<List<UserAddress>>(
+                future:
+                    userPvd.getUserAddressById(user, selectedReceiverAddressId),
+                builder: (context, snapshot) {
+                  List<UserAddress> userAddresses = snapshot.data;
+                  if (snapshot.hasData) {
+                    return Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.3,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 6),
+                        child: Column(
+                          children: [
+                            Text('${userAddresses[0].fullname}'),
+                            Text('${userAddresses[0].city}'),
+                            Text('${userAddresses[0].mobile}'),
+                            RaisedButton(
+                              onPressed: () {},
+                              child: Text(
+                                "${getTranslatedValue(context, 'invoice')}",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('No Sender Addresses Found!'),
+                    );
+                  }
+                  return LoadingIndicator();
+                },
+              )
+            : FutureBuilder<List<UserAddress>>(
+                future: userPvd.getReceiverAddresses(user),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<UserAddress> userAddresses = snapshot.data;
+                    return userAddresses.isEmpty
+                        ? Card(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.2,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 6),
+                              child: Column(
+                                children: [
+                                  Text('You did not add receiver address'),
+                                  RaisedButton(
+                                    elevation: 0,
+                                    color: Theme.of(context).primaryColor,
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed(MyAddresses.routeName);
+                                    },
+                                    child: Text(
+                                      'Add receiver address',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    // color: Theme.of(context).primaryColor,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        : Card(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2.2,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 6),
+                              child: Column(
+                                children: [
+                                  receiverName != null
+                                      ? Text('$receiverName')
+                                      : Text(
+                                          '${userAddresses[0].fullname}' ?? ''),
+                                  receiverCity != null
+                                      ? Text('$receiverCity')
+                                      : Text('${userAddresses[0].city}'),
+                                  receiverContact != null
+                                      ? Text('$receiverContact')
+                                      : Text('${userAddresses[0].mobile}'),
+                                  RaisedButton(
+                                    elevation: 0,
+                                    color: Colors.white,
+                                    onPressed: () {},
+                                    child: Text(
+                                      '',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    // color: Theme.of(context).primaryColor,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('No Receiver Addresses Found!'));
+                    // return snapshot.error;
+                  }
+                  return LoadingIndicator();
+                },
+              ),
       ],
     );
   }
@@ -280,20 +388,20 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
         const SizedBox(height: 6),
         RadioListTile(
           value: "${getTranslatedValue(context, 'sender')}",
-          groupValue: orderPvd.selectedPay,
+          groupValue: orderPvd.orderPayer,
           title: Text("${getTranslatedValue(context, 'sender_to_pay')}"),
           activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            orderPvd.setSelectedPay(currentVal);
+            orderPvd.setOrderPayer(currentVal);
           },
         ),
         RadioListTile(
           value: "${getTranslatedValue(context, 'receiver')}",
-          groupValue: orderPvd.selectedPay,
+          groupValue: orderPvd.orderPayer,
           title: Text("${getTranslatedValue(context, 'receiver_to_pay')}"),
           activeColor: Theme.of(context).primaryColor,
           onChanged: (currentVal) {
-            orderPvd.setSelectedPay(currentVal);
+            orderPvd.setOrderPayer(currentVal);
           },
         ),
         Padding(

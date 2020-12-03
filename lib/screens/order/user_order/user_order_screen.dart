@@ -65,23 +65,32 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                           itemCount: orders.length,
                           itemBuilder: (context, i) => UserOrderItem(
                             orders[i].orderId,
+                            // SENDER DETAILS
                             orders[i].orderSenderName,
-                            orders[i].orderSenderContact,
                             orders[i].orderSenderCity,
                             orders[i].orderSenderAddress,
+                            orders[i].orderSenderDistrict,
+                            orders[i].orderSenderContact,
+                            // RECEIVER DETAILS
                             orders[i].orderRecieverName,
-                            orders[i].orderRecieverContact,
                             orders[i].orderRecieverCity,
                             orders[i].orderRecieverAddress,
-                            orders[i].orderStatus,
-                            orders[i].orderRefNo,
+                            orders[i].orderRecieverDistrict,
+                            orders[i].orderRecieverContact,
+                            // EXTRA DETAILS
                             orders[i].orderDate,
+                            orders[i].orderPickupTime,
+                            orders[i].orderPackaging,
+                            orders[i].orderFragile,
+                            orders[i].orderPayer,
+                            orders[i].orderCollectionCash,
+                            orders[i].orderRefNo,
+                            orders[i].orderStatus,
                           ),
                         );
                       } else if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            // 'No Order Found!',
                             "${getTranslatedValue(context, 'no_order_found')}",
                           ),
                         );
@@ -94,7 +103,6 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                 Column(
                   children: [
                     HeadingTitle(
-                      // search_by_mobile_and_tracking_number
                       "${getTranslatedValue(context, 'search_by_mobile_and_tracking_number')}",
                     ),
                     const SizedBox(height: 22),
@@ -132,17 +140,27 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                 itemCount: orders.length,
                                 itemBuilder: (context, i) => UserOrderItem(
                                   orders[i].orderId,
+                                  // SENDER DETAILS
                                   orders[i].orderSenderName,
-                                  orders[i].orderSenderContact,
                                   orders[i].orderSenderCity,
                                   orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
                                   orders[i].orderRecieverName,
-                                  orders[i].orderRecieverContact,
                                   orders[i].orderRecieverCity,
                                   orders[i].orderRecieverAddress,
-                                  orders[i].orderStatus,
-                                  orders[i].orderRefNo,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
                                   orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
                                 ),
                               );
                             } else if (snapshot.hasError) {
@@ -169,17 +187,27 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                 itemCount: orders.length,
                                 itemBuilder: (context, i) => UserOrderItem(
                                   orders[i].orderId,
+                                  // SENDER DETAILS
                                   orders[i].orderSenderName,
-                                  orders[i].orderSenderContact,
                                   orders[i].orderSenderCity,
                                   orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
                                   orders[i].orderRecieverName,
-                                  orders[i].orderRecieverContact,
                                   orders[i].orderRecieverCity,
                                   orders[i].orderRecieverAddress,
-                                  orders[i].orderStatus,
-                                  orders[i].orderRefNo,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
                                   orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
                                 ),
                               );
                             } else if (snapshot.hasError) {
@@ -206,17 +234,27 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                                 itemCount: orders.length,
                                 itemBuilder: (context, i) => UserOrderItem(
                                   orders[i].orderId,
+                                  // SENDER DETAILS
                                   orders[i].orderSenderName,
-                                  orders[i].orderSenderContact,
                                   orders[i].orderSenderCity,
                                   orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
                                   orders[i].orderRecieverName,
-                                  orders[i].orderRecieverContact,
                                   orders[i].orderRecieverCity,
                                   orders[i].orderRecieverAddress,
-                                  orders[i].orderStatus,
-                                  orders[i].orderRefNo,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
                                   orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
                                 ),
                               );
                             } else if (snapshot.hasError) {

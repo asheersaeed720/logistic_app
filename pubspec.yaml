@@ -62,6 +62,7 @@ flutter:
 
   assets:
     - assets/images/logo.png
+    - assets/images/dummy_profile.png
     - assets/images/header.jpg
     - assets/lang/en.json
     - assets/lang/ar.json

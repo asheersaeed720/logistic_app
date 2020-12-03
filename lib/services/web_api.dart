@@ -13,6 +13,8 @@ class WebApi {
 
   static const String getFilterOrdersURL = baseURL + '/Orders/search';
   static const String getUserAddressesURL = baseURL + '/Users/addresses';
+  static const String getUserAddressesByIdURL = baseURL + '/Users/address';
+
   static const String addUserAddressesURL = baseURL + '/Users/address';
   static const String delUserAddressesURL = baseURL + '/Users/address';
   static const String changePasswordURL = baseURL + '/Users/user_password';

@@ -55,6 +55,25 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<List<UserAddress>> getUserAddressById(user, id) async {
+    try {
+      var response = await get(
+        '${WebApi.getUserAddressesByIdURL}/$id',
+        headers: {
+          'APP_KEY': '${WebApi.apiKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      return (responseJson as List)
+          .map((i) => UserAddress.fromJson(i))
+          .toList();
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   addSenderAddress(context, senderAddress, user) async {
     isLoading = true;
     final response =

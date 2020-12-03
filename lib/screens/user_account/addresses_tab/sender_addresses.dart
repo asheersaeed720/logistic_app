@@ -59,6 +59,13 @@ class _SenderAddressesState extends State<SenderAddresses> {
       decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
+    final senderAddress = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter your address" : null,
+      keyboardType: TextInputType.streetAddress,
+      onSaved: (value) => _address.senderAddress = value,
+      decoration: buildTextFieldInputDecoration("Address", Icons.location_on),
+    );
+
     final senderMobileNo = TextFormField(
       validator: (value) =>
           value.isEmpty ? "Please enter your mobile no" : null,
@@ -95,15 +102,42 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('${userAddresses[i].city}'),
-                                      Text('${userAddresses[i].mobile}'),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_city,
+                                            color: Colors.grey,
+                                          ),
+                                          Text(
+                                              '  ${userAddresses[i].cityName}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            color: Colors.grey,
+                                          ),
+                                          Text('  ${userAddresses[i].mobile}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.grey,
+                                          ),
+                                          Text('  ${userAddresses[i].address}'),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   trailing: GestureDetector(
                                     onTap: () {
                                       //ADD FUNCTION
-                                      userPvd
-                                          .delUserAddress(userAddresses[i].id, authPvd.user);
+                                      userPvd.delUserAddress(
+                                          userAddresses[i].id, authPvd.user);
                                     },
                                     child: Icon(
                                       Icons.delete,
@@ -131,55 +165,59 @@ class _SenderAddressesState extends State<SenderAddresses> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Positioned(
-                        right: -40.0,
-                        top: -40.0,
-                        child: InkResponse(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: CircleAvatar(
-                            child: Icon(Icons.close),
-                            backgroundColor: Colors.white,
+                  content: SingleChildScrollView(
+                    child: Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        Positioned(
+                          right: -40.0,
+                          top: -40.0,
+                          child: InkResponse(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              child: Icon(Icons.close),
+                              backgroundColor: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            senderName,
-                            SizedBox(height: 10),
-                            senderCitiesDropdown,
-                            SizedBox(height: 10),
-                            senderDistrict,
-                            SizedBox(height: 10),
-                            senderMobileNo,
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      userPvd.addSenderAddress(
-                                          context, _address, authPvd.user);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Add Address",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  color: Theme.of(context).primaryColor),
-                            )
-                          ],
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              senderName,
+                              SizedBox(height: 10),
+                              senderCitiesDropdown,
+                              SizedBox(height: 10),
+                              senderDistrict,
+                              SizedBox(height: 10),
+                              senderAddress,
+                              SizedBox(height: 10),
+                              senderMobileNo,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+                                        userPvd.addSenderAddress(
+                                            context, _address, authPvd.user);
+                                      }
+                                    },
+                                    child: Text(
+                                      "Add Address",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    color: Theme.of(context).primaryColor),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

@@ -8,31 +8,50 @@ import 'package:provider/provider.dart';
 
 class UserOrderItem extends StatelessWidget {
   final orderId;
+  // SENDER DETAILS
   final orderSenderName;
-  final orderSenderContact;
   final orderSenderCity;
   final orderSenderAddress;
+  final orderSenderDistrict;
+  final orderSenderContact;
+  // RECEIVER DETAILS
   final orderRecieverName;
-  final orderRecieverContact;
   final orderRecieverCity;
   final orderRecieverAddress;
-  var orderStatus;
-  final orderRefNo;
+  final orderRecieverDistrict;
+  final orderRecieverContact;
+  // EXTRA DETAILS
   final orderDate;
-
+  final orderPickupTime;
+  final orderPackaging;
+  final orderFragile;
+  final orderPayer;
+  final orderCollectionCash;
+  final orderRefNo;
+  var orderStatus;
   UserOrderItem(
     this.orderId,
+    // SENDER DETAILS
     this.orderSenderName,
-    this.orderSenderContact,
     this.orderSenderCity,
     this.orderSenderAddress,
+    this.orderSenderDistrict,
+    this.orderSenderContact,
+    // RECEIVER DETAILS
     this.orderRecieverName,
-    this.orderRecieverContact,
     this.orderRecieverCity,
     this.orderRecieverAddress,
-    this.orderStatus,
-    this.orderRefNo,
+    this.orderRecieverDistrict,
+    this.orderRecieverContact,
+    // EXTRA DETAILS
     this.orderDate,
+    this.orderPickupTime,
+    this.orderPackaging,
+    this.orderFragile,
+    this.orderPayer,
+    this.orderCollectionCash,
+    this.orderRefNo,
+    this.orderStatus,
   );
 
   @override
@@ -74,38 +93,45 @@ class UserOrderItem extends StatelessWidget {
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Tracking no: 2321322232',
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                            orderRefNo == ''
+                                ? Text(
+                                    '',
+                                    style: TextStyle(fontSize: 12),
+                                  )
+                                : Row(
+                                    children: [
+                                      Text(
+                                        'Tracking no: $orderRefNo',
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      RaisedButton(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        elevation: 0,
+                                        onPressed: () {
+                                          print('$orderRefNo');
+                                        },
+                                        child: Text(
+                                          'Copy',
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                RaisedButton(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 4),
-                                  elevation: 0,
-                                  onPressed: () {
-                                    print('2321322232');
-                                  },
-                                  child: Text(
-                                    'Copy',
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                ),
-                              ],
-                            ),
                             Text(
                               'Order no: $orderId',
                               style: TextStyle(

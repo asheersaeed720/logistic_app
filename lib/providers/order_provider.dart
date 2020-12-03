@@ -42,10 +42,10 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedPay = 'Sender';
-  String get selectedPay => _selectedPay;
-  set selectedPay(String val) {
-    _selectedPay = val;
+  String _orderPayer = 'Sender';
+  String get orderPayer => _orderPayer;
+  set orderPayer(String val) {
+    _orderPayer = val;
     notifyListeners();
   }
 
@@ -86,9 +86,9 @@ class OrderProvider with ChangeNotifier {
     print(selectedTime);
   }
 
-  setSelectedPay(String selectedValue) {
-    selectedPay = selectedValue;
-    print(selectedPay);
+  setOrderPayer(String selectedValue) {
+    orderPayer = selectedValue;
+    print(orderPayer);
   }
 
   setpackageCheckedVal(bool checkedVal) {
@@ -104,45 +104,55 @@ class OrderProvider with ChangeNotifier {
   addOrder(
     context,
     user,
+    // SENDER DETAILS
+    selectedSenderAddressId,
     senderName,
     senderCity,
+    senderAddress,
     senderDistrict,
-    senderMobile,
+    senderContact,
+    // RECEIVER DETAILS
+    selectedReceiverAddressId,
     receiverName,
     receiverCity,
+    receiverAddress,
     receiverDistrict,
-    receiverMobile,
-    collectionCashFromReceiver,
-    refNo,
+    receiverContact,
+    // EXTRA DETAILS
     packageCheckedValue,
     fragileCheckedValue,
     selectedTime,
-    whoWillPlay,
+    collectionCash,
+    refNo,
+    orderPayer,
     couponCode,
-    selectedSenderId,
-    selectedReceiverId,
   ) async {
     isLoading = true;
     final response = await _orderService.addUserOrder(
       context,
       user,
+      // SENDER DETAILS
+      selectedSenderAddressId,
       senderName,
       senderCity,
+      senderAddress,
       senderDistrict,
-      senderMobile,
+      senderContact,
+      // RECEIVER DETAILS
+      selectedReceiverAddressId,
       receiverName,
       receiverCity,
+      receiverAddress,
       receiverDistrict,
-      receiverMobile,
-      collectionCashFromReceiver,
-      refNo,
+      receiverContact,
+      // EXTRA DETAILS
       packageCheckedValue,
       fragileCheckedValue,
       selectedTime,
-      whoWillPlay,
+      collectionCash,
+      refNo,
+      orderPayer,
       couponCode,
-      selectedSenderId,
-      selectedReceiverId,
     );
 
     if (response['status'] == true) {
@@ -159,17 +169,38 @@ class OrderProvider with ChangeNotifier {
       Navigator.of(context).pushReplacementNamed(
         OrderSuccess.routeName,
         arguments: {
-          'orderId': response['user']['orderid'],
+          'orderId': response['user']['data']['order_user_id'],
+          // SENDER DETAILS
           'senderName': response['user']['data']['order_sender_name'],
           'senderCity': response['user']['data']['order_sender_city'],
-          'senderDistrict': response['user']['data']['order_sender_address'],
-          'senderMobile': response['user']['data']['order_sender_contact'],
+          'senderAddress': response['user']['data']['order_sender_address'],
+          'senderDistrict': response['user']['data']['order_sender_district'],
+          'senderContact': response['user']['data']['order_sender_contact'],
+          // RECEIVER DETAILS
           'receiverName': response['user']['data']['order_reciever_name'],
           'receiverCity': response['user']['data']['order_reciever_city'],
+          'receiverAddress': response['user']['data']['order_reciever_address'],
           'receiverDistrict': response['user']['data']
-              ['order_reciever_address'],
-          'receiverMobile': response['user']['data']['order_reciever_contact'],
-          'refNo': refNo,
+              ['order_reciever_district'],
+          'receiverContact': response['user']['data']['order_reciever_contact'],
+          // EXTRA DETAILS
+          'packageCheckedValue': response['user']['data']['order_packaging'],
+          'fragileCheckedValue': response['user']['data']['order_fragile'],
+          'selectedTime': response['user']['data']['order_pickup_time'],
+          'orderPayer': response['user']['data']['order_payer'],
+          'refNo': response['user']['data']['order_ref_no'],
+
+          // 'orderId': response['user']['orderid'],
+          // 'senderName': response['user']['data']['order_sender_name'],
+          // 'senderCity': response['user']['data']['order_sender_city'],
+          // 'senderDistrict': response['user']['data']['order_sender_address'],
+          // 'senderMobile': response['user']['data']['order_sender_contact'],
+          // 'receiverName': response['user']['data']['order_reciever_name'],
+          // 'receiverCity': response['user']['data']['order_reciever_city'],
+          // 'receiverDistrict': response['user']['data']
+          //     ['order_reciever_address'],
+          // 'receiverMobile': response['user']['data']['order_reciever_contact'],
+          // 'refNo': refNo,
         },
       );
     } else {
@@ -190,8 +221,7 @@ class OrderProvider with ChangeNotifier {
         '${WebApi.getOrderURL}',
         headers: {
           'APP-KEY': WebApi.apiKey,
-          // 'x-api-key': user['token'],
-          'x-api-key': 'f51adea8f02ca1a66033a443b4574b15'
+          'x-api-key': user['token'],
         },
       );
       var responseJson = json.decode(response.body);

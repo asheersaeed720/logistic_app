@@ -5,7 +5,6 @@ import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/test_receiver.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +57,13 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
       decoration: buildTextFieldInputDecoration("District", Icons.location_on),
     );
 
+    final receiverAddress = TextFormField(
+      validator: (value) => value.isEmpty ? "Please enter your address" : null,
+      keyboardType: TextInputType.streetAddress,
+      onSaved: (value) => _address.receiverAddress = value,
+      decoration: buildTextFieldInputDecoration("Address", Icons.location_on),
+    );
+
     final receiverMobileNo = TextFormField(
       validator: (value) =>
           value.isEmpty ? "Please enter your mobile no" : null,
@@ -86,16 +92,45 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8),
                                 child: ListTile(
-                                  title: Text('${userAddresses[i].fullname}',
-                                      style: TextStyle(fontSize: 16)),
+                                  title: Text(
+                                    '${userAddresses[i].fullname}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
                                   // subtitle: Text('${userAddresses[i].city}'),
                                   // trailing: Text('${userAddresses[i].mobile}'),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('${userAddresses[i].city}'),
-                                      Text('${userAddresses[i].mobile}'),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_city,
+                                            color: Colors.grey,
+                                          ),
+                                          Text(
+                                              '  ${userAddresses[i].cityName}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            color: Colors.grey,
+                                          ),
+                                          Text('  ${userAddresses[i].mobile}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.grey,
+                                          ),
+                                          Text('  ${userAddresses[i].address}'),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   trailing: GestureDetector(
@@ -130,55 +165,59 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Positioned(
-                        right: -40.0,
-                        top: -40.0,
-                        child: InkResponse(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: CircleAvatar(
-                            child: Icon(Icons.close),
-                            backgroundColor: Colors.white,
+                  content: SingleChildScrollView(
+                    child: Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        Positioned(
+                          right: -40.0,
+                          top: -40.0,
+                          child: InkResponse(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              child: Icon(Icons.close),
+                              backgroundColor: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            receiverName,
-                            SizedBox(height: 10),
-                            receiverCitiesDropdown,
-                            SizedBox(height: 10),
-                            receiverDistrict,
-                            SizedBox(height: 10),
-                            receiverMobileNo,
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      userPvd.addReceiverAddress(
-                                          context, _address, authPvd.user);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Add Address",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  color: Theme.of(context).primaryColor),
-                            )
-                          ],
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              receiverName,
+                              SizedBox(height: 10),
+                              receiverCitiesDropdown,
+                              SizedBox(height: 10),
+                              receiverDistrict,
+                              SizedBox(height: 10),
+                              receiverAddress,
+                              SizedBox(height: 10),
+                              receiverMobileNo,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+                                        userPvd.addReceiverAddress(
+                                            context, _address, authPvd.user);
+                                      }
+                                    },
+                                    child: Text(
+                                      "Add Address",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    color: Theme.of(context).primaryColor),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

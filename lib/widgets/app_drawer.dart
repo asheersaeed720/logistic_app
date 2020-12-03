@@ -35,7 +35,8 @@ class AppDrawer extends StatelessWidget {
                   image: AssetImage('./assets/images/header.jpg'),
                 )),
                 currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('./assets/images/logo.png'),
+                  backgroundImage:
+                      AssetImage('./assets/images/dummy_profile.png'),
                 ),
                 accountName: Text('${authProvider.user['user']['first_name']}'),
                 accountEmail:

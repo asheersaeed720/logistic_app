@@ -3,8 +3,8 @@ import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/receiver_addresses.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/sender_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/receiver_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/sender_addresses.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:provider/provider.dart';
 

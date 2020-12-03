@@ -3,7 +3,8 @@ import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/cod_amount_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
 import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,9 @@ class UserAccount extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(CODAmountScreen.routeName);
+            },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(
