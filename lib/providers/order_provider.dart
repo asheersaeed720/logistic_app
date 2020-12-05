@@ -250,9 +250,9 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  updateOrder(context, user, orderId, orderStatus) async {
+  cancelOrder(context, user, orderId, orderStatus) async {
     isLoading = true;
-    final response = await _orderService.updateUserOrder(
+    final response = await _orderService.cancelUserOrder(
         context, user, orderId, orderStatus);
 
     if (response['status'] == true) {
@@ -266,6 +266,33 @@ class OrderProvider with ChangeNotifier {
         fontSize: 16.0,
       );
       print(response['user']['data']);
+    } else {
+      Flushbar(
+        title: "Order Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
+    isLoading = false;
+  }
+
+  editOrder(context, user, orderId, editOrderData) async {
+    isLoading = true;
+    final response = await _orderService.editUserOrder(
+        context, user, orderId, editOrderData);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Your Order has been Updated",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.of(context).pop();
     } else {
       Flushbar(
         title: "Order Failed",

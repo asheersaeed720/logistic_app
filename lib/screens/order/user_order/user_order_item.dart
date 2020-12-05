@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/edit_order_screen.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -225,56 +226,84 @@ class UserOrderItem extends StatelessWidget {
                       )
                     : Container(
                         padding: EdgeInsets.only(bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            RaisedButton(
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () {},
-                              child: Text(
-                                'EDIT',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            RaisedButton(
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (dialogContext) => AlertDialog(
-                                    title: Text('Order Cancel!'),
-                                    content: Text(
-                                        'Are you sure, You want to cancel order?'),
-                                    actions: [
-                                      FlatButton(
-                                        onPressed: () {
-                                          Navigator.of(dialogContext).pop();
+                        child: orderStatus == 'PROCESSING'
+                            ? Text('')
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  RaisedButton(
+                                    color: Theme.of(context).primaryColor,
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                        EditOrderScreen.routeName,
+                                        arguments: {
+                                          'orderId': '$orderId',
+                                          'senderName': '$orderSenderName',
+                                          'senderCity': '$orderSenderCity',
+                                          'senderAddress':
+                                              '$orderSenderAddress',
+                                          'senderDistrict':
+                                              '$orderSenderDistrict',
+                                          'senderContact':
+                                              '$orderSenderContact',
+                                          'recieverName': '$orderRecieverName',
+                                          'recieverCity': '$orderRecieverCity',
+                                          'recieverAddress':
+                                              '$orderRecieverAddress',
+                                          'recieverDistrict':
+                                              '$orderRecieverDistrict',
+                                          'recieverContact':
+                                              '$orderRecieverContact',
                                         },
-                                        child: Text('No'),
-                                      ),
-                                      FlatButton(
-                                        onPressed: () async {
-                                          orderPvd.updateOrder(
-                                              context,
-                                              user,
-                                              orderId,
-                                              orderStatus = 'CANCELLED');
-                                          Navigator.of(dialogContext).pop();
-                                        },
-                                        child: Text('Yes'),
-                                      ),
-                                    ],
-                                    elevation: 20,
+                                      );
+                                    },
+                                    child: Text(
+                                      'EDIT',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: Text(
-                                'ORDER CANCEL',
-                                style: TextStyle(color: Colors.white),
+                                  RaisedButton(
+                                    color: Theme.of(context).primaryColor,
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (dialogContext) => AlertDialog(
+                                          title: Text('Order Cancel!'),
+                                          content: Text(
+                                              'Are you sure, You want to cancel order?'),
+                                          actions: [
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('No'),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () async {
+                                                orderPvd.cancelOrder(
+                                                    context,
+                                                    user,
+                                                    orderId,
+                                                    orderStatus = 'CANCELLED');
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                          elevation: 20,
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'ORDER CANCEL',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                 SizedBox(height: 4),
               ],

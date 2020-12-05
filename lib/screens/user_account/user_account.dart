@@ -24,7 +24,9 @@ class UserAccount extends StatelessWidget {
         ),
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(MyAddresses.routeName);
+            },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(
@@ -77,7 +79,10 @@ class UserAccount extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(CODAmountScreen.routeName);
+                    },
                     icon: Icon(Icons.attach_money_sharp),
                     color: Colors.white,
                     iconSize: 40,
@@ -153,7 +158,9 @@ class UserAccount extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(ChangePasswordScreen.routeName);
+            },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(
@@ -198,7 +205,9 @@ class UserAccount extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              authPvd.logOut(context);
+            },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(

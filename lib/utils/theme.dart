@@ -36,7 +36,7 @@ final customTheme = ThemeData(
   fontFamily: 'ProximaNova',
   textTheme: const TextTheme(
     headline1: TextStyle(
-      fontSize: 25.0,
+      fontSize: 24.0,
       fontFamily: 'ProximaNova',
       color: Colors.black87,
       fontWeight: FontWeight.bold,

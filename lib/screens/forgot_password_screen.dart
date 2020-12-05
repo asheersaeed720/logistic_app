@@ -22,12 +22,42 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
 
-    final emailField = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter your email" : null,
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => _userCredential.email = value,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'email')}", Icons.email),
+    // final emailField = TextFormField(
+    //   validator: (value) => value.isEmpty ? "Please enter your email" : null,
+    //   keyboardType: TextInputType.emailAddress,
+    //   onSaved: (value) => _userCredential.mobileNo = value,
+    //   decoration: buildTextFieldInputDecoration(
+    //       "${getTranslatedValue(context, 'email')}", Icons.email),
+    // );
+
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+
+    final mobileNoField = TextFormField(
+      maxLength: 9,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_userCredential.mobileNo.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _userCredential.mobileNo = '966$text';
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _userCredential.mobileNo = '966$value',
+      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
     );
 
     final forgotPasswordBtn = Material(
@@ -84,10 +114,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           const SizedBox(height: 20),
+                          // Container(
+                          //   padding:
+                          //       const EdgeInsets.symmetric(horizontal: 20.0),
+                          //   child: emailField,
+                          // ),
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: emailField,
+                            // padding:
+                            //     const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(bottom: 22.0),
+                                  width:
+                                      MediaQuery.of(context).size.width / 5.5,
+                                  child: countriesCodeField,
+                                ),
+                                SizedBox(width: 10),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.7,
+                                  child: mobileNoField,
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 20),
                           authPvd.isLoading

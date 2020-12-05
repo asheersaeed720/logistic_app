@@ -34,33 +34,42 @@ class _LoginScreenState extends State<LoginScreen> {
     final authPvd = Provider.of<AuthProvider>(context);
     final tabPvd = Provider.of<TabProvider>(context);
 
-    // final phoneNoField = TextFormField(
-    //   inputFormatters: [
-    //     new LengthLimitingTextInputFormatter(9),
-    //   ],
-    //   autofocus: false,
-    //   validator: (value) {
-    //     if (value.isEmpty) {
-    //       return 'Please enter a phone number';
-    //     } else if (_userCredential.mobileNo.length < 9) {
-    //       return 'Invalid Number';
-    //     }
-    //     return null;
-    //   },
-    //   onChanged: (text) {
-    //     _userCredential.mobileNo = text;
-    //   },
-    //   keyboardType: TextInputType.number,
-    //   onSaved: (value) => _userCredential.mobileNo = value,
-    //   decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
+    // final emailField = TextFormField(
+    //   validator: (value) => value.isEmpty ? "Please enter your email" : null,
+    //   keyboardType: TextInputType.emailAddress,
+    //   onSaved: (value) => _userCredential.email = value,
+    //   decoration: buildTextFieldInputDecoration(
+    //       "${getTranslatedValue(context, 'email')}", Icons.email),
     // );
 
-    final emailField = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter your email" : null,
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => _userCredential.email = value,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'email')}", Icons.email),
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+
+    final mobileNoField = TextFormField(
+      maxLength: 9,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_userCredential.mobileNo.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _userCredential.mobileNo = '966$text';
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _userCredential.mobileNo = '966$value',
+      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -171,26 +180,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Image.asset('./assets/images/logo.png'),
                     const SizedBox(height: 40.0),
-
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Container(
-                    //       width: MediaQuery.of(context).size.width / 5.3,
-                    //       child: countriesCodeField,
-                    //     ),
-                    //     SizedBox(width: 10),
-                    //     Container(
-                    //       width: MediaQuery.of(context).size.width / 1.8,
-                    //       child: phoneNoField,
-                    //     ),
-                    //   ],
-                    // ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      child: emailField,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(bottom: 22.0),
+                          width: MediaQuery.of(context).size.width / 5.4,
+                          child: countriesCodeField,
+                        ),
+                        SizedBox(width: 10),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.8,
+                          child: mobileNoField,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 6.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: passwordField,

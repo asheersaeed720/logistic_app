@@ -170,7 +170,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           const SizedBox(height: 20),
                           Text(
                             // 'Reset Password',
-                            "${getTranslatedValue(context, 'reset_password')}",
+                            "${getTranslatedValue(context, 'change_password')}",
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           const SizedBox(height: 20),

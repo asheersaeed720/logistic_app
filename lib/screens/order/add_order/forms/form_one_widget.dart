@@ -43,6 +43,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Column(
           children: [
             Row(
@@ -65,6 +66,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           ],
         ),
+       
       ),
       body: SingleChildScrollView(
         child: Padding(

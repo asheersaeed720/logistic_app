@@ -34,7 +34,7 @@ class AuthService {
     var result;
 
     final loginData = {
-      'email': userCredential.email,
+      'phone': userCredential.mobileNo,
       'password': userCredential.password,
     };
 
@@ -61,7 +61,7 @@ class AuthService {
     var result;
 
     final loginData = {
-      'email': userCredential.email,
+      'phone': userCredential.mobileNo,
       'password': userCredential.password,
       'key': key,
     };
@@ -91,14 +91,17 @@ class AuthService {
     var result;
 
     final signUpData = {
-      'first_name': user.firstname,
-      'last_name': user.lastName,
-      'user_email': user.email,
-      'user_mobile': user.mobileNo,
-      'user_city_id': user.cityId.toString(),
-      'user_district': user.district,
-      'user_password': user.password,
+      'first_name': '${user.firstname}',
+      'last_name': '${user.lastName}',
+      // 'user_email': '${user.email}',
+      'user_mobile': '${user.mobileNo}',
+      'user_city_id': '${user.cityId}',
+      'user_district': '${user.district}',
+      'user_address': '${user.address}',
+      'user_password': '${user.password}',
     };
+
+    print(signUpData);
 
     var response = await post(
       WebApi.registerURL,

@@ -9,6 +9,7 @@ class User {
   String country = 'Saudi Arabia';
   SearchCityModel cityId;
   String district;
+  String address;
   String mobileNo;
   String password;
   String confirmPassword;
@@ -21,6 +22,7 @@ class User {
     this.country,
     this.cityId,
     this.district,
+    this.address,
     this.mobileNo,
     this.password,
     this.confirmPassword,
@@ -28,9 +30,9 @@ class User {
 }
 
 class UserCredential {
-  String email;
+  String mobileNo;
   String password;
   String key;
 
-  UserCredential({this.email, this.password, this.key});
+  UserCredential({this.mobileNo, this.password, this.key});
 }

@@ -86,34 +86,7 @@ class OrderService {
     return result;
   }
 
-  // Future<Map> getOrder(context) async {
-  //   var result;
-
-  //   var response = await get(
-  //     '${WebApi.getOrderURL}/28',
-  //     headers: {
-  //       'APP_KEY': '${WebApi.apiKey}',
-  //       'x-api-key': '${WebApi.xApiKey}',
-  //     },
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     var responseJson = json.decode(response.body);
-  //     print(responseJson);
-
-  //     result = {'status': true, 'message': 'Successful', 'user': responseJson};
-  //   } else {
-  //     result = {
-  //       'status': false,
-  //       'message': json.decode(response.body),
-  //     };
-  //   }
-  //   print('outside $result');
-
-  //   return result;
-  // }
-
-  Future<Map> updateUserOrder(context, user, orderId, orderStatus) async {
+  Future<Map> cancelUserOrder(context, user, orderId, orderStatus) async {
     var result;
 
     var response = await post(
@@ -131,6 +104,45 @@ class OrderService {
       var responseJson = json.decode(response.body);
       print(responseJson);
 
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+
+    return result;
+  }
+
+  Future<Map> editUserOrder(context, user, orderId, editOrderData) async {
+    var result;
+
+    var orderData = {
+      'sender_name': '${editOrderData.orderSenderName}',
+      'sender_address': '${editOrderData.orderSenderAddress}',
+      'sender_district': '${editOrderData.orderSenderDistrict}',
+      'sender_contact': '${editOrderData.orderSenderContact}',
+      'sender_city': '${editOrderData.orderSenderCity}',
+      'reciever_name': '${editOrderData.orderReceiverName}',
+      'reciever_address': '${editOrderData.orderReceiverAddress}',
+      'reciever_district': '${editOrderData.orderReceiverDistrict}',
+      'reciever_contact': '${editOrderData.orderReceiverContact}',
+      'reciever_city': '${editOrderData.orderReceiverCity}',
+    };
+
+    var response = await post(
+      '${WebApi.updateOrderURL}/$orderId',
+      body: orderData,
+      headers: {
+        'APP_KEY': '${WebApi.apiKey}',
+        'x-api-key': user['token'],
+      },
+    );
+    print(orderData);
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {

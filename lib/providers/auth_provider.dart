@@ -99,6 +99,15 @@ class AuthProvider with ChangeNotifier {
         MaterialPageRoute(builder: (context) => LoginScreen()),
         (Route<dynamic> route) => false,
       );
+      Fluttertoast.showToast(
+        msg: "You have been Registered",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } else {
       Flushbar(
         title: "Registration Failed",
@@ -129,6 +138,7 @@ class AuthProvider with ChangeNotifier {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      Navigator.of(context).pop();
     } else {
       Flushbar(
         title: "Failed",

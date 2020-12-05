@@ -6,6 +6,7 @@ import 'package:hani_almutairi_logistic/screens/drawer_screens/privacy_screen.da
 import 'package:hani_almutairi_logistic/screens/drawer_screens/terms_conditions_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/track_my_shipment_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/edit_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/reset_password.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
@@ -45,4 +46,5 @@ final routes = {
   TermsConditionsScreen.routeName: (context) => TermsConditionsScreen(),
   TrackMyShipmentScreen.routeName: (context) => TrackMyShipmentScreen(),
   CODAmountScreen.routeName: (context) => CODAmountScreen(),
+  EditOrderScreen.routeName: (context) => EditOrderScreen(),
 };

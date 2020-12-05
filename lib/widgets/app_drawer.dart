@@ -16,11 +16,21 @@ import 'package:flutter/material.dart';
 // SCREENS
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context, listen: false);
+
+    void check() async {
+      const url = "https://flutter.io";
+      if (await canLaunch(url))
+        await launch(url);
+      else
+        // can't launch url, there is some error
+        throw "Could not launch $url";
+    }
 
     return Drawer(
       child: ListView(
@@ -40,7 +50,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 accountName: Text('${authProvider.user['user']['first_name']}'),
                 accountEmail:
-                    Text('${authProvider.user['user']['user_email']}'),
+                    Text('${authProvider.user['user']['user_mobile']}'),
               );
             },
           ),

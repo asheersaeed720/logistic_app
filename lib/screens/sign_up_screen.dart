@@ -57,18 +57,18 @@ class _SignupScreenState extends State<SignupScreen> {
           "${getTranslatedValue(context, 'lastname')}", Icons.person),
     );
 
-    final emailField = TextFormField(
-      autofocus: false,
-      validator: (value) => value.isEmpty ? "Please enter your email" : null,
-      onSaved: (value) => _user.email = value,
-      keyboardType: TextInputType.name,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'email')}", Icons.email),
-    );
+    // final emailField = TextFormField(
+    //   autofocus: false,
+    //   validator: (value) => value.isEmpty ? "Please enter your email" : null,
+    //   onSaved: (value) => _user.email = value,
+    //   keyboardType: TextInputType.name,
+    //   decoration: buildTextFieldInputDecoration(
+    //       "${getTranslatedValue(context, 'email')}", Icons.email),
+    // );
 
     final countryField = TextFormField(
       autofocus: false,
-      validator: (value) => value.isEmpty ? "Please type a country" : null,
+      // validator: (value) => value.isEmpty ? "Please type a country" : null,
       onSaved: (value) => _user.country = value,
       keyboardType: TextInputType.name,
       // initialValue: 'Saudi Arabia',
@@ -101,23 +101,26 @@ class _SignupScreenState extends State<SignupScreen> {
           "${getTranslatedValue(context, 'district')}", Icons.location_on),
     );
 
-    // final mobileNoField = TextFormField(
-    //   maxLength: 8,
-    //   autofocus: false,
-    //   validator: (value) => value.isEmpty ? "Please enter No" : null,
-    //   onSaved: (value) => _user.mobileNo = '966$value',
-    //   keyboardType: TextInputType.number,
-    //   decoration: buildTextFieldInputDecoration(
-    //       "${getTranslatedValue(context, 'enter_number_without_code')}",
-    //       Icons.phone),
-    //   // decoration: buildTextFieldInputDecoration(
-    //   //     "Enter number without code", Icons.phone),
-    // );
+    final addressField = TextFormField(
+      autofocus: false,
+      validator: (value) => value.isEmpty ? "Please fill this" : null,
+      onSaved: (value) => _user.address = value,
+      keyboardType: TextInputType.streetAddress,
+      decoration: buildTextFieldInputDecoration("Address", Icons.location_on),
+    );
+
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
 
     final mobileNoField = TextFormField(
-      // inputFormatters: [
-      //   new LengthLimitingTextInputFormatter(9),
-      // ],
       maxLength: 9,
       autofocus: false,
       validator: (value) {
@@ -129,11 +132,11 @@ class _SignupScreenState extends State<SignupScreen> {
         return null;
       },
       onChanged: (text) {
-        _user.mobileNo = text;
+        _user.mobileNo = '966$text';
       },
       keyboardType: TextInputType.number,
-      onSaved: (value) => _user.mobileNo = value,
-      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
+      onSaved: (value) => _user.mobileNo = '966$value',
+      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -257,8 +260,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     firstNameField,
                     const SizedBox(height: 16.0),
                     lastNameField,
-                    const SizedBox(height: 16.0),
-                    emailField,
+                    // const SizedBox(height: 16.0),
+                    // emailField,
                     const SizedBox(height: 16.0),
                     countryField,
                     const SizedBox(height: 16.0),
@@ -266,7 +269,23 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: 16.0),
                     districtField,
                     const SizedBox(height: 16.0),
-                    mobileNoField,
+                    addressField,
+                    const SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(bottom: 22.0),
+                          width: MediaQuery.of(context).size.width / 5.3,
+                          child: countriesCodeField,
+                        ),
+                        SizedBox(width: 10),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          child: mobileNoField,
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 16.0),
                     passwordField,
                     const SizedBox(height: 16.0),
