@@ -106,7 +106,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                       "${getTranslatedValue(context, 'search_by_mobile_and_tracking_number')}",
                     ),
                     const SizedBox(height: 22),
-                    _buildSearchByMobile(context),
+                    _buildSearchByMobile(context, orderPvd, user),
                   ],
                 )
               else if (filterPvd.orderFilterBtn3 == true)
@@ -298,7 +298,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     );
   }
 
-  Widget _buildSearchByMobile(BuildContext context) {
+  Widget _buildSearchByMobile(BuildContext context, orderPvd, user) {
     final mobileField = TextFormField(
       validator: (value) => value.isEmpty ? "Please enter Mobile" : null,
       onSaved: (value) => _mobileNo = value,
@@ -324,7 +324,9 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           const SizedBox(height: 10),
           RaisedButton(
             color: Theme.of(context).primaryColor,
-            onPressed: () {},
+            onPressed: () {
+              orderPvd.getUserOrderByMobile(user);
+            },
             child: Text(
               'Search',
               style: TextStyle(color: Colors.white),

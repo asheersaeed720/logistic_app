@@ -232,6 +232,24 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
+  Future<List<Order>> getUserOrderByMobile(user, String orderStatus) async {
+    try {
+      var response = await get(
+        // '${WebApi.getOrderURL}/$userId',
+        '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
+        headers: {
+          'APP-KEY': WebApi.apiKey,
+          'x-api-key': user['token'],
+        },
+      );
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
     try {
       var response = await get(
