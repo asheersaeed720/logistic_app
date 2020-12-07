@@ -8,21 +8,21 @@ import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 
-class OtpScreen extends StatefulWidget {
-  static const String routeName = '/otp';
+class UserVerificationScreen extends StatefulWidget {
+  static const String routeName = '/user-verification';
 
   @override
-  _OtpScreenState createState() => _OtpScreenState();
+  _UserVerificationScreenState createState() => _UserVerificationScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _UserVerificationScreenState extends State<UserVerificationScreen> {
   TextEditingController _pinEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
 
-    final userCredential = ModalRoute.of(context).settings.arguments;
+    final user = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
       onWillPop: authPvd.isLoading
@@ -63,7 +63,7 @@ class _OtpScreenState extends State<OtpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Enter 4 digits verification code sent to your email & number',
+                  'Enter 4 digits verification code sent to your number',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
@@ -98,7 +98,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 const SizedBox(height: 40),
                 authPvd.isLoading
                     ? LoadingIndicator()
-                    : _buildConfirmBtn(context, authPvd, userCredential),
+                    : _buildConfirmBtn(context, authPvd),
               ],
             ),
           ),
@@ -107,14 +107,14 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  Widget _buildConfirmBtn(context, authPvd, userCredential) {
+  Widget _buildConfirmBtn(context, authPvd) {
     return Container(
       // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       constraints: const BoxConstraints(maxWidth: 500),
       child: RaisedButton(
         onPressed: () {
           print('${_pinEditingController.text}');
-          authPvd.login(context, userCredential, _pinEditingController.text);
+          authPvd.getVerify(context, _pinEditingController.text);
         },
         color: Theme.of(context).primaryColor,
         shape: const RoundedRectangleBorder(

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hani_almutairi_logistic/main.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/screens/reset_password.dart';
-import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/services/auth_service.dart';
 import 'package:hani_almutairi_logistic/services/web_api.dart';
@@ -49,27 +49,9 @@ class AuthProvider with ChangeNotifier {
     return await _authService.getCities(filter);
   }
 
-  getOtp(context, userCredential) async {
+  login(context, userCredential) async {
     isLoading = true;
-    final response = await _authService.getUserOtp(userCredential);
-
-    if (response['status'] != false) {
-      Navigator.of(context)
-          .pushNamed(OtpScreen.routeName, arguments: userCredential);
-    } else {
-      Flushbar(
-        title: "Failed Login",
-        message: response['message']['status'].toString(),
-        duration: Duration(seconds: 3),
-      ).show(context);
-    }
-
-    isLoading = false;
-  }
-
-  login(context, userCredential, key) async {
-    isLoading = true;
-    final response = await _authService.loginUser(userCredential, key);
+    final response = await _authService.loginUser(userCredential);
 
     if (response['status'] != false) {
       setUser();
@@ -94,23 +76,43 @@ class AuthProvider with ChangeNotifier {
     isLoading = true;
     var response = await _authService.signUpUser(user);
     if (response['status'] != false) {
+      Navigator.of(context).pushNamed(
+        UserVerificationScreen.routeName,
+        // arguments: user,
+      );
+    } else {
+      Flushbar(
+        title: "Registration Failed",
+        message: response['message']['status'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+    isLoading = false;
+  }
+
+  getVerify(context, otp) async {
+    isLoading = true;
+    final response = await _authService.getUserVerify(otp);
+
+    if (response['status'] != false) {
+      // Phoenix.rebirth(context);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
         (Route<dynamic> route) => false,
       );
-      Fluttertoast.showToast(
-        msg: "You have been Registered",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "You have been Registered",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
     } else {
       Flushbar(
-        title: "Registration Failed",
+        title: "Registration Login",
         message: response['message']['status'].toString(),
         duration: Duration(seconds: 3),
       ).show(context);
@@ -129,15 +131,15 @@ class AuthProvider with ChangeNotifier {
         user, oldPasswordVal, passwordVal);
 
     if (response['status'] != false) {
-      Fluttertoast.showToast(
-        msg: "Password successfully changed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Password successfully changed",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
       Navigator.of(context).pop();
     } else {
       Flushbar(
@@ -178,15 +180,15 @@ class AuthProvider with ChangeNotifier {
         MaterialPageRoute(builder: (context) => LoginScreen()),
         (Route<dynamic> route) => false,
       );
-      Fluttertoast.showToast(
-        msg: "Password successfully updated",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Password successfully updated",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
     } else {
       Flushbar(
         title: "Failed Login",

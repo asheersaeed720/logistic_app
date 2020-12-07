@@ -8,7 +8,7 @@ import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
-import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var doLogin = () {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        authPvd.getOtp(context, _userCredential);
+        authPvd.login(context, _userCredential);
       }
     };
 
@@ -185,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Container(
                           padding: EdgeInsets.only(bottom: 22.0),
-                          width: MediaQuery.of(context).size.width / 5.4,
+                          width: MediaQuery.of(context).size.width / 5.3,
                           child: countriesCodeField,
                         ),
                         SizedBox(width: 10),

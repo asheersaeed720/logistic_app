@@ -12,7 +12,7 @@ import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
-import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/receiver_addresses.dart';
@@ -29,7 +29,7 @@ final routes = {
   SignupScreen.routeName: (context) => SignupScreen(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
   UserAccount.routeName: (context) => UserAccount(),
-  OtpScreen.routeName: (context) => OtpScreen(),
+  UserVerificationScreen.routeName: (context) => UserVerificationScreen(),
   ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
   ResetPasswordScreen.routeName: (context) => ResetPasswordScreen(),
   FormOneWidget.routeName: (context) => FormOneWidget(),

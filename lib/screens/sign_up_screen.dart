@@ -9,7 +9,7 @@ import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/screens/otp_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
@@ -202,14 +202,11 @@ class _SignupScreenState extends State<SignupScreen> {
         _formKey.currentState.save();
         authPvd.signUp(context, _user);
       }
-      // Navigator.of(context).pushNamed(OtpScreen.routeName);
     };
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.white,
-          // elevation: 0,
           title: Text('${getTranslatedValue(context, 'register')}'),
           actions: [
             Padding(
@@ -257,19 +254,37 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     const SizedBox(height: 30.0),
-                    firstNameField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: firstNameField,
+                    ),
                     const SizedBox(height: 16.0),
-                    lastNameField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: lastNameField,
+                    ),
                     // const SizedBox(height: 16.0),
                     // emailField,
                     const SizedBox(height: 16.0),
-                    countryField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: countryField,
+                    ),
                     const SizedBox(height: 16.0),
-                    citiesDropdown,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: citiesDropdown,
+                    ),
                     const SizedBox(height: 16.0),
-                    districtField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: districtField,
+                    ),
                     const SizedBox(height: 16.0),
-                    addressField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: addressField,
+                    ),
                     const SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -281,15 +296,21 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(width: 10),
                         Container(
-                          width: MediaQuery.of(context).size.width / 1.7,
+                          width: MediaQuery.of(context).size.width / 1.8,
                           child: mobileNoField,
                         ),
                       ],
                     ),
                     const SizedBox(height: 16.0),
-                    passwordField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: passwordField,
+                    ),
                     const SizedBox(height: 16.0),
-                    confirmPasswordField,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: confirmPasswordField,
+                    ),
                     const SizedBox(height: 16.0),
                     authPvd.isLoading
                         ? AuthIndicator()

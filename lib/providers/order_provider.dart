@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flushbar/flushbar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
@@ -156,15 +156,15 @@ class OrderProvider with ChangeNotifier {
     );
 
     if (response['status'] == true) {
-      Fluttertoast.showToast(
-        msg: "Your Order has been Placed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Your Order has been Placed",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
       print(response['user']['data']);
       Navigator.of(context).pushReplacementNamed(
         OrderSuccess.routeName,
@@ -232,22 +232,40 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Order>> getUserOrderByMobile(user, String orderStatus) async {
-    try {
-      var response = await get(
-        // '${WebApi.getOrderURL}/$userId',
-        '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
-        headers: {
-          'APP-KEY': WebApi.apiKey,
-          'x-api-key': user['token'],
-        },
-      );
+  Future<List<Order>> getUserOrderByMobile(user, mobileNo, trackingNo) async {
+    var response = await get(
+      '${WebApi.getFilterOrdersURL}/?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
+      // '${WebApi.getFilterOrdersURL}/?trackingnumber=$trackingNo',
+      headers: {
+        'APP-KEY': WebApi.apiKey,
+        'x-api-key': user['token'],
+      },
+    );
+    print('before hit: $mobileNo');
+
+    if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
       print(responseJson);
+
       return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    } catch (e) {
-      throw (e);
+    } else {
+      print(response.body);
     }
+
+    // try {
+    //   var response = await get(
+    //     '${WebApi.getFilterOrdersURL}/?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
+    //     headers: {
+    //       'APP-KEY': WebApi.apiKey,
+    //       'x-api-key': user['token'],
+    //     },
+    //   );
+    //   var responseJson = json.decode(response.body);
+    //   print(responseJson);
+    //   return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+    // } catch (e) {
+    //   throw (e);
+    // }
   }
 
   Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
@@ -274,15 +292,15 @@ class OrderProvider with ChangeNotifier {
         context, user, orderId, orderStatus);
 
     if (response['status'] == true) {
-      Fluttertoast.showToast(
-        msg: "Your Order has been Updated",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Your Order has been Updated",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
       print(response['user']['data']);
     } else {
       Flushbar(
@@ -301,15 +319,15 @@ class OrderProvider with ChangeNotifier {
         context, user, orderId, editOrderData);
 
     if (response['status'] == true) {
-      Fluttertoast.showToast(
-        msg: "Your Order has been Updated",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Your Order has been Updated",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
       Navigator.of(context).pop();
     } else {
       Flushbar(
@@ -322,7 +340,7 @@ class OrderProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  delUserOrder(test, orderId, user) async {
+  delUserOrder(orderId, user) async {
     isLoading = true;
     try {
       delete(

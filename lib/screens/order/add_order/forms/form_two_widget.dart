@@ -1,23 +1,20 @@
-import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:hani_almutairi_logistic/widgets/invoice.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
-import 'package:hani_almutairi_logistic/main.dart';
-import 'package:hani_almutairi_logistic/models/add_order.dart';
-import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/sender_addresses.dart';
-import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
-import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class FormTwoWidget extends StatefulWidget {
@@ -31,6 +28,21 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   final _formKey = GlobalKey<FormState>();
 
   String _couponCode;
+
+  test() {
+    final doc = pw.Document();
+
+    doc.addPage(
+      pw.Page(
+        build: (pw.Context context) => pw.Center(
+          child: pw.Text('Hello World!'),
+        ),
+      ),
+    );
+
+    final file = File('example.pdf');
+    file.writeAsBytesSync(doc.save());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +216,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             Text('${userAddresses[0].city}'),
                             Text('${userAddresses[0].mobile}'),
                             RaisedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                test();
+                              },
                               child: Text(
                                 "${getTranslatedValue(context, 'invoice')}",
                                 style: TextStyle(color: Colors.white),
@@ -245,7 +259,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 ? Text('$senderContact')
                                 : Text('${userAddresses[0].mobile}'),
                             RaisedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                test();
+                              },
                               child: Text(
                                 "${getTranslatedValue(context, 'invoice')}",
                                 style: TextStyle(color: Colors.white),
@@ -281,7 +297,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             Text('${userAddresses[0].city}'),
                             Text('${userAddresses[0].mobile}'),
                             RaisedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                test();
+                              },
                               child: Text(
                                 "${getTranslatedValue(context, 'invoice')}",
                                 style: TextStyle(color: Colors.white),

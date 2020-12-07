@@ -23,15 +23,6 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context, listen: false);
 
-    void check() async {
-      const url = "https://flutter.io";
-      if (await canLaunch(url))
-        await launch(url);
-      else
-        // can't launch url, there is some error
-        throw "Could not launch $url";
-    }
-
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -48,7 +39,8 @@ class AppDrawer extends StatelessWidget {
                   backgroundImage:
                       AssetImage('./assets/images/dummy_profile.png'),
                 ),
-                accountName: Text('${authProvider.user['user']['first_name']}'),
+                accountName: Text(
+                    '${authProvider.user['user']['first_name']} ${authProvider.user['user']['last_name']}'),
                 accountEmail:
                     Text('${authProvider.user['user']['user_mobile']}'),
               );

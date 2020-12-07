@@ -206,9 +206,30 @@ class UserAccount extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              authPvd.logOut(context);
+              showDialog(
+                context: context,
+                builder: (dialogContext) => AlertDialog(
+                  title: Text('Logout'),
+                  content: Text('Are you sure, You want to Logout?'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        authPvd.logOut(context);
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                  elevation: 20,
+                ),
+              );
             },
-            // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(
               child: Container(
@@ -216,7 +237,29 @@ class UserAccount extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {
-                      authPvd.logOut(context);
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: Text('Logout'),
+                          content: Text('Are you sure, You want to Logout?'),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('No'),
+                            ),
+                            FlatButton(
+                              onPressed: () async {
+                                authPvd.logOut(context);
+                                Navigator.of(dialogContext).pop();
+                              },
+                              child: Text('Yes'),
+                            ),
+                          ],
+                          elevation: 20,
+                        ),
+                      );
                     },
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,

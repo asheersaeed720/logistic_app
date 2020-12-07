@@ -19,7 +19,7 @@ class UserOrderScreen extends StatefulWidget {
 }
 
 class _UserOrderScreenState extends State<UserOrderScreen> {
-  // final GlobalKey<AppExpansionTileState> expansionTile = new GlobalKey();
+  final _formKey = new GlobalKey<FormState>();
 
   String _mobileNo, _trackingNo;
 
@@ -300,14 +300,14 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
 
   Widget _buildSearchByMobile(BuildContext context, orderPvd, user) {
     final mobileField = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter Mobile" : null,
-      onSaved: (value) => _mobileNo = value,
+      // validator: (value) => value.isEmpty ? "Please enter Mobile no" : null,
+      onSaved: (value) => _mobileNo = '966$value',
       keyboardType: TextInputType.phone,
       decoration: buildTextFieldInputDecoration('Mobile', Icons.phone),
     );
 
     final trackingNo = TextFormField(
-        validator: (value) => value.isEmpty ? "Please enter Mobile" : null,
+        // validator: (value) => value.isEmpty ? "Please enter tracking no" : null,
         onSaved: (value) => _trackingNo = value,
         keyboardType: TextInputType.number,
         decoration:
@@ -315,24 +315,30 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          mobileField,
-          const SizedBox(height: 10),
-          trackingNo,
-          const SizedBox(height: 10),
-          RaisedButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              orderPvd.getUserOrderByMobile(user);
-            },
-            child: Text(
-              'Search',
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            mobileField,
+            const SizedBox(height: 10),
+            trackingNo,
+            const SizedBox(height: 10),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  orderPvd.getUserOrderByMobile(user, _mobileNo, _trackingNo);
+                }
+              },
+              child: Text(
+                'Search',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

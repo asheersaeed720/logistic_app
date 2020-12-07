@@ -66,7 +66,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           ],
         ),
-       
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -195,7 +194,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                                         _addOrder.orderRefNo,
                                                   },
                                                 );
-                                                print(_addOrder.orderRefNo);
                                               }
                                             });
                                   } else if (snapshot.hasError) {

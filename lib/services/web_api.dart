@@ -1,11 +1,13 @@
 class WebApi {
+  var test = '576398998';
   static const String apiKey = 'fdsanfbsalsdola_nljkagn_';
   static const String xApiKey =
-      '8468c401f53feeaedcc3ed7ccfed5db6'; // FOR TESTING
+      '0cd80861f585f2135f559bef1980dff1'; // FOR TESTING
   static const String baseURL = 'https://portal.hubexsa.com/API';
   static const String loginURL = baseURL + '/auth/login';
-  static const String loginGetkeyURL = baseURL + '/auth/get_key';
+  // static const String loginGetkeyURL = baseURL + '/auth/get_key';
   static const String registerURL = baseURL + '/auth/signup';
+  static const String getUserVerifyURL = baseURL + '/auth/verify';
   static const String getCitiesURL = baseURL + '/locations/cities';
   static const String addOrderURL = baseURL + '/Orders/order';
   static const String updateOrderURL = baseURL + '/Orders/order_update';

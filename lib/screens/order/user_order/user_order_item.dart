@@ -1,3 +1,4 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
@@ -109,12 +110,6 @@ class UserOrderItem extends StatelessWidget {
                                       ),
                                       SizedBox(width: 10),
                                       RaisedButton(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        elevation: 0,
-                                        onPressed: () {
-                                          print('$orderRefNo');
-                                        },
                                         child: Text(
                                           'Copy',
                                           style: TextStyle(
@@ -124,6 +119,25 @@ class UserOrderItem extends StatelessWidget {
                                             fontSize: 12,
                                           ),
                                         ),
+                                        onPressed: () {
+                                          // ClipboardManager.copyToClipBoard(
+                                          //         '$orderRefNo')
+                                          //     .then((result) {
+                                          //   final snackBar = SnackBar(
+                                          //     content:
+                                          //         Text('Copied to Clipboard'),
+                                          //   );
+                                          //   Scaffold.of(context)
+                                          //       .showSnackBar(snackBar);
+                                          // });
+                                          FlutterClipboard.copy('$orderRefNo')
+                                              .then((value) {
+                                            Scaffold.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text('Copied!'),
+                                            ));
+                                          });
+                                        },
                                         color: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           side: BorderSide(
@@ -209,8 +223,7 @@ class UserOrderItem extends StatelessWidget {
                                 ),
                                 FlatButton(
                                   onPressed: () async {
-                                    orderPvd.delUserOrder(
-                                        tabPvd.onTabTapped(2), orderId, user);
+                                    orderPvd.delUserOrder(orderId, user);
                                     Navigator.of(dialogContext).pop();
                                   },
                                   child: Text('Yes'),

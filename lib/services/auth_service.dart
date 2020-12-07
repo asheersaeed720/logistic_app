@@ -30,43 +30,13 @@ class AuthService {
     }
   }
 
-  Future<Map> getUserOtp(userCredential) async {
+  Future<Map> loginUser(userCredential) async {
     var result;
 
     final loginData = {
       'phone': userCredential.mobileNo,
       'password': userCredential.password,
     };
-
-    var response = await post(
-      WebApi.loginGetkeyURL,
-      body: loginData,
-      headers: {'APP_KEY': '${WebApi.apiKey}'},
-    );
-
-    if (response.statusCode == 200) {
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-      result = {'status': true, 'message': 'Successful', 'user': responseJson};
-    } else {
-      result = {
-        'status': false,
-        'message': json.decode(response.body),
-      };
-    }
-    return result;
-  }
-
-  Future<Map> loginUser(userCredential, key) async {
-    var result;
-
-    final loginData = {
-      'phone': userCredential.mobileNo,
-      'password': userCredential.password,
-      'key': key,
-    };
-
-    // print('Before hit: $loginData');
 
     var response = await post(
       WebApi.loginURL,
@@ -93,7 +63,6 @@ class AuthService {
     final signUpData = {
       'first_name': '${user.firstname}',
       'last_name': '${user.lastName}',
-      // 'user_email': '${user.email}',
       'user_mobile': '${user.mobileNo}',
       'user_city_id': '${user.cityId}',
       'user_district': '${user.district}',
@@ -111,6 +80,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
+      print(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {
@@ -119,6 +89,27 @@ class AuthService {
       };
     }
 
+    return result;
+  }
+
+  Future<Map> getUserVerify(otp) async {
+    var result;
+
+    var response = await post(
+      WebApi.getUserVerifyURL,
+      body: {'otp': otp},
+      headers: {'APP_KEY': '${WebApi.apiKey}'},
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
     return result;
   }
 
