@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class FilterProvider with ChangeNotifier {
   // ADDRESS FILTER
-  bool _addressFilterBtn1 = true;
+  bool _addressFilterBtn1 = false;
   bool get addressFilterBtn1 => _addressFilterBtn1;
   set addressFilterBtn1(bool value) {
     _addressFilterBtn1 = value;
     notifyListeners();
   }
 
-  bool _addressFilterBtn2 = false;
+  bool _addressFilterBtn2 = true;
   bool get addressFilterBtn2 => _addressFilterBtn2;
   set addressFilterBtn2(bool value) {
     _addressFilterBtn2 = value;
@@ -82,14 +82,14 @@ class FilterProvider with ChangeNotifier {
   }
 
   // RECEIVER ADDRESS FILTER
-  bool _receiverAddressFilterBtn1 = true;
+  bool _receiverAddressFilterBtn1 = false;
   bool get receiverAddressFilterBtn1 => _receiverAddressFilterBtn1;
   set receiverAddressFilterBtn1(bool value) {
     _receiverAddressFilterBtn1 = value;
     notifyListeners();
   }
 
-  bool _receiverAddressFilterBtn2 = false;
+  bool _receiverAddressFilterBtn2 = true;
   bool get receiverAddressFilterBtn2 => _receiverAddressFilterBtn2;
   set receiverAddressFilterBtn2(bool value) {
     _receiverAddressFilterBtn2 = value;

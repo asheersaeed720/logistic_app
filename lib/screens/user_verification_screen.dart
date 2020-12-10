@@ -21,7 +21,16 @@ class _UserVerificationScreenState extends State<UserVerificationScreen> {
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
 
-    final user = ModalRoute.of(context).settings.arguments;
+    final user =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+
+    final firstName = user['firstName'];
+    final lastName = user['lastName'];
+    final userMobile = user['userMobile'];
+    final userCityId = user['userCityId'];
+    final userDistrict = user['userDistrict'];
+    final userAddress = user['userAddress'];
+    final userPassword = user['userPassword'];
 
     return WillPopScope(
       onWillPop: authPvd.isLoading
@@ -62,7 +71,7 @@ class _UserVerificationScreenState extends State<UserVerificationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Enter 4 digits verification code sent to your number',
+                  'Enter 4 digits verification code sent to your +$userMobile',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,

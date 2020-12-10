@@ -205,7 +205,7 @@ class OrderProvider with ChangeNotifier {
   Future<List<Order>> getUserOrder(user) async {
     try {
       var response = await get(
-        '${WebApi.getOrderURL}/${user['userid']}',
+        '${WebApi.getOrderURL}',
         headers: {
           'APP-KEY': WebApi.appKey,
           'x-api-key': user['token'],

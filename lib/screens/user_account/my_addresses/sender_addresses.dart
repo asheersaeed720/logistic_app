@@ -147,7 +147,10 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                             Icons.location_on,
                                             color: Colors.grey,
                                           ),
-                                          Text('  ${userAddresses[i].address}'),
+                                          Text(
+                                            '  ${userAddresses[i].address}',
+                                            overflow: TextOverflow.fade,
+                                          ),
                                         ],
                                       ),
                                     ],

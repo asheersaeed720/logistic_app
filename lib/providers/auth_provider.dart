@@ -73,8 +73,17 @@ class AuthProvider with ChangeNotifier {
     if (response['status'] != false) {
       Navigator.of(context).pushNamed(
         UserVerificationScreen.routeName,
-        // arguments: user,
+        arguments: {
+          'firstName': user.firstname,
+          'lastName': user.lastName,
+          'userMobile': user.mobileNo,
+          'userCityId': user.cityId,
+          'userDistrict': user.district,
+          'userAddress': user.address,
+          'userPassword': user.password,
+        },
       );
+      print(response);
     } else {
       Flushbar(
         title: "Registration Failed",
@@ -148,8 +157,7 @@ class AuthProvider with ChangeNotifier {
 
   forgotPassword(context, userCredential) async {
     isLoading = true;
-    final response =
-        await _authService.forgotUserPassword(userCredential);
+    final response = await _authService.forgotUserPassword(userCredential);
 
     if (response['status'] != false) {
       Navigator.of(context)
@@ -166,7 +174,8 @@ class AuthProvider with ChangeNotifier {
 
   getForgotPasswordVerify(context, password, key) async {
     isLoading = true;
-    final response = await _authService.getForgotUserPasswordVerify(password, key);
+    final response =
+        await _authService.getForgotUserPasswordVerify(password, key);
 
     if (response['status'] != false) {
       Navigator.pushAndRemoveUntil(

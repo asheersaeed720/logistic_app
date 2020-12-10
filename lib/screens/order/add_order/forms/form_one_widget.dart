@@ -73,15 +73,37 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             child: Column(
               children: [
                 // SENDER ADDRESS SECTION
-                _buildSenderAddressSection(
-                    context, filterPvd, authPvd, orderPvd, userPvd),
+                FutureBuilder(
+                  future: userPvd.getSenderAddresses(authPvd.user),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<UserAddress> userAddresses = snapshot.data;
+                      return _buildSenderAddressSection(context, filterPvd,
+                          authPvd, orderPvd, userPvd, userAddresses);
+                    } else if (snapshot.hasError) {
+                      return snapshot.error;
+                    }
+                    return LoadingIndicator();
+                  },
+                ),
 
                 // TIME SECTION
                 _buildTimeSection(context, filterPvd, orderPvd),
 
                 // RECEIVER ADDRESS SECTION
-                _buildReceiverSection(
-                    context, filterPvd, authPvd, orderPvd, userPvd),
+                FutureBuilder(
+                  future: userPvd.getReceiverAddresses(authPvd.user),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<UserAddress> userAddresses = snapshot.data;
+                      return _buildReceiverSection(context, filterPvd, authPvd,
+                          orderPvd, userPvd, userAddresses);
+                    } else if (snapshot.hasError) {
+                      return snapshot.error;
+                    }
+                    return LoadingIndicator();
+                  },
+                ),
 
                 // CASH FROM RECEIVER SECTION
                 _buildCashFromReceiverSection(context),
@@ -90,145 +112,52 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 _buildExtraInfoSection(context, orderPvd),
 
                 // NEXT BUTTON
-                Container(
-                  child: FutureBuilder<List<UserAddress>>(
-                    future: userPvd.getSenderAddresses(authPvd.user),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<UserAddress> userAddresses = snapshot.data;
-                        return userAddresses.isNotEmpty
-                            ? FutureBuilder<List<UserAddress>>(
-                                future:
-                                    userPvd.getReceiverAddresses(authPvd.user),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    List<UserAddress> userAddresses =
-                                        snapshot.data;
-                                    return userAddresses.isEmpty
-                                        ? Column(
-                                            children: [
-                                              RaisedButton(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          AddressTab.routeName);
-                                                },
-                                                child: Text(
-                                                  'Add Receiver Address',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              SizedBox(height: 12),
-                                            ],
-                                          )
-                                        : FlatButton(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            child: Text(
-                                              // 'Next >',
-                                              "${getTranslatedValue(context, 'next')} >",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              if (!_formKey.currentState
-                                                  .validate()) {
-                                                Flushbar(
-                                                  title: "Field Missing",
-                                                  message:
-                                                      'You missing cod or sender or receiver address fields',
-                                                  duration:
-                                                      Duration(seconds: 3),
-                                                ).show(context);
-                                              } else {
-                                                _formKey.currentState.save();
-                                                Navigator.of(context).pushNamed(
-                                                  FormTwoWidget.routeName,
-                                                  arguments: {
-                                                    'selectedSenderAddressId':
-                                                        orderPvd
-                                                            .selectedSenderAddress,
-                                                    'senderName': _addOrder
-                                                        .orderSenderName,
-                                                    'senderCity': _addOrder
-                                                        .orderSenderCity,
-                                                    'senderAddress': _addOrder
-                                                        .orderSenderAddress,
-                                                    'senderDistrict': _addOrder
-                                                        .orderSenderDistrict,
-                                                    'senderContact': _addOrder
-                                                        .orderSenderContact,
+                FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text(
+                      "${getTranslatedValue(context, 'next')} >",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      if (!_formKey.currentState.validate()) {
+                        Flushbar(
+                          title: "Field Missing",
+                          message:
+                              'You missing cod or sender or receiver address fields',
+                          duration: Duration(seconds: 3),
+                        ).show(context);
+                      } else {
+                        _formKey.currentState.save();
+                        Navigator.of(context).pushNamed(
+                          FormTwoWidget.routeName,
+                          arguments: {
+                            'selectedSenderAddressId':
+                                orderPvd.selectedSenderAddress,
+                            'senderName': _addOrder.orderSenderName,
+                            'senderCity': _addOrder.orderSenderCity,
+                            'senderAddress': _addOrder.orderSenderAddress,
+                            'senderDistrict': _addOrder.orderSenderDistrict,
+                            'senderContact': _addOrder.orderSenderContact,
 
-                                                    // RECEIVER DETAILS
-                                                    'selectedReceiverAddressId':
-                                                        orderPvd
-                                                            .selectedReceiverAddress,
-                                                    'receiverName': _addOrder
-                                                        .orderReceiverName,
-                                                    'receiverCity': _addOrder
-                                                        .orderReceiverCity,
-                                                    'receiverAddress': _addOrder
-                                                        .orderReceiverAddress,
-                                                    'receiverDistrict': _addOrder
-                                                        .orderReceiverDistrict,
-                                                    'receiverContact': _addOrder
-                                                        .orderReceiverContact,
+                            // RECEIVER DETAILS
+                            'selectedReceiverAddressId':
+                                orderPvd.selectedReceiverAddress,
+                            'receiverName': _addOrder.orderReceiverName,
+                            'receiverCity': _addOrder.orderReceiverCity,
+                            'receiverAddress': _addOrder.orderReceiverAddress,
+                            'receiverDistrict': _addOrder.orderReceiverDistrict,
+                            'receiverContact': _addOrder.orderReceiverContact,
 
-                                                    // EXTRA DETAILS
-                                                    'packageCheckedValue':
-                                                        orderPvd
-                                                            .packageCheckedValue,
-                                                    'fragileCheckedValue':
-                                                        orderPvd
-                                                            .fragileCheckedValue,
-                                                    'selectedTime':
-                                                        orderPvd.selectedTime,
-                                                    'collectionCash': _addOrder
-                                                        .orderCollectionCash,
-                                                    'refNo':
-                                                        _addOrder.orderRefNo,
-                                                  },
-                                                );
-                                              }
-                                            });
-                                  } else if (snapshot.hasError) {
-                                    return Center(
-                                      // child: snapshot.error,
-                                      child: Text('No Receiver Address'),
-                                    );
-                                  }
-                                  return LoadingIndicator();
-                                },
-                              )
-                            : Column(
-                                children: [
-                                  RaisedButton(
-                                    color: Theme.of(context).primaryColor,
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(AddressTab.routeName);
-                                    },
-                                    child: Text(
-                                      'Add Sender Address',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  SizedBox(height: 12),
-                                ],
-                              );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          // child: snapshot.error,
-                          child: Text('No Sender Address'),
+                            // EXTRA DETAILS
+                            'packageCheckedValue': orderPvd.packageCheckedValue,
+                            'fragileCheckedValue': orderPvd.fragileCheckedValue,
+                            'selectedTime': orderPvd.selectedTime,
+                            'collectionCash': _addOrder.orderCollectionCash,
+                            'refNo': _addOrder.orderRefNo,
+                          },
                         );
                       }
-                      return LoadingIndicator();
-                    },
-                  ),
-                ),
+                    })
               ],
             ),
           ),
@@ -239,7 +168,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
   // SENDER ADDRESS SECTION
   Widget _buildSenderAddressSection(
-      context, filterPvd, authPvd, orderPvd, userPvd) {
+      context, filterPvd, authPvd, orderPvd, userPvd, userAddresses) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _addOrder.orderSenderName = value,
@@ -254,6 +183,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       isFilteredOnline: true,
       showClearButton: true,
       showSearchBox: true,
+      validator: (value) =>
+          _addOrder.orderReceiverCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
         _addOrder.orderSenderCity = data;
@@ -290,21 +221,48 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'sender_address')}"),
-        FilterBtnForClearRadioCheck(
-          "${getTranslatedValue(context, 'my_address')}",
-          "${getTranslatedValue(context, 'new_address')}",
-          "${getTranslatedValue(context, 'saved_address')}",
-          filterPvd.addressFilterBtn1,
-          filterPvd.addressFilterBtn2,
-          filterPvd.addressFilterBtn3,
-          filterPvd.activateAddressFilterBtn1,
-          filterPvd.activateAddressFilterBtn2,
-          filterPvd.activateAddressFilterBtn3,
-          orderPvd.clearSenderSelectedRadioBtn,
-        ),
+        userAddresses.isEmpty
+            ? Container(
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                child: RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    filterPvd.activateAddressFilterBtn2();
+                    orderPvd.clearSenderSelectedRadioBtn();
+                  },
+                  child: Text(
+                    "${getTranslatedValue(context, 'new_address')}",
+                    style: TextStyle(
+                      color: filterPvd.addressFilterBtn2
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterPvd.addressFilterBtn2
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              )
+            : FilterBtnForClearRadioCheck(
+                "${getTranslatedValue(context, 'my_address')}",
+                "${getTranslatedValue(context, 'new_address')}",
+                "${getTranslatedValue(context, 'saved_address')}",
+                filterPvd.addressFilterBtn1,
+                filterPvd.addressFilterBtn2,
+                filterPvd.addressFilterBtn3,
+                filterPvd.activateAddressFilterBtn1,
+                filterPvd.activateAddressFilterBtn2,
+                filterPvd.activateAddressFilterBtn3,
+                orderPvd.clearSenderSelectedRadioBtn,
+              ),
         if (filterPvd.addressFilterBtn1 == true)
           Text(
-            // 'Note: Your Default address which was submitted \n when you created account.',
             "${getTranslatedValue(context, 'note_your_default')}",
             style: TextStyle(color: Theme.of(context).errorColor, fontSize: 15),
           )
@@ -448,7 +406,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
   }
 
   // RECEIVER SECTION
-  Widget _buildReceiverSection(context, filterPvd, authPvd, orderPvd, userPvd) {
+  Widget _buildReceiverSection(
+      context, filterPvd, authPvd, orderPvd, userPvd, userAddresses) {
     final fullNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type Receiver name" : null,
       onSaved: (value) => _addOrder.orderReceiverName = value,
@@ -463,6 +422,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       isFilteredOnline: true,
       showClearButton: true,
       showSearchBox: true,
+      validator: (value) =>
+          _addOrder.orderReceiverCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
         _addOrder.orderReceiverCity = data;
@@ -499,18 +460,46 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'receiver_address')}"),
-        FilterBtnForClearRadioCheck(
-          "${getTranslatedValue(context, 'my_address')}",
-          "${getTranslatedValue(context, 'new_address')}",
-          "${getTranslatedValue(context, 'saved_address')}",
-          filterPvd.receiverAddressFilterBtn1,
-          filterPvd.receiverAddressFilterBtn2,
-          filterPvd.receiverAddressFilterBtn3,
-          filterPvd.activateReceiverAddressFilterBtn1,
-          filterPvd.activateReceiverAddressFilterBtn2,
-          filterPvd.activateReceiverAddressFilterBtn3,
-          orderPvd.clearReceiverSelectedRadioBtn,
-        ),
+        userAddresses.isEmpty
+            ? Container(
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                child: RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    filterPvd.activateReceiverAddressFilterBtn2();
+                    orderPvd.clearReceiverSelectedRadioBtn();
+                  },
+                  child: Text(
+                    "${getTranslatedValue(context, 'new_address')}",
+                    style: TextStyle(
+                      color: filterPvd.receiverAddressFilterBtn2
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterPvd.receiverAddressFilterBtn2
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              )
+            : FilterBtnForClearRadioCheck(
+                "${getTranslatedValue(context, 'my_address')}",
+                "${getTranslatedValue(context, 'new_address')}",
+                "${getTranslatedValue(context, 'saved_address')}",
+                filterPvd.receiverAddressFilterBtn1,
+                filterPvd.receiverAddressFilterBtn2,
+                filterPvd.receiverAddressFilterBtn3,
+                filterPvd.activateReceiverAddressFilterBtn1,
+                filterPvd.activateReceiverAddressFilterBtn2,
+                filterPvd.activateReceiverAddressFilterBtn3,
+                orderPvd.clearReceiverSelectedRadioBtn,
+              ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
           Text('')
         else if (filterPvd.receiverAddressFilterBtn2 == true)
