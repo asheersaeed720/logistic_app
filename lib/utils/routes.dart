@@ -14,9 +14,9 @@ import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/receiver_addresses.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/sender_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/address_tab.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/receiver_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/sender_addresses.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/user_account.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_one_widget.dart';
@@ -37,7 +37,7 @@ final routes = {
   OrderSuccess.routeName: (context) => OrderSuccess(),
   SenderAddresses.routeName: (context) => SenderAddresses(),
   ReceiverAddresses.routeName: (context) => ReceiverAddresses(),
-  MyAddresses.routeName: (context) => MyAddresses(),
+  AddressTab.routeName: (context) => AddressTab(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
   CompanyWebsiteScreen.routeName: (context) => CompanyWebsiteScreen(),
   CallUsScreen.routeName: (context) => CallUsScreen(),

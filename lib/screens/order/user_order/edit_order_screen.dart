@@ -1,5 +1,8 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/add_order.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
@@ -8,7 +11,6 @@ import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class EditOrderScreen extends StatelessWidget {
   static const String routeName = '/edit-order';

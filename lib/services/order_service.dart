@@ -1,9 +1,7 @@
 import 'dart:convert';
-
-import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:http/http.dart';
 
-import 'package:hani_almutairi_logistic/services/web_api.dart';
+import 'package:hani_almutairi_logistic/utils/web_api.dart';
 
 class OrderService {
   Future<Map> addUserOrder(
@@ -65,7 +63,7 @@ class OrderService {
       '${WebApi.addOrderURL}',
       body: orderData,
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': user['token'],
       },
     );
@@ -95,7 +93,7 @@ class OrderService {
         'order_status': '$orderStatus',
       },
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': user['token'],
       },
     );
@@ -135,7 +133,7 @@ class OrderService {
       '${WebApi.updateOrderURL}/$orderId',
       body: orderData,
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': user['token'],
       },
     );

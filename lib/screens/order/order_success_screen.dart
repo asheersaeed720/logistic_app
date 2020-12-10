@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/models/user_address.dart';
-import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
-import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
+
 import 'package:provider/provider.dart';
+
+import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
+import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 
 class OrderSuccess extends StatelessWidget {
   static const String routeName = '/order-success';

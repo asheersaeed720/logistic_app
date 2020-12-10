@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String routeName = '/reset-password';
@@ -115,12 +117,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            authPvd.forgotPassword(context, passwordVal, _forgotPasswordKey);
-            // _formKey.currentState.reset();
+            authPvd.getForgotPasswordVerify(
+                context, passwordVal, _forgotPasswordKey);
           }
         },
         child: Text(
-          // 'Change Password',
           "${getTranslatedValue(context, 'change_password')}",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -134,7 +135,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          // 'Change Password',
           "${getTranslatedValue(context, 'change_password')}",
         ),
       ),
@@ -159,7 +159,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         children: [
                           const SizedBox(height: 20),
                           Text(
-                            // 'Reset Password',
                             "${getTranslatedValue(context, 'reset_password')}",
                             style: Theme.of(context).textTheme.headline1,
                           ),

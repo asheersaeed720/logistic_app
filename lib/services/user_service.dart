@@ -1,7 +1,7 @@
 import 'dart:convert';
-
-import 'package:hani_almutairi_logistic/services/web_api.dart';
 import 'package:http/http.dart';
+
+import 'package:hani_almutairi_logistic/utils/web_api.dart';
 
 class UserService {
   Future<Map> addUserSenderAddress(context, senderAddress, user) async {
@@ -22,7 +22,7 @@ class UserService {
       '${WebApi.addUserAddressesURL}/${user['user_id']}',
       body: senderAddressData,
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': user['token'],
       },
     );
@@ -60,7 +60,7 @@ class UserService {
       '${WebApi.addUserAddressesURL}/${user['user_id']}',
       body: receiverAddressData,
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': user['token'],
       },
     );

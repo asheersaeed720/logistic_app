@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const String routeName = '/forgot-password';
@@ -57,7 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _userCredential.mobileNo = '966$value',
-      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final forgotPasswordBtn = Material(
@@ -70,7 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            authPvd.getForgotPasswordKey(context, _userCredential);
+            authPvd.forgotPassword(context, _userCredential);
           }
         },
         child: Text(
@@ -126,7 +127,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  padding: EdgeInsets.only(bottom: 22.0),
+                                  padding: EdgeInsets.only(bottom: 23.0),
                                   width:
                                       MediaQuery.of(context).size.width / 5.5,
                                   child: countriesCodeField,

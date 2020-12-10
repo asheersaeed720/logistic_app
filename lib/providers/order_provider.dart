@@ -1,15 +1,15 @@
 import 'dart:convert';
-
-import 'package:flushbar/flushbar.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hani_almutairi_logistic/models/order.dart';
-import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
-import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
-import 'package:hani_almutairi_logistic/services/order_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/services/web_api.dart';
-import 'package:http/http.dart';
+
+import 'package:flushbar/flushbar.dart';
+
+import 'package:hani_almutairi_logistic/models/order.dart';
+import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/services/order_service.dart';
+import 'package:hani_almutairi_logistic/utils/web_api.dart';
 
 class OrderProvider with ChangeNotifier {
   OrderService _orderService = OrderService();
@@ -156,15 +156,15 @@ class OrderProvider with ChangeNotifier {
     );
 
     if (response['status'] == true) {
-      // Fluttertoast.showToast(
-      //   msg: "Your Order has been Placed",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.black87,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
+      Fluttertoast.showToast(
+        msg: "Your Order has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       print(response['user']['data']);
       Navigator.of(context).pushReplacementNamed(
         OrderSuccess.routeName,
@@ -189,18 +189,6 @@ class OrderProvider with ChangeNotifier {
           'selectedTime': response['user']['data']['order_pickup_time'],
           'orderPayer': response['user']['data']['order_payer'],
           'refNo': response['user']['data']['order_ref_no'],
-
-          // 'orderId': response['user']['orderid'],
-          // 'senderName': response['user']['data']['order_sender_name'],
-          // 'senderCity': response['user']['data']['order_sender_city'],
-          // 'senderDistrict': response['user']['data']['order_sender_address'],
-          // 'senderMobile': response['user']['data']['order_sender_contact'],
-          // 'receiverName': response['user']['data']['order_reciever_name'],
-          // 'receiverCity': response['user']['data']['order_reciever_city'],
-          // 'receiverDistrict': response['user']['data']
-          //     ['order_reciever_address'],
-          // 'receiverMobile': response['user']['data']['order_reciever_contact'],
-          // 'refNo': refNo,
         },
       );
     } else {
@@ -217,10 +205,27 @@ class OrderProvider with ChangeNotifier {
   Future<List<Order>> getUserOrder(user) async {
     try {
       var response = await get(
-        // '${WebApi.getOrderURL}/$userId',
-        '${WebApi.getOrderURL}',
+        '${WebApi.getOrderURL}/${user['userid']}',
         headers: {
-          'APP-KEY': WebApi.apiKey,
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+      print('${user['user_id']}');
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+    } catch (e) {
+      throw Exception('Failed to load orders');
+    }
+  }
+
+  Future<List<Order>> getUserOrderAsReceiver(user, receiverORSender) async {
+    try {
+      var response = await get(
+        '${WebApi.getOrderbyReceiverURL}/$receiverORSender',
+        headers: {
+          'APP-KEY': WebApi.appKey,
           'x-api-key': user['token'],
         },
       );
@@ -228,7 +233,7 @@ class OrderProvider with ChangeNotifier {
       print(responseJson);
       return (responseJson as List).map((i) => Order.fromJson(i)).toList();
     } catch (e) {
-      throw (e);
+      throw Exception('Failed to load orders');
     }
   }
 
@@ -237,7 +242,7 @@ class OrderProvider with ChangeNotifier {
       '${WebApi.getFilterOrdersURL}/?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
       // '${WebApi.getFilterOrdersURL}/?trackingnumber=$trackingNo',
       headers: {
-        'APP-KEY': WebApi.apiKey,
+        'APP-KEY': WebApi.appKey,
         'x-api-key': user['token'],
       },
     );
@@ -251,30 +256,14 @@ class OrderProvider with ChangeNotifier {
     } else {
       print(response.body);
     }
-
-    // try {
-    //   var response = await get(
-    //     '${WebApi.getFilterOrdersURL}/?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
-    //     headers: {
-    //       'APP-KEY': WebApi.apiKey,
-    //       'x-api-key': user['token'],
-    //     },
-    //   );
-    //   var responseJson = json.decode(response.body);
-    //   print(responseJson);
-    //   return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    // } catch (e) {
-    //   throw (e);
-    // }
   }
 
   Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
     try {
       var response = await get(
-        // '${WebApi.getOrderURL}/$userId',
         '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
         headers: {
-          'APP-KEY': WebApi.apiKey,
+          'APP-KEY': WebApi.appKey,
           'x-api-key': user['token'],
         },
       );
@@ -292,15 +281,15 @@ class OrderProvider with ChangeNotifier {
         context, user, orderId, orderStatus);
 
     if (response['status'] == true) {
-      // Fluttertoast.showToast(
-      //   msg: "Your Order has been Updated",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.black87,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
+      Fluttertoast.showToast(
+        msg: "Your Order has been Canceled",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       print(response['user']['data']);
     } else {
       Flushbar(
@@ -319,15 +308,15 @@ class OrderProvider with ChangeNotifier {
         context, user, orderId, editOrderData);
 
     if (response['status'] == true) {
-      // Fluttertoast.showToast(
-      //   msg: "Your Order has been Updated",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.black87,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
+      Fluttertoast.showToast(
+        msg: "Your Order has been Updated",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       Navigator.of(context).pop();
     } else {
       Flushbar(
@@ -346,7 +335,7 @@ class OrderProvider with ChangeNotifier {
       delete(
         '${WebApi.addOrderURL}/$orderId',
         headers: {
-          'APP-KEY': WebApi.apiKey,
+          'APP-KEY': WebApi.appKey,
           'x-api-key': user['token'],
         },
       );

@@ -1,22 +1,15 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
-import 'package:hani_almutairi_logistic/main.dart';
-import 'package:hani_almutairi_logistic/models/user.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/call_us_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/company_website_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/drop_list_of_cities_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/privacy_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/terms_conditions_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/track_my_shipment_screen.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/utils/theme.dart';
-
-import 'package:flutter/material.dart';
-
-// SCREENS
-import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatelessWidget {
   @override

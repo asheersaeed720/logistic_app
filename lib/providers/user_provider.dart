@@ -1,13 +1,13 @@
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/services/user_service.dart';
-import 'package:hani_almutairi_logistic/services/web_api.dart';
-import 'package:http/http.dart';
+import 'package:hani_almutairi_logistic/utils/web_api.dart';
 
 class UserProvider with ChangeNotifier {
   UserService _userService = UserService();
@@ -24,7 +24,7 @@ class UserProvider with ChangeNotifier {
       var response = await get(
         '${WebApi.getUserAddressesURL}/${user['user_id']}',
         headers: {
-          'APP_KEY': '${WebApi.apiKey}',
+          'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
       );
@@ -42,7 +42,7 @@ class UserProvider with ChangeNotifier {
       var response = await get(
         '${WebApi.getUserAddressesURL}/${user['user_id']}',
         headers: {
-          'APP_KEY': '${WebApi.apiKey}',
+          'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
       );
@@ -60,7 +60,7 @@ class UserProvider with ChangeNotifier {
       var response = await get(
         '${WebApi.getUserAddressesByIdURL}/$id',
         headers: {
-          'APP_KEY': '${WebApi.apiKey}',
+          'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
       );
@@ -80,17 +80,16 @@ class UserProvider with ChangeNotifier {
         await _userService.addUserSenderAddress(context, senderAddress, user);
 
     if (response['status'] == true) {
-      // Fluttertoast.showToast(
-      //   msg: "Your address has been Added",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.black87,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
+      Fluttertoast.showToast(
+        msg: "Your address has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       print(response['user']);
-      // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
     } else {
       Flushbar(
         title: "Failed",
@@ -108,17 +107,16 @@ class UserProvider with ChangeNotifier {
         context, receiverAddress, user);
 
     if (response['status'] == true) {
-      // Fluttertoast.showToast(
-      //   msg: "Receiver address has been Added",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.BOTTOM,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.black87,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0,
-      // );
+      Fluttertoast.showToast(
+        msg: "Receiver address has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       print(response['user']);
-      // Navigator.of(context).pushReplacementNamed(OrderSuccess.routeName);
     } else {
       Flushbar(
         title: "Failed",
@@ -136,7 +134,7 @@ class UserProvider with ChangeNotifier {
       delete(
         '${WebApi.delUserAddressesURL}/$userId',
         headers: {
-          'APP-KEY': WebApi.apiKey,
+          'APP-KEY': WebApi.appKey,
           'x-api-key': user['token'],
         },
       );

@@ -1,5 +1,8 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
 import 'package:hani_almutairi_logistic/models/address.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
@@ -7,13 +10,9 @@ import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class SenderAddresses extends StatefulWidget {
   static const String routeName = '/sender-addresses';
-
-  // final senderAddresses;
-  // SenderAddresses({this.senderAddresses});
 
   @override
   _SenderAddressesState createState() => _SenderAddressesState();
@@ -66,12 +65,34 @@ class _SenderAddressesState extends State<SenderAddresses> {
       decoration: buildTextFieldInputDecoration("Address", Icons.location_on),
     );
 
-    final senderMobileNo = TextFormField(
-      validator: (value) =>
-          value.isEmpty ? "Please enter your mobile no" : null,
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
       keyboardType: TextInputType.number,
-      onSaved: (value) => _address.senderMobileNo = value,
-      decoration: buildTextFieldInputDecoration("Mobile no", Icons.phone),
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+
+    final senderMobileNo = TextFormField(
+      maxLength: 9,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_address.senderMobileNo.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _address.senderMobileNo = '966$text';
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _address.senderMobileNo = '966$value',
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     return SafeArea(
@@ -96,8 +117,6 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                 child: ListTile(
                                   title: Text('${userAddresses[i].fullname}',
                                       style: TextStyle(fontSize: 16)),
-                                  // subtitle: Text('${userAddresses[i].city}'),
-                                  // trailing: Text('${userAddresses[i].mobile}'),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -135,9 +154,51 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                   ),
                                   trailing: GestureDetector(
                                     onTap: () {
-                                      //ADD FUNCTION
-                                      userPvd.delUserAddress(
-                                          userAddresses[i].id, authPvd.user);
+                                      showDialog(
+                                        context: context,
+                                        builder: (dialogContext) => AlertDialog(
+                                          title: Text('Address Delete'),
+                                          content: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.2,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                    'Are you sure, You want to delete address?'),
+                                                SizedBox(height: 14),
+                                                Text(
+                                                  'If you delete this address, the orders sent to this address using "${userAddresses[i].mobile}" won\'t apear in search orders',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .errorColor),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: [
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('No'),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () async {
+                                                userPvd.delUserAddress(
+                                                    userAddresses[i].id,
+                                                    authPvd.user);
+                                                Navigator.of(dialogContext)
+                                                    .pop();
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                          elevation: 20,
+                                        ),
+                                      );
                                     },
                                     child: Icon(
                                       Icons.delete,
@@ -195,7 +256,23 @@ class _SenderAddressesState extends State<SenderAddresses> {
                               SizedBox(height: 10),
                               senderAddress,
                               SizedBox(height: 10),
-                              senderMobileNo,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(bottom: 23.0),
+                                    width:
+                                        MediaQuery.of(context).size.width / 6,
+                                    child: countriesCodeField,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2.4,
+                                    child: senderMobileNo,
+                                  ),
+                                ],
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: RaisedButton(

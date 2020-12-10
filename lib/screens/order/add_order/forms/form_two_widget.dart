@@ -1,21 +1,20 @@
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:hani_almutairi_logistic/widgets/invoice.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 
 import 'package:flutter/material.dart';
+// import 'package:pdf/pdf.dart';
+import 'package:provider/provider.dart';
+// import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/address_tab.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class FormTwoWidget extends StatefulWidget {
   static const String routeName = '/add-order-form-two';
@@ -29,20 +28,36 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
   String _couponCode;
 
-  test() {
-    final doc = pw.Document();
+  // final pdf = pw.Document();
 
-    doc.addPage(
-      pw.Page(
-        build: (pw.Context context) => pw.Center(
-          child: pw.Text('Hello World!'),
-        ),
-      ),
-    );
+  // writeOnPdf(senderName) {
+  //   pdf.addPage(pw.MultiPage(
+  //     pageFormat: PdfPageFormat.a5,
+  //     margin: pw.EdgeInsets.all(32),
+  //     build: (pw.Context context) {
+  //       return <pw.Widget>[
+  //         pw.Header(
+  //           level: 0,
+  //           child: pw.Text("Hubex"),
+  //         ),
+  //         pw.Paragraph(text: "Sender Detail: \n $senderName"),
+  //         pw.Paragraph(text: "Receiver Detail \n "),
+  //       ];
+  //     },
+  //   ));
+  // }
 
-    final file = File('example.pdf');
-    file.writeAsBytesSync(doc.save());
-  }
+  // Future savePdf() async {
+  //   Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+  //   String documentPath = documentDirectory.path;
+
+  //   File file = File("$documentPath/example.pdf");
+
+  //   file.writeAsBytesSync(pdf.save());
+
+  //   print(documentDirectory.path);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +122,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                   receiverContact,
                 ),
                 const SizedBox(height: 20),
+
                 // DELIVERY COST SECTION
                 _buildDeliveryCostAndCoupon(context, orderPvd),
                 orderPvd.isLoading
@@ -117,10 +133,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                           RaisedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              print(senderName);
                             },
                             child: Text(
-                              // 'Back/Edit',
                               "${getTranslatedValue(context, 'back/edit')}",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -178,24 +192,23 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
   // SENDER & RECEIVER DETAIL SECTION
   Widget _buildSenderAndReceiverDetail(
-    context,
-    user,
-    userPvd,
-    // SENDER DETIALS
-    selectedSenderAddressId,
-    senderName,
-    senderCity,
-    senderAddress,
-    senderDistrict,
-    senderContact,
-    // RECEIVER DETIALS
-    selectedReceiverAddressId,
-    receiverName,
-    receiverCity,
-    receiverAddress,
-    receiverDistrict,
-    receiverContact,
-  ) {
+      context,
+      user,
+      userPvd,
+      // SENDER DETIALS
+      selectedSenderAddressId,
+      senderName,
+      senderCity,
+      senderAddress,
+      senderDistrict,
+      senderContact,
+      // RECEIVER DETIALS
+      selectedReceiverAddressId,
+      receiverName,
+      receiverCity,
+      receiverAddress,
+      receiverDistrict,
+      receiverContact) {
     return Row(
       children: [
         selectedSenderAddressId != null
@@ -215,16 +228,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             Text('${userAddresses[0].fullname}'),
                             Text('${userAddresses[0].city}'),
                             Text('${userAddresses[0].mobile}'),
-                            RaisedButton(
-                              onPressed: () {
-                                test();
-                              },
-                              child: Text(
-                                "${getTranslatedValue(context, 'invoice')}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Theme.of(context).primaryColor,
-                            )
+                            _buildInvoiceButton(context, senderName)
                           ],
                         ),
                       ),
@@ -251,23 +255,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                           children: [
                             senderName != null
                                 ? Text('$senderName')
-                                : Text('${userAddresses[0].fullname}'),
+                                : Text('${userAddresses.last.fullname}'),
                             senderCity != null
                                 ? Text('$senderCity')
-                                : Text('${userAddresses[0].city}'),
+                                : Text('${userAddresses.last.city}'),
                             senderContact != null
                                 ? Text('$senderContact')
-                                : Text('${userAddresses[0].mobile}'),
-                            RaisedButton(
-                              onPressed: () {
-                                test();
-                              },
-                              child: Text(
-                                "${getTranslatedValue(context, 'invoice')}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Theme.of(context).primaryColor,
-                            )
+                                : Text('${userAddresses.last.mobile}'),
+                            _buildInvoiceButton(context, senderName)
                           ],
                         ),
                       ),
@@ -296,16 +291,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             Text('${userAddresses[0].fullname}'),
                             Text('${userAddresses[0].city}'),
                             Text('${userAddresses[0].mobile}'),
-                            RaisedButton(
-                              onPressed: () {
-                                test();
-                              },
-                              child: Text(
-                                "${getTranslatedValue(context, 'invoice')}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: Theme.of(context).primaryColor,
-                            )
+                            _buildInvoiceButton(context, senderName)
                           ],
                         ),
                       ),
@@ -337,7 +323,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                     color: Theme.of(context).primaryColor,
                                     onPressed: () {
                                       Navigator.of(context)
-                                          .pushNamed(MyAddresses.routeName);
+                                          .pushNamed(AddressTab.routeName);
                                     },
                                     child: Text(
                                       'Add receiver address',
@@ -358,14 +344,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 children: [
                                   receiverName != null
                                       ? Text('$receiverName')
-                                      : Text(
-                                          '${userAddresses[0].fullname}' ?? ''),
+                                      : Text('${userAddresses.last.fullname}' ??
+                                          ''),
                                   receiverCity != null
                                       ? Text('$receiverCity')
-                                      : Text('${userAddresses[0].city}'),
+                                      : Text('${userAddresses.last.city}'),
                                   receiverContact != null
                                       ? Text('$receiverContact')
-                                      : Text('${userAddresses[0].mobile}'),
+                                      : Text('${userAddresses.last.mobile}'),
                                   RaisedButton(
                                     elevation: 0,
                                     color: Colors.white,
@@ -388,6 +374,37 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 },
               ),
       ],
+    );
+  }
+
+  Widget _buildInvoiceButton(context, senderName) {
+    return RaisedButton(
+      onPressed: () async {
+        // writeOnPdf(senderName);
+        // await savePdf();
+
+        // print(savePdf());
+
+        // Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+        // String documentPath = documentDirectory.path;
+
+        // String fullPath = "$documentPath/example.pdf";
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PdfPreviewScreen(
+        //       path: fullPath,
+        //     ),
+        //   ),
+        // );
+      },
+      child: Text(
+        "${getTranslatedValue(context, 'invoice')}",
+        style: TextStyle(color: Colors.white),
+      ),
+      color: Theme.of(context).primaryColor,
     );
   }
 

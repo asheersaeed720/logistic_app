@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hani_almutairi_logistic/models/user.dart';
-import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
+
 import 'package:provider/provider.dart';
+import 'package:pin_input_text_field/pin_input_text_field.dart';
+
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 
 class UserVerificationScreen extends StatefulWidget {
   static const String routeName = '/user-verification';

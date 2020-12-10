@@ -21,7 +21,7 @@
     "my_address": "My Address",
     "new_address": "New Address",
     "saved_address": "Saved Address",
-    "note_your_default": "Note Your Default",
+    "note_your_default": "Note: Your Default address which was submitted \n when you created account.",
     "pickup_prefer_time": "Pickup Prefer Time",
     "nearest": "Nearest",
     "today": "Today",

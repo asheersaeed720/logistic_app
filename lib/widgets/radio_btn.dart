@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+
 import 'package:provider/provider.dart';
+
+import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 
 class RadioBtn extends StatelessWidget {
   final radioBtnTitle1;

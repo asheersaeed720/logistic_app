@@ -1,12 +1,12 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+
+import 'package:clipboard/clipboard.dart';
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/edit_order_screen.dart';
-import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class UserOrderItem extends StatelessWidget {
   final orderId;
@@ -232,7 +232,6 @@ class UserOrderItem extends StatelessWidget {
                               elevation: 20,
                             ),
                           );
-                          // orderPvd.delUserOrder(tabPvd.onTabTapped(2), orderId, user);
                         },
                         icon: Icon(Icons.delete),
                         color: Theme.of(context).errorColor,

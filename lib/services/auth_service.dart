@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
-
 import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 
+import 'package:flutter/material.dart';
+
+import 'package:hani_almutairi_logistic/screens/login_screen.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
-import 'package:hani_almutairi_logistic/services/web_api.dart';
+import 'package:hani_almutairi_logistic/utils/web_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -19,7 +17,7 @@ class AuthService {
         '${WebApi.getCitiesURL}',
         queryParameters: {"filter": filter},
         options: Options(
-          headers: {"APP_KEY": '${WebApi.apiKey}'},
+          headers: {"APP_KEY": '${WebApi.appKey}'},
         ),
       );
 
@@ -41,7 +39,7 @@ class AuthService {
     var response = await post(
       WebApi.loginURL,
       body: loginData,
-      headers: {'APP_KEY': '${WebApi.apiKey}'},
+      headers: {'APP_KEY': '${WebApi.appKey}'},
     );
 
     if (response.statusCode == 200) {
@@ -75,7 +73,7 @@ class AuthService {
     var response = await post(
       WebApi.registerURL,
       body: signUpData,
-      headers: {'APP_KEY': '${WebApi.apiKey}'},
+      headers: {'APP_KEY': '${WebApi.appKey}'},
     );
 
     if (response.statusCode == 200) {
@@ -96,9 +94,9 @@ class AuthService {
     var result;
 
     var response = await post(
-      WebApi.getUserVerifyURL,
+      WebApi.userVerificationURL,
       body: {'otp': otp},
-      headers: {'APP_KEY': '${WebApi.apiKey}'},
+      headers: {'APP_KEY': '${WebApi.appKey}'},
     );
 
     if (response.statusCode == 200) {
@@ -145,7 +143,7 @@ class AuthService {
       WebApi.changePasswordURL +
           '/${user['user_id']}?password=$passwordVal&oldpassword=$oldPasswordVal',
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
         'x-api-key': '${user['token']}',
       },
     );
@@ -164,14 +162,14 @@ class AuthService {
     return result;
   }
 
-  Future<Map> getUserForgotPasswordKey(userCredential) async {
+  Future<Map> forgotUserPassword(userCredential) async {
     var result;
 
     var response = await post(
       WebApi.getforgotPasswordKeyURL,
       body: {'email': userCredential.email},
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
       },
     );
 
@@ -189,7 +187,7 @@ class AuthService {
     return result;
   }
 
-  Future<Map> userForgotPassword(password, key) async {
+  Future<Map> getForgotUserPasswordVerify(password, key) async {
     var result;
 
     var response = await post(
@@ -199,7 +197,7 @@ class AuthService {
         'newpassword': '$password',
       },
       headers: {
-        'APP_KEY': '${WebApi.apiKey}',
+        'APP_KEY': '${WebApi.appKey}',
       },
     );
 

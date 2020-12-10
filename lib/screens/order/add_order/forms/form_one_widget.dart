@@ -1,26 +1,24 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/add_order.dart';
-import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
-
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
-import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_two_widget.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/address_tab.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
 import 'package:hani_almutairi_logistic/widgets/radio_btn.dart';
-import 'package:provider/provider.dart';
-import './form_two_widget.dart';
 
 class FormOneWidget extends StatefulWidget {
   static const String routeName = '/add-order-form-one';
@@ -50,12 +48,12 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Delivery outside riyadh \n                 50',
-                  style: TextStyle(fontSize: 15),
+                  'Delivery outside riyadh \n              50 SAR',
+                  style: TextStyle(fontSize: 14),
                 ),
                 Text(
-                  'Delivery inside riyadh \n                  35',
-                  style: TextStyle(fontSize: 15),
+                  'Delivery inside riyadh \n               35 SAR',
+                  style: TextStyle(fontSize: 14),
                 ),
               ],
             ),
@@ -114,8 +112,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                                     .primaryColor,
                                                 onPressed: () {
                                                   Navigator.of(context)
-                                                      .pushNamed(MyAddresses
-                                                          .routeName);
+                                                      .pushNamed(
+                                                          AddressTab.routeName);
                                                 },
                                                 child: Text(
                                                   'Add Receiver Address',
@@ -141,7 +139,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                                 Flushbar(
                                                   title: "Field Missing",
                                                   message:
-                                                      'You missing sender or receiver address fields',
+                                                      'You missing cod or sender or receiver address fields',
                                                   duration:
                                                       Duration(seconds: 3),
                                                 ).show(context);
@@ -211,7 +209,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                     color: Theme.of(context).primaryColor,
                                     onPressed: () {
                                       Navigator.of(context)
-                                          .pushNamed(MyAddresses.routeName);
+                                          .pushNamed(AddressTab.routeName);
                                     },
                                     child: Text(
                                       'Add Sender Address',
@@ -584,10 +582,10 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 // CASH FROM RECEIVER SECTION
   Widget _buildCashFromReceiverSection(context) {
     final cashOfDeliveryAmount = TextFormField(
-      // validator: (value) => value.isEmpty ? "Please enter amount" : null,
+      validator: (value) => value.isEmpty ? "Please enter amount" : null,
       onSaved: (value) => _addOrder.orderCollectionCash = value,
       keyboardType: TextInputType.name,
-      // initialValue: '0',
+      initialValue: '0',
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'cod_amounts')}", Icons.money),
     );
@@ -624,7 +622,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
     final packagingCheckBox = CheckboxListTile(
       title: Text(
-          "${getTranslatedValue(context, 'packaging_their_items_with_us')}"),
+          "${getTranslatedValue(context, 'packaging_their_items_with_us')} (5 SAR)"),
       value: orderPvd.packageCheckedValue,
       onChanged: (value) {
         orderPvd.setpackageCheckedVal(value);
@@ -650,6 +648,10 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           child: referenceNo,
         ),
         packagingCheckBox,
+        // Text(
+        //   'Note: 5 SAR for packing',
+        //   style: TextStyle(color: Theme.of(context).errorColor),
+        // ),
         fragileCheckBox,
       ],
     );

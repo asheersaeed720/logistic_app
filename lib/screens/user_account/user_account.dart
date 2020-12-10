@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/cod_amount_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_account/addresses_tab/my_addresses.dart';
-import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/address_tab.dart';
 import 'package:hani_almutairi_logistic/utils/theme.dart';
-import 'package:provider/provider.dart';
 
 class UserAccount extends StatelessWidget {
   static const String routeName = '/user-account';
@@ -25,7 +25,7 @@ class UserAccount extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed(MyAddresses.routeName);
+              Navigator.of(context).pushNamed(AddressTab.routeName);
             },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
@@ -35,7 +35,7 @@ class UserAccount extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(MyAddresses.routeName);
+                      Navigator.of(context).pushNamed(AddressTab.routeName);
                     },
                     icon: Icon(Icons.location_on),
                     color: Colors.white,

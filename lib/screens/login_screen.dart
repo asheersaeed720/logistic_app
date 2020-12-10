@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
@@ -7,13 +10,9 @@ import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
-import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
-import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
@@ -69,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _userCredential.mobileNo = '966$value',
-      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -184,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(bottom: 22.0),
+                          padding: EdgeInsets.only(bottom: 23.0),
                           width: MediaQuery.of(context).size.width / 5.3,
                           child: countriesCodeField,
                         ),

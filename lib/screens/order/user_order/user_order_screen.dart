@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
@@ -9,7 +12,6 @@ import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/widgets/filter_btn.dart';
 import 'package:hani_almutairi_logistic/widgets/heading_title.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class UserOrderScreen extends StatefulWidget {
   static const String routeName = '/user-order';
@@ -114,9 +116,6 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                   children: [
                     HeadingTitle('Receiver'),
                     FilterBtn(
-                      // 'New orders (1)',
-                      // 'Not delivered (4)',
-                      // 'Finished orders \n           (0)',
                       "${getTranslatedValue(context, 'new_orders')}",
                       "${getTranslatedValue(context, 'not_delivered')}",
                       "${getTranslatedValue(context, 'finished_orders')}",
@@ -132,7 +131,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
                           future:
-                              orderPvd.getFilterUserOrder(user, 'PROCESSING'),
+                              orderPvd.getUserOrderAsReceiver(user, 'reciever'),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               List<Order> orders = snapshot.data;
@@ -166,7 +165,6 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                             } else if (snapshot.hasError) {
                               return Center(
                                 child: Text(
-                                  // 'No Order Found!',
                                   "${getTranslatedValue(context, 'no_order_found')}",
                                 ),
                               );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 
 class NotificationScreen extends StatelessWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:hani_almutairi_logistic/utils/theme.dart';
 
 class HeadingTitle extends StatelessWidget {

@@ -1,21 +1,17 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:provider/provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
 import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/language.dart';
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/models/user.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
-import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/providers/tab_provider.dart';
-import 'package:hani_almutairi_logistic/screens/login_screen.dart';
-import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
-import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:hani_almutairi_logistic/utils/long_btn.dart';
-import 'package:hani_almutairi_logistic/utils/theme.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   static const String routeName = '/signup';
@@ -136,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _user.mobileNo = '966$value',
-      decoration: buildTextFieldInputDecoration("e.g 531020000", Icons.phone),
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final passwordField = TextFormField(
@@ -290,7 +286,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(bottom: 22.0),
+                          padding: EdgeInsets.only(bottom: 23.0),
                           width: MediaQuery.of(context).size.width / 5.3,
                           child: countriesCodeField,
                         ),
