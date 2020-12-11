@@ -184,7 +184,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       showClearButton: true,
       showSearchBox: true,
       validator: (value) =>
-          _addOrder.orderReceiverCity == null ? 'Select city' : null,
+          _addOrder.orderSenderCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
         _addOrder.orderSenderCity = data;
