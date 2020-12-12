@@ -35,11 +35,17 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedTime = 'From 9 to 12';
+  // TODAY PICKUP TIME
+  String _selectedTime = 'From 9 to 12 Today';
   String get selectedTime => _selectedTime;
   set selectedTime(String val) {
     _selectedTime = val;
     notifyListeners();
+  }
+
+  setSelectedTime(String selectedValue) {
+    selectedTime = selectedValue;
+    print(selectedTime);
   }
 
   String _orderPayer = 'Sender';
@@ -79,11 +85,6 @@ class OrderProvider with ChangeNotifier {
   setSelectedReceiverAddress(String selectedValue) {
     selectedReceiverAddress = selectedValue;
     print(selectedReceiverAddress);
-  }
-
-  setSelectedTime(String selectedValue) {
-    selectedTime = selectedValue;
-    print(selectedTime);
   }
 
   setOrderPayer(String selectedValue) {

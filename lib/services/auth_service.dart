@@ -90,17 +90,24 @@ class AuthService {
     return result;
   }
 
-  Future<Map> getUserVerify(otp) async {
+  Future<Map> getUserVerify(otp, userMobile, userPassword) async {
     var result;
 
     var response = await post(
       WebApi.userVerificationURL,
-      body: {'otp': otp},
-      headers: {'APP_KEY': '${WebApi.appKey}'},
+      body: {
+        'phone': userMobile,
+        'password': userPassword,
+        'otp': otp,
+      },
+      headers: {
+        'APP_KEY': '${WebApi.appKey}',
+      },
     );
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
+      saveUser(responseJson);
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {
@@ -167,7 +174,7 @@ class AuthService {
 
     var response = await post(
       WebApi.getforgotPasswordKeyURL,
-      body: {'email': userCredential.email},
+      body: {'phone': userCredential.mobileNo},
       headers: {
         'APP_KEY': '${WebApi.appKey}',
       },

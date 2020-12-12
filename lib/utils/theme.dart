@@ -41,6 +41,6 @@ final customTheme = ThemeData(
       color: Colors.black87,
       fontWeight: FontWeight.bold,
     ),
-    bodyText2: const TextStyle(fontSize: 16.0),
+    bodyText2: const TextStyle(fontSize: 14.0),
   ),
 );

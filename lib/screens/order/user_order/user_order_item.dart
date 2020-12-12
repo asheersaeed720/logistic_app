@@ -109,27 +109,14 @@ class UserOrderItem extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(width: 10),
-                                      RaisedButton(
-                                        child: Text(
-                                          'Copy',
-                                          style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
+                                      MaterialButton(
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
                                         ),
                                         onPressed: () {
-                                          // ClipboardManager.copyToClipBoard(
-                                          //         '$orderRefNo')
-                                          //     .then((result) {
-                                          //   final snackBar = SnackBar(
-                                          //     content:
-                                          //         Text('Copied to Clipboard'),
-                                          //   );
-                                          //   Scaffold.of(context)
-                                          //       .showSnackBar(snackBar);
-                                          // });
                                           FlutterClipboard.copy('$orderRefNo')
                                               .then((value) {
                                             Scaffold.of(context)
@@ -138,11 +125,21 @@ class UserOrderItem extends StatelessWidget {
                                             ));
                                           });
                                         },
-                                        color: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
+                                        minWidth: 0,
+                                        height: 0,
+                                        padding: EdgeInsets.zero,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 10),
+                                          child: Text(
+                                            'Copy',
+                                            style: TextStyle(
                                               color: Theme.of(context)
-                                                  .primaryColor),
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],

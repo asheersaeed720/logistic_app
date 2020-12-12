@@ -91,6 +91,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final collectionCash = formOneDetails['collectionCash'];
     final refNo = formOneDetails['refNo'];
 
+    print(selectedTime);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(

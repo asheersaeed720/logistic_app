@@ -6,9 +6,10 @@ import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/add_order/add_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/user_account.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TabProvider with ChangeNotifier {
-  int _currentTabScreen = 3;
+  int _currentTabScreen = 0;
   int get currentTabScreen => _currentTabScreen;
   set currentTabScreen(int indexVal) {
     _currentTabScreen = indexVal;
@@ -60,9 +61,11 @@ class TabProvider with ChangeNotifier {
     switch (language.languageCode) {
       case 'en':
         _temp = Locale(language.languageCode, 'US');
+        // test = true;
         break;
       case 'ar':
         _temp = Locale(language.languageCode, 'SA');
+        // test = true;
         break;
 
       default:

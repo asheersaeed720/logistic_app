@@ -25,7 +25,7 @@ class EditOrderScreen extends StatelessWidget {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     final orderPvd = Provider.of<OrderProvider>(context);
-    final tabPvd = Provider.of<TabProvider>(context);
+    final authPvd = Provider.of<AuthProvider>(context);
 
     final senderName = editDetailsArg['senderName'];
     final orderId = editDetailsArg['orderId'];
@@ -40,7 +40,6 @@ class EditOrderScreen extends StatelessWidget {
     final receiverDistrict = editDetailsArg['recieverDistrict'];
     final receiverContact = editDetailsArg['recieverContact'];
 
-    final authPvd = Provider.of<AuthProvider>(context);
     final senderNameField = TextFormField(
       validator: (value) => value.isEmpty ? "Please type fullname" : null,
       onSaved: (value) => _editOrder.orderSenderName = value,
@@ -60,7 +59,7 @@ class EditOrderScreen extends StatelessWidget {
         _editOrder.orderSenderCity = data;
       },
       validator: (value) =>
-          _editOrder.orderReceiverCity == null ? 'Select city' : null,
+          _editOrder.orderSenderCity == null ? 'Select city' : null,
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/providers/app_language_provider.dart';
 
 import 'package:provider/provider.dart';
 
@@ -10,65 +11,18 @@ import 'package:hani_almutairi_logistic/widgets/app_drawer.dart';
 class TabsScreen extends StatefulWidget {
   static const String routeName = '/tabs';
 
-  // final activeTabIndex;
-
-  // TabsScreen({Key key, this.activeTabIndex}) : super(key: key);
-
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  // String _tabTittle;
-
-  // final List<Widget> childrenTab = [
-  //   UserAccount(),
-  //   NotificationScreen(),
-  //   UserOrderScreen(),
-  //   AddOrderScreen(),
-  // ];
-
-  // int _currentTabScreen = 3;
-  // onTabTapped(int index) {
-  //   setState(() {
-  //     _currentTabScreen = index;
-  //   });
-
-  //   switch (index) {
-  //     case 0:
-  //       {
-  //         _tabTittle = getTranslatedValue(context, 'my_account');
-  //       }
-  //       break;
-  //     case 1:
-  //       {
-  //         _tabTittle = getTranslatedValue(context, 'notifications');
-  //       }
-  //       break;
-  //     case 2:
-  //       {
-  //         _tabTittle = getTranslatedValue(context, 'my_orders');
-  //       }
-  //       break;
-  //     case 3:
-  //       {
-  //         _tabTittle = getTranslatedValue(context, 'add_order');
-  //       }
-  //       break;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final tabPvd = Provider.of<TabProvider>(context);
-    // final tabArg =
-    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-
-    // _tabTittle = getTranslatedValue(context, 'add_order');
+    // final appLangPvd = Provider.of<AppLanguage>(context);
 
     return Scaffold(
       appBar: AppBar(
-        // title: Text(_tabTittle ?? getTranslatedValue(context, 'add_order')),
         title: Text(tabPvd.tabTittle),
         actions: [
           Padding(
@@ -149,22 +103,6 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
-      // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   elevation: 4.0,
-      //   backgroundColor:
-      //       _currentIndex == 1 ? Theme.of(context).primaryColor : Colors.white,
-      //   child: Icon(
-      //     Icons.home,
-      //     color: _currentIndex == 1
-      //         ? Colors.white
-      //         : Theme.of(context).primaryColor,
-      //   ),
-      //   onPressed: () {
-      //     onTabTapped(1);
-      //   },
-      // ),
     );
   }
 }

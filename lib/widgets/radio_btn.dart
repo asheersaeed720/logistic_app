@@ -8,8 +8,14 @@ class RadioBtn extends StatelessWidget {
   final radioBtnTitle1;
   final radioBtnTitle2;
   final radioBtnTitle3;
+  final String day;
 
-  RadioBtn(this.radioBtnTitle1, this.radioBtnTitle2, this.radioBtnTitle3);
+  RadioBtn(
+    this.radioBtnTitle1,
+    this.radioBtnTitle2,
+    this.radioBtnTitle3,
+    this.day,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class RadioBtn extends StatelessWidget {
     return Column(
       children: [
         RadioListTile(
-          value: radioBtnTitle1,
+          value: radioBtnTitle1 + ' $day',
           groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle1'),
           activeColor: Theme.of(context).primaryColor,
@@ -27,7 +33,7 @@ class RadioBtn extends StatelessWidget {
           },
         ),
         RadioListTile(
-          value: radioBtnTitle2,
+          value: radioBtnTitle2 + ' $day',
           groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle2'),
           activeColor: Theme.of(context).primaryColor,
@@ -36,7 +42,7 @@ class RadioBtn extends StatelessWidget {
           },
         ),
         RadioListTile(
-          value: radioBtnTitle3,
+          value: radioBtnTitle3 + ' $day',
           groupValue: orderPvd.selectedTime,
           title: Text('$radioBtnTitle3'),
           activeColor: Theme.of(context).primaryColor,

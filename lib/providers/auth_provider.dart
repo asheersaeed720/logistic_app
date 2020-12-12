@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:flushbar/flushbar.dart';
@@ -49,6 +51,13 @@ class AuthProvider with ChangeNotifier {
     final response = await _authService.loginUser(userCredential);
 
     if (response['status'] != false) {
+      // Timer(
+      //     Duration(seconds: 5),
+      //     () => Flushbar(
+      //           title: "Failed Login",
+      //           message: 'Timeout',
+      //           duration: Duration(seconds: 3),
+      //         ).show(context));
       setUser();
       Phoenix.rebirth(context);
       Navigator.pushAndRemoveUntil(
@@ -83,7 +92,6 @@ class AuthProvider with ChangeNotifier {
           'userPassword': user.password,
         },
       );
-      print(response);
     } else {
       Flushbar(
         title: "Registration Failed",
@@ -94,14 +102,17 @@ class AuthProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  getVerify(context, otp) async {
+  getVerify(context, userMobile, userPassword, otp) async {
     isLoading = true;
-    final response = await _authService.getUserVerify(otp);
+    final response =
+        await _authService.getUserVerify(otp, userMobile, userPassword);
 
     if (response['status'] != false) {
+      setUser();
+      Phoenix.rebirth(context);
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => TabsScreen()),
         (Route<dynamic> route) => false,
       );
       Fluttertoast.showToast(
@@ -160,11 +171,13 @@ class AuthProvider with ChangeNotifier {
     final response = await _authService.forgotUserPassword(userCredential);
 
     if (response['status'] != false) {
-      Navigator.of(context)
-          .pushNamed(ResetPasswordScreen.routeName, arguments: userCredential);
+      Navigator.of(context).pushNamed(
+        ResetPasswordScreen.routeName,
+        arguments: userCredential,
+      );
     } else {
       Flushbar(
-        title: "Failed Login",
+        title: "Forgot password Failed",
         message: response['message'].toString(),
         duration: Duration(seconds: 3),
       ).show(context);

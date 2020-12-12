@@ -106,7 +106,8 @@ class _UserVerificationScreenState extends State<UserVerificationScreen> {
                 const SizedBox(height: 40),
                 authPvd.isLoading
                     ? LoadingIndicator()
-                    : _buildConfirmBtn(context, authPvd),
+                    : _buildConfirmBtn(
+                        context, authPvd, userMobile, userPassword),
               ],
             ),
           ),
@@ -115,14 +116,15 @@ class _UserVerificationScreenState extends State<UserVerificationScreen> {
     );
   }
 
-  Widget _buildConfirmBtn(context, authPvd) {
+  Widget _buildConfirmBtn(context, authPvd, userMobile, userPassword) {
     return Container(
       // margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       constraints: const BoxConstraints(maxWidth: 500),
       child: RaisedButton(
         onPressed: () {
           print('${_pinEditingController.text}');
-          authPvd.getVerify(context, _pinEditingController.text);
+          authPvd.getVerify(
+              context, userMobile, userPassword, _pinEditingController.text);
         },
         color: Theme.of(context).primaryColor,
         shape: const RoundedRectangleBorder(

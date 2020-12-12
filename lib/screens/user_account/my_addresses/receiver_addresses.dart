@@ -32,7 +32,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
       validator: (value) => value.isEmpty ? "Please enter your fullname" : null,
       keyboardType: TextInputType.name,
       onSaved: (value) => _address.receiverName = value,
-      decoration: buildTextFieldInputDecoration("fullname", Icons.person),
+      decoration: buildTextFieldInputDecoration("Fullname", Icons.person),
     );
 
     final receiverCitiesDropdown = DropdownSearch<SearchCityModel>(
@@ -176,8 +176,10 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                                 Text(
                                                   'If you delete this address, the orders recieved to this address using "${userAddresses[i].mobile}" won\'t apear in search orders',
                                                   style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .errorColor),
+                                                    fontSize: 13,
+                                                    color: Theme.of(context)
+                                                        .errorColor,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -282,8 +284,8 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: RaisedButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
                                       if (_formKey.currentState.validate()) {
+                                        Navigator.of(context).pop();
                                         _formKey.currentState.save();
                                         userPvd.addReceiverAddress(
                                             context, _address, authPvd.user);

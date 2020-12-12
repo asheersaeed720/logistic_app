@@ -32,7 +32,7 @@ class _SenderAddressesState extends State<SenderAddresses> {
       validator: (value) => value.isEmpty ? "Please enter your fullname" : null,
       keyboardType: TextInputType.name,
       onSaved: (value) => _address.senderName = value,
-      decoration: buildTextFieldInputDecoration("fullname", Icons.person),
+      decoration: buildTextFieldInputDecoration("Fullname", Icons.person),
     );
 
     final senderCitiesDropdown = DropdownSearch<SearchCityModel>(
@@ -174,8 +174,10 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                                 Text(
                                                   'If you delete this address, the orders sent to this address using "${userAddresses[i].mobile}" won\'t apear in search orders',
                                                   style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .errorColor),
+                                                    fontSize: 13,
+                                                    color: Theme.of(context)
+                                                        .errorColor,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -280,8 +282,9 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: RaisedButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
                                       if (_formKey.currentState.validate()) {
+                                        Navigator.of(context).pop();
+
                                         _formKey.currentState.save();
                                         userPvd.addSenderAddress(
                                             context, _address, authPvd.user);

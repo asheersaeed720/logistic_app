@@ -40,29 +40,32 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final userPvd = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Delivery outside riyadh \n              50 SAR',
-                  style: TextStyle(fontSize: 14),
-                ),
-                Text(
-                  'Delivery inside riyadh \n               35 SAR',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
-            ),
-            SizedBox(height: 3),
-            Text(
-              'Note: Warning that prices not including VAT',
-              style: TextStyle(color: Colors.red, fontSize: 15),
-            ),
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(65),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Delivery outside riyadh \n              50 SAR',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  Text(
+                    'Delivery inside riyadh \n               35 SAR',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Note: Warning that prices not including VAT',
+                style: TextStyle(color: Colors.red, fontSize: 15),
+              ),
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -210,12 +213,34 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           Icons.location_on),
     );
 
-    final mobileNoField = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
-      onSaved: (value) => _addOrder.orderSenderContact = value,
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+
+    final mobileNoField = TextFormField(
+      maxLength: 9,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_addOrder.orderSenderContact.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _addOrder.orderSenderContact = '966$text';
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _addOrder.orderSenderContact = '966$value',
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     return Column(
@@ -262,24 +287,53 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 orderPvd.clearSenderSelectedRadioBtn,
               ),
         if (filterPvd.addressFilterBtn1 == true)
-          Text(
-            "${getTranslatedValue(context, 'note_your_default')}",
-            style: TextStyle(color: Theme.of(context).errorColor, fontSize: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "${getTranslatedValue(context, 'note_your_default')}",
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
           )
         else if (filterPvd.addressFilterBtn2 == true)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Column(
               children: [
-                fullNameField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: fullNameField,
+                ),
                 const SizedBox(height: 14),
-                citiesDropdown,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: citiesDropdown,
+                ),
                 const SizedBox(height: 14),
-                districtField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: districtField,
+                ),
                 const SizedBox(height: 14),
-                addressField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: addressField,
+                ),
                 const SizedBox(height: 14),
-                mobileNoField,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(bottom: 23.0),
+                      width: MediaQuery.of(context).size.width / 4.6,
+                      child: countriesCodeField,
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.7,
+                      child: mobileNoField,
+                    ),
+                  ],
+                ),
               ],
             ),
           )
@@ -383,22 +437,26 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateTimeFilterBtn3,
         ),
         if (filterPvd.timeFilterBtn1 == true)
-          Text(
-            // 'Note: Nearest time',
-            "${getTranslatedValue(context, 'note_nearest_time')}",
-            style: TextStyle(color: Theme.of(context).errorColor),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "${getTranslatedValue(context, 'note_nearest_time')}",
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
           )
         else if (filterPvd.timeFilterBtn2 == true)
           RadioBtn(
             "${getTranslatedValue(context, 'from_9_to_12')}",
             "${getTranslatedValue(context, 'from_12_to_3')}",
             "${getTranslatedValue(context, 'from_3_to_6')}",
+            'Today',
           )
         else if (filterPvd.timeFilterBtn3 == true)
           RadioBtn(
             "${getTranslatedValue(context, 'from_9_to_12')}",
             "${getTranslatedValue(context, 'from_12_to_3')}",
             "${getTranslatedValue(context, 'from_3_to_6')}",
+            'Tomorrow',
           ),
         const SizedBox(height: 18),
       ],
@@ -450,11 +508,33 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
 
     final mobileNoField = TextFormField(
-      validator: (value) => value.isEmpty ? "Please enter mobile no" : null,
-      onSaved: (value) => _addOrder.orderReceiverContact = value,
+      maxLength: 9,
+      autofocus: false,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_addOrder.orderReceiverContact.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
+      onChanged: (text) {
+        _addOrder.orderReceiverContact = '966$text';
+      },
       keyboardType: TextInputType.number,
-      decoration: buildTextFieldInputDecoration(
-          "${getTranslatedValue(context, 'mobile')}", Icons.phone),
+      onSaved: (value) => _addOrder.orderReceiverContact = '966$value',
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
+    );
+
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
     );
 
     return Column(
@@ -501,21 +581,53 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 orderPvd.clearReceiverSelectedRadioBtn,
               ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
-          Text('')
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "${getTranslatedValue(context, 'note_receiver_default')}",
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+          )
         else if (filterPvd.receiverAddressFilterBtn2 == true)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             child: Column(
               children: [
-                fullNameField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: fullNameField,
+                ),
                 const SizedBox(height: 14),
-                citiesDropdown,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: citiesDropdown,
+                ),
                 const SizedBox(height: 14),
-                districtField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: districtField,
+                ),
                 const SizedBox(height: 14),
-                addressField,
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: addressField,
+                ),
                 const SizedBox(height: 14),
-                mobileNoField,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(bottom: 23.0),
+                      width: MediaQuery.of(context).size.width / 4.6,
+                      child: countriesCodeField,
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.7,
+                      child: mobileNoField,
+                    ),
+                  ],
+                ),
               ],
             ),
           )
@@ -583,10 +695,12 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         HeadingTitle(
             // 'Collecting Cash from Receiver',
             "${getTranslatedValue(context, 'collecting_cash_from_receiver')}"),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        const SizedBox(height: 18),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.2,
           child: cashOfDeliveryAmount,
         ),
+        const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
@@ -632,15 +746,13 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       children: [
         HeadingTitle(
             "${getTranslatedValue(context, 'extra_info_not_mandatory')}"),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
+        const SizedBox(height: 18),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.2,
           child: referenceNo,
         ),
+        const SizedBox(height: 10),
         packagingCheckBox,
-        // Text(
-        //   'Note: 5 SAR for packing',
-        //   style: TextStyle(color: Theme.of(context).errorColor),
-        // ),
         fragileCheckBox,
       ],
     );
