@@ -35,16 +35,11 @@ class CompanyWebsiteScreen extends StatelessWidget {
               onPressed: _launchURL,
               child: Container(
                 width: MediaQuery.of(context).size.width / 4.5,
-                child: Row(
-                  children: [
-                    Text(
-                      'Visit Here',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Icon(Icons.keyboard_arrow_right, color: Colors.white),
-                  ],
+                child: Text(
+                  'Visit Here',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

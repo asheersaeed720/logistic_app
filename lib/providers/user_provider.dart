@@ -19,61 +19,6 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<UserAddress>> getSenderAddresses(user) async {
-    try {
-      var response = await get(
-        '${WebApi.getUserAddressesURL}/${user['user_id']}',
-        headers: {
-          'APP_KEY': '${WebApi.appKey}',
-          'x-api-key': '${user['token']}',
-        },
-      );
-      var responseJson = json.decode(response.body);
-      return (responseJson['sender'] as List)
-          .map((i) => UserAddress.fromJson(i))
-          .toList();
-    } catch (e) {
-      throw (e);
-    }
-  }
-
-  Future<List<UserAddress>> getReceiverAddresses(user) async {
-    try {
-      var response = await get(
-        '${WebApi.getUserAddressesURL}/${user['user_id']}',
-        headers: {
-          'APP_KEY': '${WebApi.appKey}',
-          'x-api-key': '${user['token']}',
-        },
-      );
-      var responseJson = json.decode(response.body);
-      return (responseJson['reciever'] as List)
-          .map((i) => UserAddress.fromJson(i))
-          .toList();
-    } catch (e) {
-      throw (e);
-    }
-  }
-
-  Future<List<UserAddress>> getUserAddressById(user, id) async {
-    try {
-      var response = await get(
-        '${WebApi.getUserAddressesByIdURL}/$id',
-        headers: {
-          'APP_KEY': '${WebApi.appKey}',
-          'x-api-key': '${user['token']}',
-        },
-      );
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-      return (responseJson as List)
-          .map((i) => UserAddress.fromJson(i))
-          .toList();
-    } catch (e) {
-      throw (e);
-    }
-  }
-
   addSenderAddress(context, senderAddress, user) async {
     isLoading = true;
     final response =
@@ -126,6 +71,18 @@ class UserProvider with ChangeNotifier {
     }
 
     isLoading = false;
+  }
+
+  Future<List<UserAddress>> getSenderAddresses(user) async {
+    return _userService.getSenderAddresses(user);
+  }
+
+  Future<List<UserAddress>> getReceiverAddresses(user) async {
+    return _userService.getReceiverAddresses(user);
+  }
+
+  Future<List<UserAddress>> getUserAddressById(user, addressId) async {
+    return _userService.getUserAddressById(user, addressId);
   }
 
   delUserAddress(String userId, user) async {

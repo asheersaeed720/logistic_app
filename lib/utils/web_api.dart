@@ -17,7 +17,7 @@ class WebApi {
 
   static const String getOrderURL = baseURL + '/Orders/orders';
 
-  static const String getOrderbyReceiverURL =
+  static const String getOrderbySenderOrReceiverURL =
       baseURL + '/Orders/search_by_address';
 
   static const String getFilterOrdersURL = baseURL + '/Orders/search';

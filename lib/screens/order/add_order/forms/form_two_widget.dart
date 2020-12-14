@@ -127,6 +127,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
                 // DELIVERY COST SECTION
                 _buildDeliveryCostAndCoupon(context, orderPvd),
+
+                // Text(collectionCash),
+
                 orderPvd.isLoading
                     ? LoadingIndicator()
                     : Row(
@@ -212,6 +215,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
       receiverDistrict,
       receiverContact) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         selectedSenderAddressId != null
             ? FutureBuilder<List<UserAddress>>(
@@ -222,13 +227,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                   if (snapshot.hasData) {
                     return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.3,
+                        width: MediaQuery.of(context).size.width / 2.2,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 6),
                         child: Column(
                           children: [
                             Text('${userAddresses[0].fullname}'),
-                            Text('${userAddresses[0].city}'),
+                            Text('${userAddresses[0].cityName}'),
                             Text('${userAddresses[0].mobile}'),
                             _buildInvoiceButton(context, senderName)
                           ],
@@ -237,7 +242,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                     );
                   } else if (snapshot.hasError) {
                     return Center(
-                      child: Text('No Sender Addresses Found!'),
+                      child: Text('${snapshot.error}'),
                     );
                   }
                   return LoadingIndicator();
@@ -250,7 +255,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                     List<UserAddress> userAddresses = snapshot.data;
                     return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.3,
+                        width: MediaQuery.of(context).size.width / 2.4,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 6),
                         child: Column(
@@ -260,7 +265,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 : Text('${userAddresses.last.fullname}'),
                             senderCity != null
                                 ? Text('$senderCity')
-                                : Text('${userAddresses.last.city}'),
+                                : Text('${userAddresses.last.cityName}'),
                             senderContact != null
                                 ? Text('$senderContact')
                                 : Text('${userAddresses.last.mobile}'),
@@ -270,8 +275,9 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('No Sender Addresses Found!'));
-                    // return snapshot.error;
+                    return Center(
+                      child: Text('${snapshot.error}'),
+                    );
                   }
                   return LoadingIndicator();
                 },
@@ -285,13 +291,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                   if (snapshot.hasData) {
                     return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.3,
+                        width: MediaQuery.of(context).size.width / 2.4,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 6),
                         child: Column(
                           children: [
                             Text('${userAddresses[0].fullname}'),
-                            Text('${userAddresses[0].city}'),
+                            Text('${userAddresses[0].cityName}'),
                             Text('${userAddresses[0].mobile}'),
                             _buildInvoiceButton(context, senderName)
                           ],
@@ -300,7 +306,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                     );
                   } else if (snapshot.hasError) {
                     return Center(
-                      child: Text('No Sender Addresses Found!'),
+                      child: Text('${snapshot.error}'),
                     );
                   }
                   return LoadingIndicator();
@@ -311,66 +317,40 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<UserAddress> userAddresses = snapshot.data;
-                    return userAddresses.isEmpty
-                        ? Card(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.2,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 6),
-                              child: Column(
-                                children: [
-                                  Text('You did not add receiver address'),
-                                  RaisedButton(
-                                    elevation: 0,
-                                    color: Theme.of(context).primaryColor,
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(AddressTab.routeName);
-                                    },
-                                    child: Text(
-                                      'Add receiver address',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    // color: Theme.of(context).primaryColor,
-                                  )
-                                ],
+                    return Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.4,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 6),
+                        child: Column(
+                          children: [
+                            receiverName != null
+                                ? Text('$receiverName')
+                                : Text('${userAddresses.last.fullname}'),
+                            receiverCity != null
+                                ? Text('$receiverCity')
+                                : Text('${userAddresses.last.cityName}'),
+                            receiverContact != null
+                                ? Text('$receiverContact')
+                                : Text('${userAddresses.last.mobile}'),
+                            RaisedButton(
+                              elevation: 0,
+                              color: Colors.white,
+                              onPressed: () {},
+                              child: Text(
+                                '',
+                                style: TextStyle(color: Colors.white),
                               ),
-                            ),
-                          )
-                        : Card(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.2,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 6),
-                              child: Column(
-                                children: [
-                                  receiverName != null
-                                      ? Text('$receiverName')
-                                      : Text('${userAddresses.last.fullname}' ??
-                                          ''),
-                                  receiverCity != null
-                                      ? Text('$receiverCity')
-                                      : Text('${userAddresses.last.city}'),
-                                  receiverContact != null
-                                      ? Text('$receiverContact')
-                                      : Text('${userAddresses.last.mobile}'),
-                                  RaisedButton(
-                                    elevation: 0,
-                                    color: Colors.white,
-                                    onPressed: () {},
-                                    child: Text(
-                                      '',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    // color: Theme.of(context).primaryColor,
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
+                              // color: Theme.of(context).primaryColor,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('No Receiver Addresses Found!'));
-                    // return snapshot.error;
+                    return Center(
+                      child: Text('${snapshot.error}'),
+                    );
                   }
                   return LoadingIndicator();
                 },

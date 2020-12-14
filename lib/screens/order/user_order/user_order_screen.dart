@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/search_order_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class UserOrderScreen extends StatefulWidget {
 class _UserOrderScreenState extends State<UserOrderScreen> {
   final _formKey = new GlobalKey<FormState>();
 
-  String _mobileNo, _trackingNo;
+  String _mobileNoValue, _trackingNoValue;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,11 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     final orderPvd = Provider.of<OrderProvider>(context);
     final user = Provider.of<AuthProvider>(context).user;
 
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
@@ -59,7 +64,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: FutureBuilder<List<Order>>(
-                    future: orderPvd.getUserOrder(user),
+                    future: orderPvd.getOrders(user),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<Order> orders = snapshot.data;
@@ -93,7 +98,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                       } else if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            "${getTranslatedValue(context, 'no_order_found')}",
+                            "${snapshot.error}",
                           ),
                         );
                       }
@@ -115,23 +120,20 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                 Column(
                   children: [
                     HeadingTitle('Receiver'),
-                    FilterBtn(
-                      "${getTranslatedValue(context, 'new_orders')}",
+                    OrderStatusFilterBtn(
                       "${getTranslatedValue(context, 'not_delivered')}",
                       "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
-                      filterPvd.orderStatusFilterBtn3,
                       filterPvd.activateOrderStatusFilterBtn1,
                       filterPvd.activateOrderStatusFilterBtn2,
-                      filterPvd.activateOrderStatusFilterBtn3,
                     ),
                     if (filterPvd.orderStatusFilterBtn1 == true)
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
-                          future:
-                              orderPvd.getUserOrderAsReceiver(user, 'reciever'),
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'reciever', 'INCOMPLETE'),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               List<Order> orders = snapshot.data;
@@ -164,9 +166,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                               );
                             } else if (snapshot.hasError) {
                               return Center(
-                                child: Text(
-                                  "${getTranslatedValue(context, 'no_order_found')}",
-                                ),
+                                child: Text('${snapshot.error}'),
                               );
                             }
                             return LoadingIndicator();
@@ -177,7 +177,8 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
-                          future: orderPvd.getFilterUserOrder(user, 'PENDING'),
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'reciever', 'COMPLETE'),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               List<Order> orders = snapshot.data;
@@ -210,57 +211,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                               );
                             } else if (snapshot.hasError) {
                               return Center(
-                                child: Text(
-                                  // 'No Order Found!',
-                                  "${getTranslatedValue(context, 'no_order_found')}",
-                                ),
-                              );
-                            }
-                            return LoadingIndicator();
-                          },
-                        ),
-                      )
-                    else if (filterPvd.orderStatusFilterBtn3 == true)
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: FutureBuilder<List<Order>>(
-                          future: orderPvd.getFilterUserOrder(user, 'COMPLETE'),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              List<Order> orders = snapshot.data;
-                              return ListView.builder(
-                                itemCount: orders.length,
-                                itemBuilder: (context, i) => UserOrderItem(
-                                  orders[i].orderId,
-                                  // SENDER DETAILS
-                                  orders[i].orderSenderName,
-                                  orders[i].orderSenderCity,
-                                  orders[i].orderSenderAddress,
-                                  orders[i].orderSenderDistrict,
-                                  orders[i].orderSenderContact,
-                                  // RECEIVER DETAILS
-                                  orders[i].orderRecieverName,
-                                  orders[i].orderRecieverCity,
-                                  orders[i].orderRecieverAddress,
-                                  orders[i].orderRecieverDistrict,
-                                  orders[i].orderRecieverContact,
-                                  // EXTRA DETAILS
-                                  orders[i].orderDate,
-                                  orders[i].orderPickupTime,
-                                  orders[i].orderPackaging,
-                                  orders[i].orderFragile,
-                                  orders[i].orderPayer,
-                                  orders[i].orderCollectionCash,
-                                  orders[i].orderRefNo,
-                                  orders[i].orderStatus,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                child: Text(
-                                  // 'No Order Found!',
-                                  "${getTranslatedValue(context, 'no_order_found')}",
-                                ),
+                                child: Text('${snapshot.error}'),
                               );
                             }
                             return LoadingIndicator();
@@ -273,20 +224,104 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                 Column(
                   children: [
                     HeadingTitle('Sender'),
-                    FilterBtn(
-                      // 'New orders (1)',
-                      // 'Not delivered (4)',
-                      // 'Finished orders \n           (0)',
-                      "${getTranslatedValue(context, 'new_orders')}",
+                    OrderStatusFilterBtn(
                       "${getTranslatedValue(context, 'not_delivered')}",
                       "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
-                      filterPvd.orderStatusFilterBtn3,
                       filterPvd.activateOrderStatusFilterBtn1,
                       filterPvd.activateOrderStatusFilterBtn2,
-                      filterPvd.activateOrderStatusFilterBtn3,
                     ),
+                    if (filterPvd.orderStatusFilterBtn1 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'sender', 'INCOMPLETE'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  // SENDER DETAILS
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
+                                  orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('${snapshot.error}'),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
+                      )
+                    else if (filterPvd.orderStatusFilterBtn2 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'sender', 'COMPLETE'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  // SENDER DETAILS
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
+                                  orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('${snapshot.error}'),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
+                      )
                   ],
                 ),
             ],
@@ -297,44 +332,136 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
   }
 
   Widget _buildSearchByMobile(BuildContext context, orderPvd, user) {
+    final countriesCodeField = TextFormField(
+      initialValue: '966',
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: '966',
+        hintStyle: TextStyle(color: Colors.grey),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
     final mobileField = TextFormField(
-      // validator: (value) => value.isEmpty ? "Please enter Mobile no" : null,
-      onSaved: (value) => _mobileNo = '966$value',
-      keyboardType: TextInputType.phone,
-      decoration: buildTextFieldInputDecoration('Mobile', Icons.phone),
+      maxLength: 9,
+      autofocus: false,
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter a phone number';
+      //   } else if (_mobileNo.length < 9) {
+      //     return 'Invalid Number';
+      //   }
+      //   return null;
+      // },
+      onChanged: (text) {
+        _mobileNoValue = '966$text';
+      },
+      keyboardType: TextInputType.number,
+      onSaved: (value) => _mobileNoValue = '966$value',
+      decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
     final trackingNo = TextFormField(
         // validator: (value) => value.isEmpty ? "Please enter tracking no" : null,
-        onSaved: (value) => _trackingNo = value,
+        onSaved: (value) => _trackingNoValue = value,
         keyboardType: TextInputType.number,
         decoration:
             buildTextFieldInputDecoration('Tracking no', Icons.track_changes));
+
+    // var doSearch = () {
+    //   if (_formKey.currentState.validate()) {
+    //     _formKey.currentState.save();
+    //     // orderPvd.getSearchOrderByMobile(user, _mobileNoValue, _trackingNoValue);
+    //     orderPvd.getSearchOrderByMobile(user, '966576398998');
+    //   }
+    // };
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
         key: _formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            mobileField,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 23.0),
+                  width: MediaQuery.of(context).size.width / 5.3,
+                  child: countriesCodeField,
+                ),
+                SizedBox(width: 10),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.8,
+                  child: mobileField,
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
-            trackingNo,
-            const SizedBox(height: 10),
+            Container(
+              width: MediaQuery.of(context).size.width / 1.3,
+              child: trackingNo,
+            ),
+            const SizedBox(height: 13),
             RaisedButton(
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  orderPvd.getUserOrderByMobile(user, _mobileNo, _trackingNo);
-                }
+                orderPvd.getSearchOrderByMobile(
+                    context, user, _mobileNoValue, _trackingNoValue);
               },
               child: Text(
                 'Search',
                 style: TextStyle(color: Colors.white),
               ),
-            )
+            ),
+            const SizedBox(height: 10),
+            // orderPvd.isSearchOrderVisible == false
+            //     ? Text('')
+            //     : Container(
+            //         height: MediaQuery.of(context).size.height * 0.5,
+            //         child: FutureBuilder<List<Order>>(
+            //           future: orderPvd.getSearchOrderByMobile(
+            //               context, user, _mobileNoValue, _trackingNoValue),
+            //           builder: (context, snapshot) {
+            //             if (snapshot.hasData) {
+            //               List<Order> orders = snapshot.data;
+            //               return ListView.builder(
+            //                 itemCount: orders.length,
+            //                 itemBuilder: (context, i) => UserOrderItem(
+            //                   orders[i].orderId,
+            //                   // SENDER DETAILS
+            //                   orders[i].orderSenderName,
+            //                   orders[i].orderSenderCity,
+            //                   orders[i].orderSenderAddress,
+            //                   orders[i].orderSenderDistrict,
+            //                   orders[i].orderSenderContact,
+            //                   // RECEIVER DETAILS
+            //                   orders[i].orderRecieverName,
+            //                   orders[i].orderRecieverCity,
+            //                   orders[i].orderRecieverAddress,
+            //                   orders[i].orderRecieverDistrict,
+            //                   orders[i].orderRecieverContact,
+            //                   // EXTRA DETAILS
+            //                   orders[i].orderDate,
+            //                   orders[i].orderPickupTime,
+            //                   orders[i].orderPackaging,
+            //                   orders[i].orderFragile,
+            //                   orders[i].orderPayer,
+            //                   orders[i].orderCollectionCash,
+            //                   orders[i].orderRefNo,
+            //                   orders[i].orderStatus,
+            //                 ),
+            //               );
+            //             } else if (snapshot.hasError) {
+            //               return Center(
+            //                 child: Text('${snapshot.error}'),
+            //               );
+            //             }
+            //             return LoadingIndicator();
+            //           },
+            //         ),
+            //       ),
           ],
         ),
       ),
@@ -359,7 +486,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 68,
+          width: 72,
           child: RaisedButton(
             elevation: 0,
             onPressed: () {
@@ -381,7 +508,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           ),
         ),
         Container(
-          width: 90,
+          width: 80,
           child: RaisedButton(
             padding: const EdgeInsets.all(0),
             elevation: 0,
@@ -404,7 +531,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           ),
         ),
         Container(
-          width: 60,
+          width: 66,
           child: RaisedButton(
             padding: const EdgeInsets.all(0),
             elevation: 0,
@@ -427,7 +554,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           ),
         ),
         Container(
-          width: 60,
+          width: 62,
           child: RaisedButton(
             padding: const EdgeInsets.all(0),
             elevation: 0,

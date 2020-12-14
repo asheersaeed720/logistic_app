@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/models/order.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/search_order_screen.dart';
 import 'package:http/http.dart';
 
 import 'package:hani_almutairi_logistic/utils/web_api.dart';
@@ -82,6 +86,132 @@ class OrderService {
     }
 
     return result;
+  }
+
+  Future<List<Order>> getUserOrder(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getOrderURL}',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<Order>> getUserOrderAsSenderOrReceiver(
+      user, receiverORSender, orderStatus) async {
+    try {
+      var response = await get(
+        '${WebApi.getOrderbySenderOrReceiverURL}?q=$receiverORSender&status=$orderStatus',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
+    try {
+      var response = await get(
+        '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<Order>> getSearchUserOrderByMobile(
+      context, user, mobileNo, trackingNo) async {
+    try {
+      var response = await get(
+        '${WebApi.getFilterOrdersURL}?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        Navigator.of(context).pushNamed(
+          SearchOrderScreen.routeName,
+          arguments: {
+            'mobileNo': mobileNo,
+            'trackingNo': trackingNo,
+          },
+        );
+        // return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<Order>> getSearch(user, mobileNo, trackingNo) async {
+    try {
+      var response = await get(
+        '${WebApi.getFilterOrdersURL}?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        return (responseJson as List).map((i) => Order.fromJson(i)).toList();
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
   }
 
   Future<Map> cancelUserOrder(context, user, orderId, orderStatus) async {

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:http/http.dart';
 
 import 'package:hani_almutairi_logistic/utils/web_api.dart';
@@ -78,5 +80,75 @@ class UserService {
     }
 
     return result;
+  }
+
+  Future<List<UserAddress>> getSenderAddresses(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return (responseJson['sender'] as List)
+            .map((i) => UserAddress.fromJson(i))
+            .toList();
+      } else {
+        throw ('Failed to load Address');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<UserAddress>> getReceiverAddresses(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return (responseJson['reciever'] as List)
+            .map((i) => UserAddress.fromJson(i))
+            .toList();
+      } else {
+        throw ('Failed to load Address');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<UserAddress>> getUserAddressById(user, addressId) async {
+    try {
+      var response = await get(
+        '${WebApi.getUserAddressesByIdURL}/$addressId',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        return (responseJson as List)
+            .map((i) => UserAddress.fromJson(i))
+            .toList();
+      } else {
+        throw ('Failed to load Address');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
   }
 }

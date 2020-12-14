@@ -34,13 +34,13 @@ final customTheme = ThemeData(
   errorColor: Colors.redAccent,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'ProximaNova',
-  textTheme: const TextTheme(
+  textTheme: TextTheme(
     headline1: TextStyle(
-      fontSize: 24.0,
+      fontSize: 22.0,
       fontFamily: 'ProximaNova',
       color: Colors.black87,
       fontWeight: FontWeight.bold,
     ),
-    bodyText2: const TextStyle(fontSize: 14.0),
+    bodyText2: TextStyle(fontSize: 14.0),
   ),
 );

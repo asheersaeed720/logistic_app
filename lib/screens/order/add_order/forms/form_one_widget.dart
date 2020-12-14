@@ -84,7 +84,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                       return _buildSenderAddressSection(context, filterPvd,
                           authPvd, orderPvd, userPvd, userAddresses);
                     } else if (snapshot.hasError) {
-                      return snapshot.error;
+                      return Center(
+                        child: Text('${snapshot.error}'),
+                      );
                     }
                     return LoadingIndicator();
                   },
@@ -102,7 +104,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                       return _buildReceiverSection(context, filterPvd, authPvd,
                           orderPvd, userPvd, userAddresses);
                     } else if (snapshot.hasError) {
-                      return snapshot.error;
+                      return Center(
+                        child: Text('${snapshot.error}'),
+                      );
                     }
                     return LoadingIndicator();
                   },
@@ -190,6 +194,10 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           _addOrder.orderSenderCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
+        // var dataConvertintoString = data.toString();
+        // String smallString = dataConvertintoString != null
+        //     ? dataConvertintoString.substring(5)
+        //     : dataConvertintoString;
         _addOrder.orderSenderCity = data;
       },
       dropdownBuilder: _customDropDownExample,
@@ -365,6 +373,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                               ),
                               activeColor: Theme.of(context).primaryColor,
                               onChanged: (currentVal) {
+                                print(currentVal);
                                 orderPvd.setSelectedSenderAddress(currentVal);
                               },
                             );
@@ -372,8 +381,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                         );
                 } else if (snapshot.hasError) {
                   return Center(
-                    // child: Text('No Receiver Addresses Found!'))
-                    child: snapshot.error,
+                    child: Text('snapshot.error'),
                   );
                 }
                 return LoadingIndicator();

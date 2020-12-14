@@ -96,11 +96,13 @@ class OrderSuccess extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
                     child: Column(
                       children: [
-                        Text('Name: $senderName'),
+                        Text('Sender Detail'),
                         const SizedBox(height: 5),
-                        Text('City: $senderCity'),
+                        Text('$senderName'),
                         const SizedBox(height: 5),
-                        Text('Mobile no: $senderContact'),
+                        Text('$senderCity'),
+                        const SizedBox(height: 5),
+                        Text('$senderContact'),
                         const SizedBox(height: 5),
                         RaisedButton(
                           onPressed: () {},
@@ -121,6 +123,8 @@ class OrderSuccess extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
                     child: Column(
                       children: [
+                        Text('Receiver Detail'),
+                        const SizedBox(height: 5),
                         Text('$receiverName'),
                         const SizedBox(height: 5),
                         Text('$receiverCity'),
@@ -130,7 +134,7 @@ class OrderSuccess extends StatelessWidget {
                         RaisedButton(
                           elevation: 0,
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: null,
                           child: Text(
                             '',
                             style: TextStyle(color: Colors.white),

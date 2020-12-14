@@ -106,7 +106,7 @@ class _SenderAddressesState extends State<SenderAddresses> {
                 if (snapshot.hasData) {
                   List<UserAddress> userAddresses = snapshot.data;
                   return userAddresses.isEmpty
-                      ? Center(child: Text('No Sender Addresses Found!'))
+                      ? Center(child: Text('No Sender Addresses Found'))
                       : ListView.builder(
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {
@@ -164,8 +164,8 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                           content: Container(
                                             height: MediaQuery.of(context)
                                                     .size
-                                                    .height *
-                                                0.2,
+                                                    .height /
+                                                5.6,
                                             child: Column(
                                               children: [
                                                 Text(
@@ -216,8 +216,9 @@ class _SenderAddressesState extends State<SenderAddresses> {
                           },
                         );
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('No Sender Addresses Found!'));
-                  // return snapshot.error;
+                  return Center(
+                    child: Text('${snapshot.error}'),
+                  );
                 }
                 return LoadingIndicator();
               },
@@ -253,14 +254,26 @@ class _SenderAddressesState extends State<SenderAddresses> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              senderName,
-                              SizedBox(height: 10),
-                              senderCitiesDropdown,
-                              SizedBox(height: 10),
-                              senderDistrict,
-                              SizedBox(height: 10),
-                              senderAddress,
-                              SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: senderName,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: senderCitiesDropdown,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: senderDistrict,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: senderAddress,
+                              ),
+                              const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -273,7 +286,7 @@ class _SenderAddressesState extends State<SenderAddresses> {
                                   SizedBox(width: 10),
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width / 2.4,
+                                        MediaQuery.of(context).size.width / 2.2,
                                     child: senderMobileNo,
                                   ),
                                 ],

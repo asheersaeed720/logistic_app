@@ -107,7 +107,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                 if (snapshot.hasData) {
                   List<UserAddress> userAddresses = snapshot.data;
                   return userAddresses.isEmpty
-                      ? Center(child: Text('No Receiver Addresses Found!'))
+                      ? Center(child: Text('No Receiver Addresses Found'))
                       : ListView.builder(
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {
@@ -120,8 +120,6 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                     '${userAddresses[i].fullname}',
                                     style: TextStyle(fontSize: 16),
                                   ),
-                                  // subtitle: Text('${userAddresses[i].city}'),
-                                  // trailing: Text('${userAddresses[i].mobile}'),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -166,8 +164,8 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                           content: Container(
                                             height: MediaQuery.of(context)
                                                     .size
-                                                    .height *
-                                                0.2,
+                                                    .height /
+                                                5.6,
                                             child: Column(
                                               children: [
                                                 Text(
@@ -218,8 +216,9 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                           },
                         );
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('No Receiver Addresses Found!'));
-                  // return snapshot.error;
+                  return Center(
+                    child: Text('${snapshot.error}'),
+                  );
                 }
                 return LoadingIndicator();
               },
@@ -255,14 +254,26 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              receiverName,
-                              SizedBox(height: 10),
-                              receiverCitiesDropdown,
-                              SizedBox(height: 10),
-                              receiverDistrict,
-                              SizedBox(height: 10),
-                              receiverAddress,
-                              SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: receiverName,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: receiverCitiesDropdown,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: receiverDistrict,
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                child: receiverAddress,
+                              ),
+                              const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -275,7 +286,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                   SizedBox(width: 10),
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width / 2.4,
+                                        MediaQuery.of(context).size.width / 2.2,
                                     child: receiverMobileNo,
                                   ),
                                 ],
@@ -286,6 +297,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                                     onPressed: () {
                                       if (_formKey.currentState.validate()) {
                                         Navigator.of(context).pop();
+
                                         _formKey.currentState.save();
                                         userPvd.addReceiverAddress(
                                             context, _address, authPvd.user);

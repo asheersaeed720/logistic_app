@@ -21,6 +21,13 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // bool _isSearchOrderVisible = false;
+  // bool get isSearchOrderVisible => _isSearchOrderVisible;
+  // set isSearchOrderVisible(bool value) {
+  //   _isSearchOrderVisible = value;
+  //   notifyListeners();
+  // }
+
   String _selectedSenderAddress;
   String get selectedSenderAddress => _selectedSenderAddress;
   set selectedSenderAddress(String val) {
@@ -203,77 +210,30 @@ class OrderProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  Future<List<Order>> getUserOrder(user) async {
-    try {
-      var response = await get(
-        '${WebApi.getOrderURL}',
-        headers: {
-          'APP-KEY': WebApi.appKey,
-          'x-api-key': user['token'],
-        },
-      );
-      print('${user['user_id']}');
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    } catch (e) {
-      throw Exception('Failed to load orders');
-    }
+  Future<List<Order>> getOrders(user) {
+    return _orderService.getUserOrder(user);
   }
 
-  Future<List<Order>> getUserOrderAsReceiver(user, receiverORSender) async {
-    try {
-      var response = await get(
-        '${WebApi.getOrderbyReceiverURL}/$receiverORSender',
-        headers: {
-          'APP-KEY': WebApi.appKey,
-          'x-api-key': user['token'],
-        },
-      );
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    } catch (e) {
-      throw Exception('Failed to load orders');
-    }
+  Future<List<Order>> getOrdersAsSenderOrReceiver(
+      user, receiverORSender, orderStatus) {
+    return _orderService.getUserOrderAsSenderOrReceiver(
+        user, receiverORSender, orderStatus);
   }
 
-  Future<List<Order>> getUserOrderByMobile(user, mobileNo, trackingNo) async {
-    var response = await get(
-      '${WebApi.getFilterOrdersURL}/?mobilenumber=$mobileNo&trackingnumber=$trackingNo',
-      // '${WebApi.getFilterOrdersURL}/?trackingnumber=$trackingNo',
-      headers: {
-        'APP-KEY': WebApi.appKey,
-        'x-api-key': user['token'],
-      },
-    );
-    print('before hit: $mobileNo');
-
-    if (response.statusCode == 200) {
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-
-      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    } else {
-      print(response.body);
-    }
+  Future<List<Order>> getFilterOrder(user, receiverORSender) {
+    return _orderService.getFilterUserOrder(user, receiverORSender);
   }
 
-  Future<List<Order>> getFilterUserOrder(user, String orderStatus) async {
-    try {
-      var response = await get(
-        '${WebApi.getFilterOrdersURL}/?type=$orderStatus',
-        headers: {
-          'APP-KEY': WebApi.appKey,
-          'x-api-key': user['token'],
-        },
-      );
-      var responseJson = json.decode(response.body);
-      print(responseJson);
-      return (responseJson as List).map((i) => Order.fromJson(i)).toList();
-    } catch (e) {
-      throw (e);
-    }
+  Future<List<Order>> getSearchOrderByMobile(
+      context, user, mobileNo, trackingNo) {
+    // isSearchOrderVisible = true;
+    return _orderService.getSearchUserOrderByMobile(
+        context, user, mobileNo, trackingNo);
+  }
+
+  Future<List<Order>> getSearch(user, mobileNo, trackingNo) {
+    // isSearchOrderVisible = true;
+    return _orderService.getSearch(user, mobileNo, trackingNo);
   }
 
   cancelOrder(context, user, orderId, orderStatus) async {

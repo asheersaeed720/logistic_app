@@ -56,6 +56,10 @@ class EditOrderScreen extends StatelessWidget {
       showSearchBox: true,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
+        // var dataConvertintoString = data.toString();
+        // String smallString = dataConvertintoString != null
+        //     ? dataConvertintoString.substring(5)
+        //     : dataConvertintoString;
         _editOrder.orderSenderCity = data;
       },
       validator: (value) =>

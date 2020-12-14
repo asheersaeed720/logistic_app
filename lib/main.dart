@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hani_almutairi_logistic/providers/app_language_provider.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:hani_almutairi_logistic/localization/localizations.dart';
+import 'package:hani_almutairi_logistic/localization/app_localizations.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/filter_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';

@@ -60,7 +60,6 @@ class UserOrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final orderPvd = Provider.of<OrderProvider>(context);
     final user = Provider.of<AuthProvider>(context).user;
-    final tabPvd = Provider.of<TabProvider>(context);
 
     return orderPvd.isLoading
         ? Text('')
@@ -73,7 +72,6 @@ class UserOrderItem extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               subtitle: Text('$orderSenderCity $orderSenderContact'),
-              // expandedCrossAxisAlignment: CrossAxisAlignment.start,
               expandedAlignment: Alignment.topLeft,
               children: [
                 Padding(

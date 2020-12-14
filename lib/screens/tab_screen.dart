@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hani_almutairi_logistic/providers/app_language_provider.dart';
 
 import 'package:provider/provider.dart';
 
@@ -71,7 +70,8 @@ class _TabsScreenState extends State<TabsScreen> {
                   : Icons.account_circle_outlined,
               size: 24.0,
             ),
-            title: Text(getTranslatedValue(context, 'my_account')),
+            title: Text(getTranslatedValue(context, 'my_account'),
+                style: TextStyle(fontSize: 13)),
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -80,7 +80,8 @@ class _TabsScreenState extends State<TabsScreen> {
                   : Icons.notifications_outlined,
               size: 24.0,
             ),
-            title: Text(getTranslatedValue(context, 'notifications')),
+            title: Text(getTranslatedValue(context, 'notifications'),
+                style: TextStyle(fontSize: 13)),
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -89,7 +90,8 @@ class _TabsScreenState extends State<TabsScreen> {
                   : Icons.folder_open_outlined,
               size: 24.0,
             ),
-            title: Text(getTranslatedValue(context, 'my_orders')),
+            title: Text(getTranslatedValue(context, 'my_orders'),
+                style: TextStyle(fontSize: 13)),
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -99,7 +101,8 @@ class _TabsScreenState extends State<TabsScreen> {
               size: 24.0,
             ),
             // title: Text('Create Orders'),
-            title: Text(getTranslatedValue(context, 'add_order')),
+            title: Text(getTranslatedValue(context, 'add_order'),
+                style: TextStyle(fontSize: 13)),
           ),
         ],
       ),
