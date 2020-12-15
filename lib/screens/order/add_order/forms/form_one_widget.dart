@@ -40,33 +40,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final userPvd = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(65),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          title: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Delivery outside riyadh \n              50 SAR',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  Text(
-                    'Delivery inside riyadh \n               35 SAR',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Note: Warning that prices not including VAT',
-                style: TextStyle(color: Colors.red, fontSize: 15),
-              ),
-            ],
-          ),
-        ),
+      appBar: AppBar(
+        title: Text('Add Order'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -119,52 +94,155 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 _buildExtraInfoSection(context, orderPvd),
 
                 // NEXT BUTTON
-                FlatButton(
-                    color: Theme.of(context).primaryColor,
-                    child: Text(
-                      "${getTranslatedValue(context, 'next')} >",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      if (!_formKey.currentState.validate()) {
-                        Flushbar(
-                          title: "Field Missing",
-                          message:
-                              'You missing cod or sender or receiver address fields',
-                          duration: Duration(seconds: 3),
-                        ).show(context);
-                      } else {
-                        _formKey.currentState.save();
-                        Navigator.of(context).pushNamed(
-                          FormTwoWidget.routeName,
-                          arguments: {
-                            'selectedSenderAddressId':
-                                orderPvd.selectedSenderAddress,
-                            'senderName': _addOrder.orderSenderName,
-                            'senderCity': _addOrder.orderSenderCity,
-                            'senderAddress': _addOrder.orderSenderAddress,
-                            'senderDistrict': _addOrder.orderSenderDistrict,
-                            'senderContact': _addOrder.orderSenderContact,
+                FutureBuilder(
+                  future: userPvd.getSenderAddresses(authPvd.user),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<UserAddress> userAddresses = snapshot.data;
+                      return userAddresses.isEmpty
+                          ? FutureBuilder(
+                              future:
+                                  userPvd.getReceiverAddresses(authPvd.user),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<UserAddress> userAddresses =
+                                      snapshot.data;
+                                  return FlatButton(
+                                    color: Theme.of(context).primaryColor,
+                                    child: Text(
+                                      "${getTranslatedValue(context, 'next')} >",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      if (!_formKey.currentState.validate()) {
+                                        Flushbar(
+                                          title: "Field Missing",
+                                          message:
+                                              'You missing cod or sender or receiver address fields',
+                                          duration: Duration(seconds: 3),
+                                        ).show(context);
+                                      } else {
+                                        _formKey.currentState.save();
+                                        Navigator.of(context).pushNamed(
+                                          FormTwoWidget.routeName,
+                                          arguments: {
+                                            'selectedSenderAddressId':
+                                                orderPvd.selectedSenderAddress,
+                                            'senderName':
+                                                _addOrder.orderSenderName,
+                                            'senderCity':
+                                                _addOrder.orderSenderCity,
+                                            'senderAddress':
+                                                _addOrder.orderSenderAddress,
+                                            'senderDistrict':
+                                                _addOrder.orderSenderDistrict,
+                                            'senderContact':
+                                                _addOrder.orderSenderContact,
 
-                            // RECEIVER DETAILS
-                            'selectedReceiverAddressId':
-                                orderPvd.selectedReceiverAddress,
-                            'receiverName': _addOrder.orderReceiverName,
-                            'receiverCity': _addOrder.orderReceiverCity,
-                            'receiverAddress': _addOrder.orderReceiverAddress,
-                            'receiverDistrict': _addOrder.orderReceiverDistrict,
-                            'receiverContact': _addOrder.orderReceiverContact,
+                                            // RECEIVER DETAILS
+                                            'selectedReceiverAddressId':
+                                                orderPvd
+                                                    .selectedReceiverAddress,
+                                            'receiverName':
+                                                _addOrder.orderReceiverName,
+                                            'receiverCity':
+                                                _addOrder.orderReceiverCity,
+                                            'receiverAddress':
+                                                _addOrder.orderReceiverAddress,
+                                            'receiverDistrict':
+                                                _addOrder.orderReceiverDistrict,
+                                            'receiverContact':
+                                                _addOrder.orderReceiverContact,
 
-                            // EXTRA DETAILS
-                            'packageCheckedValue': orderPvd.packageCheckedValue,
-                            'fragileCheckedValue': orderPvd.fragileCheckedValue,
-                            'selectedTime': orderPvd.selectedTime,
-                            'collectionCash': _addOrder.orderCollectionCash,
-                            'refNo': _addOrder.orderRefNo,
-                          },
-                        );
-                      }
-                    })
+                                            // EXTRA DETAILS
+                                            'packageCheckedValue':
+                                                orderPvd.packageCheckedValue,
+                                            'fragileCheckedValue':
+                                                orderPvd.fragileCheckedValue,
+                                            'selectedTime':
+                                                orderPvd.selectedTime,
+                                            'collectionCash':
+                                                _addOrder.orderCollectionCash,
+                                            'refNo': _addOrder.orderRefNo,
+                                          },
+                                        );
+                                      }
+                                    },
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text('${snapshot.error}'),
+                                  );
+                                }
+                                return LoadingIndicator();
+                              },
+                            )
+                          : FlatButton(
+                              color: Theme.of(context).primaryColor,
+                              child: Text(
+                                "${getTranslatedValue(context, 'next')} >",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                if (!_formKey.currentState.validate()) {
+                                  Flushbar(
+                                    title: "Field Missing",
+                                    message:
+                                        'You missing cod or sender or receiver address fields',
+                                    duration: Duration(seconds: 3),
+                                  ).show(context);
+                                } else {
+                                  _formKey.currentState.save();
+                                  Navigator.of(context).pushNamed(
+                                    FormTwoWidget.routeName,
+                                    arguments: {
+                                      'selectedSenderAddressId':
+                                          orderPvd.selectedSenderAddress,
+                                      'senderName': _addOrder.orderSenderName,
+                                      'senderCity': _addOrder.orderSenderCity,
+                                      'senderAddress':
+                                          _addOrder.orderSenderAddress,
+                                      'senderDistrict':
+                                          _addOrder.orderSenderDistrict,
+                                      'senderContact':
+                                          _addOrder.orderSenderContact,
+
+                                      // RECEIVER DETAILS
+                                      'selectedReceiverAddressId':
+                                          orderPvd.selectedReceiverAddress,
+                                      'receiverName':
+                                          _addOrder.orderReceiverName,
+                                      'receiverCity':
+                                          _addOrder.orderReceiverCity,
+                                      'receiverAddress':
+                                          _addOrder.orderReceiverAddress,
+                                      'receiverDistrict':
+                                          _addOrder.orderReceiverDistrict,
+                                      'receiverContact':
+                                          _addOrder.orderReceiverContact,
+
+                                      // EXTRA DETAILS
+                                      'packageCheckedValue':
+                                          orderPvd.packageCheckedValue,
+                                      'fragileCheckedValue':
+                                          orderPvd.fragileCheckedValue,
+                                      'selectedTime': orderPvd.selectedTime,
+                                      'collectionCash':
+                                          _addOrder.orderCollectionCash,
+                                      'refNo': _addOrder.orderRefNo,
+                                    },
+                                  );
+                                }
+                              },
+                            );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('${snapshot.error}'),
+                      );
+                    }
+                    return LoadingIndicator();
+                  },
+                ),
               ],
             ),
           ),
@@ -194,11 +272,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           _addOrder.orderSenderCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
-        // var dataConvertintoString = data.toString();
-        // String smallString = dataConvertintoString != null
-        //     ? dataConvertintoString.substring(5)
-        //     : dataConvertintoString;
         _addOrder.orderSenderCity = data;
+        print(data);
       },
       dropdownBuilder: _customDropDownExample,
       popupItemBuilder: _customPopupItemBuilderExample,
@@ -251,6 +326,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       decoration: buildTextFieldInputDecoration("531020000", Icons.phone),
     );
 
+    final saveAddressCheckBox = CheckboxListTile(
+      title: Text("Save Address for future use"),
+      value: orderPvd.isSenderAddressSave,
+      onChanged: (value) {
+        orderPvd.setSenderAddressChecked(value);
+      },
+      controlAffinity: ListTileControlAffinity.leading,
+    );
+
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'sender_address')}"),
@@ -295,12 +379,36 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 orderPvd.clearSenderSelectedRadioBtn,
               ),
         if (filterPvd.addressFilterBtn1 == true)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              "${getTranslatedValue(context, 'note_your_default')}",
-              style: TextStyle(color: Theme.of(context).errorColor),
-            ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 15),
+          //   child: Text(
+          //     "${getTranslatedValue(context, 'note_your_default')}",
+          //     style: TextStyle(color: Theme.of(context).errorColor),
+          //   ),
+          // )
+
+          FutureBuilder<List<UserAddress>>(
+            future: userPvd.getSenderAddresses(authPvd.user),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<UserAddress> userAddresses = snapshot.data;
+                return ListTile(
+                  title: Text('${userAddresses.last.fullname}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${userAddresses.last.city}'),
+                      Text('${userAddresses.last.mobile}'),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+              return LoadingIndicator();
+            },
           )
         else if (filterPvd.addressFilterBtn2 == true)
           Container(
@@ -342,6 +450,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                     ),
                   ],
                 ),
+                // const SizedBox(height: 14),
+                saveAddressCheckBox,
               ],
             ),
           )
@@ -381,7 +491,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                         );
                 } else if (snapshot.hasError) {
                   return Center(
-                    child: Text('snapshot.error'),
+                    child: Text('${snapshot.error}'),
                   );
                 }
                 return LoadingIndicator();
@@ -545,6 +655,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
       ),
     );
 
+    final saveAddressCheckBox = CheckboxListTile(
+      title: Text("Save Address for future use"),
+      value: orderPvd.isReceiverAddressSave,
+      onChanged: (value) {
+        orderPvd.setReceiverAddressChecked(value);
+      },
+      controlAffinity: ListTileControlAffinity.leading,
+    );
+
     return Column(
       children: [
         HeadingTitle("${getTranslatedValue(context, 'receiver_address')}"),
@@ -589,12 +708,35 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 orderPvd.clearReceiverSelectedRadioBtn,
               ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              "${getTranslatedValue(context, 'note_receiver_default')}",
-              style: TextStyle(color: Theme.of(context).errorColor),
-            ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 15),
+          //   child: Text(
+          //     "${getTranslatedValue(context, 'note_receiver_default')}",
+          //     style: TextStyle(color: Theme.of(context).errorColor),
+          //   ),
+          // )
+          FutureBuilder<List<UserAddress>>(
+            future: userPvd.getReceiverAddresses(authPvd.user),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<UserAddress> userAddresses = snapshot.data;
+                return ListTile(
+                  title: Text('${userAddresses.last.fullname}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${userAddresses.last.city}'),
+                      Text('${userAddresses.last.mobile}'),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+              return LoadingIndicator();
+            },
           )
         else if (filterPvd.receiverAddressFilterBtn2 == true)
           Container(
@@ -636,6 +778,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                     ),
                   ],
                 ),
+                saveAddressCheckBox,
               ],
             ),
           )
@@ -676,7 +819,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                 } else if (snapshot.hasError) {
                   return Center(
                     // child: Text('No Receiver Addresses Found!'))
-                    child: snapshot.error,
+                    child: Text('${snapshot.error}'),
                   );
                 }
                 return LoadingIndicator();
@@ -708,14 +851,14 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           width: MediaQuery.of(context).size.width / 1.2,
           child: cashOfDeliveryAmount,
         ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Text(
-            "${getTranslatedValue(context, 'note_if_this_amount')}",
-            style: TextStyle(color: Theme.of(context).errorColor),
-          ),
-        ),
+        // const SizedBox(height: 10),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 15),
+        //   child: Text(
+        //     "${getTranslatedValue(context, 'note_if_this_amount')}",
+        //     style: TextStyle(color: Theme.of(context).errorColor),
+        //   ),
+        // ),
         const SizedBox(height: 18),
       ],
     );

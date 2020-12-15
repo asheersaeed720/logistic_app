@@ -31,7 +31,7 @@ class HeadingTitle extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
             fontSize: 15.5,
-            letterSpacing: 2,
+            letterSpacing: 1,
             fontWeight: FontWeight.bold,
           ),
         ),

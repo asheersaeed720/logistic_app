@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hani_almutairi_logistic/models/delivery_cost.dart';
 import 'package:http/http.dart';
 
 import 'package:flutter/material.dart';
@@ -109,6 +110,49 @@ class OrderProvider with ChangeNotifier {
     print(fragileCheckedValue);
   }
 
+  // SAVE SENDER ADDRESS FOR FUTURE USE
+  bool _isSenderAddressSave = false;
+  bool get isSenderAddressSave => _isSenderAddressSave;
+  set isSenderAddressSave(bool value) {
+    _isSenderAddressSave = value;
+    notifyListeners();
+  }
+
+  setSenderAddressChecked(bool checkedVal) {
+    isSenderAddressSave = checkedVal;
+    print(isSenderAddressSave);
+  }
+
+  // SAVE RECEIVER ADDRESS FOR FUTURE USE
+  bool _isReceiverAddressSave = false;
+  bool get isReceiverAddressSave => _isReceiverAddressSave;
+  set isReceiverAddressSave(bool value) {
+    _isReceiverAddressSave = value;
+    notifyListeners();
+  }
+
+  setReceiverAddressChecked(bool checkedVal) {
+    isReceiverAddressSave = checkedVal;
+    print(isReceiverAddressSave);
+  }
+
+  Future<Map> getDeliveryCost(user) {
+    return _orderService.getDeliveryCost(user);
+  }
+
+  double _deliveryAmount;
+  double get deliveryAmount => _deliveryAmount;
+  set deliveryAmount(double value) {
+    _deliveryAmount = value;
+    notifyListeners();
+  }
+
+  double calculateDeliveryCost(deliveryCost) {
+    deliveryAmount = double.parse(deliveryCost);
+    return deliveryAmount;
+  }
+
+  // ADD ORDER
   addOrder(
     context,
     user,

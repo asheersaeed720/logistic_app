@@ -239,37 +239,37 @@ class UserOrderItem extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  RaisedButton(
-                                    color: Theme.of(context).primaryColor,
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(
-                                        EditOrderScreen.routeName,
-                                        arguments: {
-                                          'orderId': '$orderId',
-                                          'senderName': '$orderSenderName',
-                                          'senderCity': '$orderSenderCity',
-                                          'senderAddress':
-                                              '$orderSenderAddress',
-                                          'senderDistrict':
-                                              '$orderSenderDistrict',
-                                          'senderContact':
-                                              '$orderSenderContact',
-                                          'recieverName': '$orderRecieverName',
-                                          'recieverCity': '$orderRecieverCity',
-                                          'recieverAddress':
-                                              '$orderRecieverAddress',
-                                          'recieverDistrict':
-                                              '$orderRecieverDistrict',
-                                          'recieverContact':
-                                              '$orderRecieverContact',
-                                        },
-                                      );
-                                    },
-                                    child: Text(
-                                      'EDIT',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
+                                  // RaisedButton(
+                                  //   color: Theme.of(context).primaryColor,
+                                  //   onPressed: () {
+                                  //     Navigator.of(context).pushNamed(
+                                  //       EditOrderScreen.routeName,
+                                  //       arguments: {
+                                  //         'orderId': '$orderId',
+                                  //         'senderName': '$orderSenderName',
+                                  //         'senderCity': '$orderSenderCity',
+                                  //         'senderAddress':
+                                  //             '$orderSenderAddress',
+                                  //         'senderDistrict':
+                                  //             '$orderSenderDistrict',
+                                  //         'senderContact':
+                                  //             '$orderSenderContact',
+                                  //         'recieverName': '$orderRecieverName',
+                                  //         'recieverCity': '$orderRecieverCity',
+                                  //         'recieverAddress':
+                                  //             '$orderRecieverAddress',
+                                  //         'recieverDistrict':
+                                  //             '$orderRecieverDistrict',
+                                  //         'recieverContact':
+                                  //             '$orderRecieverContact',
+                                  //       },
+                                  //     );
+                                  //   },
+                                  //   child: Text(
+                                  //     'EDIT',
+                                  //     style: TextStyle(color: Colors.white),
+                                  //   ),
+                                  // ),
                                   RaisedButton(
                                     color: Theme.of(context).primaryColor,
                                     onPressed: () {

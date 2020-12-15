@@ -35,6 +35,8 @@ class WebApi {
   static const String getforgotPasswordKeyURL = baseURL + '/auth/forgot_key';
 
   static const String forgotPasswordURL = baseURL + '/auth/forgot';
+
+  static const String getDeliveryCost = baseURL + '/Misc/settings';
 }
 
 // TEST LOGIN CREDENTIAL

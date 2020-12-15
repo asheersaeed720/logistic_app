@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/models/delivery_cost.dart';
 import 'package:hani_almutairi_logistic/models/order.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/search_order_screen.dart';
 import 'package:http/http.dart';
@@ -8,6 +9,29 @@ import 'package:http/http.dart';
 import 'package:hani_almutairi_logistic/utils/web_api.dart';
 
 class OrderService {
+  Future<Map> getDeliveryCost(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getDeliveryCost}',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        return responseJson;
+      } else if (response.statusCode == 404) {
+        throw ('No Delivery Found');
+      } else {
+        throw ('Failed to load delivery cost');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
   Future<Map> addUserOrder(
     context,
     user,
