@@ -138,7 +138,14 @@ class _SignupScreenState extends State<SignupScreen> {
     final passwordField = TextFormField(
       autofocus: false,
       obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? "Please enter password" : null,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please Enter Confirm Password';
+        } else if (value.length < 7) {
+          return 'Password must be atleast 6 characters';
+        }
+        return null;
+      },
       onSaved: (value) {
         setState(() {
           _user.password = value;

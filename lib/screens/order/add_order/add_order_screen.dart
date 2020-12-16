@@ -26,14 +26,14 @@ class AddOrderScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          FutureBuilder<Map>(
-            future: orderPvd.getDeliveryCost(user),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                Map deliveryCost = snapshot.data;
-                return Container(
+      body: FutureBuilder<Map>(
+        future: orderPvd.getDeliveryCost(user),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Map deliveryCost = snapshot.data;
+            return Column(
+              children: [
+                Container(
                   decoration: BoxDecoration(
                     border: Border(
                       top: BorderSide(color: Colors.grey),
@@ -47,7 +47,7 @@ class AddOrderScreen extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Delivery outside Riyadh \n                  ${deliveryCost['delivery_cost']}",
+                          "Delivery outside Riyadh \n                 ${deliveryCost['delivery_cost']}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -59,62 +59,63 @@ class AddOrderScreen extends StatelessWidget {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
-                          "Delivery inside Riyadh \n                  ${deliveryCost['delivery_cost_inside']}",
+                          "Delivery inside Riyadh \n                 ${deliveryCost['delivery_cost_inside']}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
                     ],
                   ),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
-                );
-              }
-              return LoadingIndicator();
-            },
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Note: Warning that prices not including VAT",
-            style: TextStyle(fontSize: 16, color: Theme.of(context).errorColor),
-          ),
-          const SizedBox(height: 6),
-          SizedBox(
-            height: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.grey),
-                  bottom: BorderSide(color: Colors.grey),
                 ),
-              ),
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height / 4),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(FormOneWidget.routeName);
-            },
-            child: Column(
-              children: [
-                Icon(
-                  Icons.add_circle_outline_rounded,
-                  size: 60,
-                  color: Theme.of(context).primaryColor,
-                ),
+                const SizedBox(height: 8),
                 Text(
-                  'Add Order',
-                  style: Theme.of(context).textTheme.headline1,
+                  "Note: Warning that prices not including VAT",
+                  style: TextStyle(
+                      fontSize: 16, color: Theme.of(context).errorColor),
                 ),
-                Text(
-                  'Create new order',
-                  style: TextStyle(fontSize: 16),
+                const SizedBox(height: 6),
+                SizedBox(
+                  height: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(color: Colors.grey),
+                        bottom: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 4),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(FormOneWidget.routeName);
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline_rounded,
+                        size: 60,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      Text(
+                        'Add Order',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      Text(
+                        'Create new order',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
+            );
+          }
+          return LoadingIndicator();
+        },
       ),
     );
   }

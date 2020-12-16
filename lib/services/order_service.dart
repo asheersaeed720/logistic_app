@@ -55,6 +55,8 @@ class OrderService {
     selectedTime,
     collectionCash,
     refNo,
+    isSenderAddressSave,
+    isReceiverAddressSave,
     orderPayer,
     couponCode,
   ) async {
@@ -81,6 +83,8 @@ class OrderService {
       'order_pickup_time': '$selectedTime',
       'order_collection_cash': '$collectionCash',
       'order_ref_no': '$refNo',
+      'save_sender_address': '$isSenderAddressSave',
+      'save_reciever_address': '$isReceiverAddressSave',
       'order_payer': '$orderPayer',
       'order_coupon': '$couponCode',
     };

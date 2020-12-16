@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:async/async.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:http/http.dart';
 
@@ -32,7 +33,6 @@ class UserService {
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
       print(responseJson);
-
       result = {'status': true, 'message': 'Successful', 'user': responseJson};
     } else {
       result = {

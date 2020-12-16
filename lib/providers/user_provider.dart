@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:async/async.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
@@ -18,6 +19,8 @@ class UserProvider with ChangeNotifier {
     _isLoading = loadVal;
     notifyListeners();
   }
+
+  // AsyncMemoizer _memorizer = AsyncMemoizer<List<UserAddress>>();
 
   addSenderAddress(context, senderAddress, user) async {
     isLoading = true;
@@ -52,6 +55,7 @@ class UserProvider with ChangeNotifier {
         context, receiverAddress, user);
 
     if (response['status'] == true) {
+      getSenderAddresses(user);
       Fluttertoast.showToast(
         msg: "Receiver address has been Added",
         toastLength: Toast.LENGTH_SHORT,

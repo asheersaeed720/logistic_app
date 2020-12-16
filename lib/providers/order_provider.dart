@@ -176,6 +176,8 @@ class OrderProvider with ChangeNotifier {
     selectedTime,
     collectionCash,
     refNo,
+    isSenderAddressSave,
+    isReceiverAddressSave,
     orderPayer,
     couponCode,
   ) async {
@@ -203,6 +205,8 @@ class OrderProvider with ChangeNotifier {
       selectedTime,
       collectionCash,
       refNo,
+      isSenderAddressSave,
+      isReceiverAddressSave,
       orderPayer,
       couponCode,
     );

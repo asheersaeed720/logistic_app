@@ -24,6 +24,11 @@ class _SenderAddressesState extends State<SenderAddresses> {
   Address _address = Address();
 
   @override
+  void didUpdateWidget(SenderAddresses oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
     final userPvd = Provider.of<UserProvider>(context);

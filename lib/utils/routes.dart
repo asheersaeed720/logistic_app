@@ -47,6 +47,6 @@ final routes = {
   TermsConditionsScreen.routeName: (context) => TermsConditionsScreen(),
   TrackMyShipmentScreen.routeName: (context) => TrackMyShipmentScreen(),
   CODAmountScreen.routeName: (context) => CODAmountScreen(),
-  EditOrderScreen.routeName: (context) => EditOrderScreen(),
+  // EditOrderScreen.routeName: (context) => EditOrderScreen(),
   SearchOrderScreen.routeName: (context) => SearchOrderScreen(),
 };

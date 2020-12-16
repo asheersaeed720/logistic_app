@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_one_widget.dart';
 // import 'package:pdf/pdf.dart';
 import 'package:provider/provider.dart';
 // import 'package:pdf/widgets.dart' as pw;
@@ -28,42 +29,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
   String _couponCode;
 
-  // final pdf = pw.Document();
-
-  // writeOnPdf(senderName) {
-  //   pdf.addPage(pw.MultiPage(
-  //     pageFormat: PdfPageFormat.a5,
-  //     margin: pw.EdgeInsets.all(32),
-  //     build: (pw.Context context) {
-  //       return <pw.Widget>[
-  //         pw.Header(
-  //           level: 0,
-  //           child: pw.Text("Hubex"),
-  //         ),
-  //         pw.Paragraph(text: "Sender Detail: \n $senderName"),
-  //         pw.Paragraph(text: "Receiver Detail \n "),
-  //       ];
-  //     },
-  //   ));
-  // }
-
-  // Future savePdf() async {
-  //   Directory documentDirectory = await getApplicationDocumentsDirectory();
-
-  //   String documentPath = documentDirectory.path;
-
-  //   File file = File("$documentPath/example.pdf");
-
-  //   file.writeAsBytesSync(pdf.save());
-
-  //   print(documentDirectory.path);
-  // }
-
-  var lastSenderCity;
-  var lastReceiverCity;
-
-  var senderAddressbyId;
-  var receiverAddressbyId;
+  var senderAddressbyIdCity;
+  var receiverAddressbyIdCity;
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +63,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     final selectedTime = formOneDetails['selectedTime'];
     final collectionCash = formOneDetails['collectionCash'];
     final refNo = formOneDetails['refNo'];
-
-    // var senderCityConvertintoString = senderCity.toString();
-    // String senderCityString = senderCityConvertintoString.substring(5);
-
-    // var receiverCityConvertintoString = receiverCity.toString();
-    // String receiverCityString = receiverCityConvertintoString.substring(5);
+    final isSenderAddressSave = formOneDetails['isSenderAddressSave'];
+    final isReceiverAddressSave = formOneDetails['isReceiverAddressSave'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -135,7 +98,49 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                   receiverDistrict,
                   receiverContact,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
+
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        refNo != ''
+                            ? Padding(
+                                padding: EdgeInsets.only(bottom: 14),
+                                child: Text(
+                                  'Reference no: $refNo',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              )
+                            : Text(
+                                '',
+                                style: TextStyle(fontSize: 2),
+                              ),
+                        fragileCheckedValue == true
+                            ? Padding(
+                                padding: EdgeInsets.only(bottom: 14),
+                                child: Image.asset(
+                                  './assets/images/fragile_sticker.png',
+                                  width: 120,
+                                ),
+                              )
+                            : Text(
+                                '',
+                                style: TextStyle(fontSize: 2),
+                              ),
+                        Text(
+                          '$collectionCash riyals will be added to your balance if the delivery is successful',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
 
                 // DELIVERY COST SECTION
                 _buildDeliveryCostAndCoupon(context, orderPvd),
@@ -149,7 +154,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                         children: [
                           RaisedButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              // _formKey.currentState.reset();
+                              // _formKey.currentState.build(context);
+                              Navigator.of(context).pushReplacementNamed(
+                                  FormOneWidget.routeName);
                             },
                             child: Text(
                               "${getTranslatedValue(context, 'back/edit')}",
@@ -186,6 +194,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   selectedTime,
                                   collectionCash,
                                   refNo,
+                                  isSenderAddressSave,
+                                  isReceiverAddressSave,
                                   orderPvd.orderPayer,
                                   _couponCode,
                                 );
@@ -218,14 +228,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // SENDER DETIALS
     selectedSenderAddressId,
     senderName,
-    senderCityString,
+    senderCity,
     senderAddress,
     senderDistrict,
     senderContact,
     // RECEIVER DETIALS
     selectedReceiverAddressId,
     receiverName,
-    receiverCityString,
+    receiverCity,
     receiverAddress,
     receiverDistrict,
     receiverContact,
@@ -240,12 +250,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                     userPvd.getUserAddressById(user, selectedSenderAddressId),
                 builder: (context, snapshot) {
                   List<UserAddress> userAddresses = snapshot.data;
-                  senderAddressbyId = userAddresses[0].cityName;
                   if (snapshot.hasData) {
+                    senderAddressbyIdCity = userAddresses[0].cityName;
                     return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.6,
-                        height: MediaQuery.of(context).size.height / 4,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        height: MediaQuery.of(context).size.height / 3.8,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 6),
                         child: Column(
@@ -261,21 +271,101 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             const SizedBox(height: 6),
                             Text('${userAddresses[0].mobile}'),
                             const SizedBox(height: 6),
+                            orderPvd.orderPayer == 'Sender'
+                                ? FutureBuilder(
+                                    future: orderPvd.getDeliveryCost(user),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        Map deliveryCost = snapshot.data;
+                                        var costInside = deliveryCost[
+                                            'delivery_cost_inside'];
+                                        var costOutside =
+                                            deliveryCost['delivery_cost'];
 
-                            FutureBuilder<Map>(
+                                        if ((senderCity == 'ar-Riyad' &&
+                                                receiverCity == 'ar-Riyad') ||
+                                            (senderAddressbyIdCity ==
+                                                    'ar-Riyad' &&
+                                                receiverAddressbyIdCity ==
+                                                    'ar-Riyad')) {
+                                          return Text(
+                                            'Delivery cost: $costInside',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .errorColor),
+                                          );
+                                        } else {
+                                          return Text(
+                                            'Delivery cost: $costOutside',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .errorColor),
+                                          );
+                                        }
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text('${snapshot.error}'),
+                                        );
+                                      }
+                                      return LoadingIndicator();
+                                    },
+                                  )
+                                : Text('', style: TextStyle(fontSize: 2)),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('${snapshot.error}'),
+                    );
+                  }
+                  return LoadingIndicator();
+                },
+              )
+            : Card(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  height: MediaQuery.of(context).size.height / 3.8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Sender Detail',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('$senderName'),
+                      const SizedBox(height: 6),
+                      Text('$senderCity'),
+                      const SizedBox(height: 6),
+                      Text('$senderContact'),
+                      const SizedBox(height: 6),
+                      orderPvd.orderPayer == 'Sender'
+                          ? FutureBuilder(
                               future: orderPvd.getDeliveryCost(user),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   Map deliveryCost = snapshot.data;
-                                  if (senderAddressbyId == '37444ar-Riyad') {
+                                  var costInside =
+                                      deliveryCost['delivery_cost_inside'];
+                                  var costOutside =
+                                      deliveryCost['delivery_cost'];
+
+                                  if ((senderCity == 'ar-Riyad' &&
+                                          receiverCity == 'ar-Riyad') ||
+                                      (senderAddressbyIdCity == 'ar-Riyad' &&
+                                          receiverAddressbyIdCity ==
+                                              'ar-Riyad')) {
                                     return Text(
-                                      'Delivery cost: ${deliveryCost['delivery_cost_inside']}',
+                                      'Delivery cost: $costInside',
                                       style: TextStyle(
                                           color: Theme.of(context).errorColor),
                                     );
                                   } else {
                                     return Text(
-                                      'Delivery cost: ${deliveryCost['delivery_cost']}',
+                                      'Delivery cost: $costOutside',
                                       style: TextStyle(
                                           color: Theme.of(context).errorColor),
                                     );
@@ -287,103 +377,11 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 }
                                 return LoadingIndicator();
                               },
-                            ),
-
-                            // _buildInvoiceButton(context, senderName)
-                          ],
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('${snapshot.error}'),
-                    );
-                  }
-                  return LoadingIndicator();
-                },
-              )
-            : FutureBuilder<List<UserAddress>>(
-                future: userPvd.getSenderAddresses(user),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<UserAddress> userAddresses = snapshot.data;
-                    lastSenderCity = userAddresses.last.cityName;
-                    return Card(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.6,
-                        height: MediaQuery.of(context).size.height / 4,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 6),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Sender Detail',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            senderName != null
-                                ? Text('$senderName')
-                                : Text('${userAddresses.last.fullname}'),
-                            const SizedBox(height: 6),
-
-                            senderCityString != null
-                                ? Text('$senderCityString')
-                                : Text('${userAddresses.last.cityName}'),
-                            const SizedBox(height: 6),
-
-                            senderContact != null
-                                ? Text('$senderContact')
-                                : Text('${userAddresses.last.mobile}'),
-                            const SizedBox(height: 6),
-
-                            orderPvd.orderPayer == 'Sender'
-                                ? FutureBuilder<Map>(
-                                    future: orderPvd.getDeliveryCost(user),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        Map deliveryCost = snapshot.data;
-                                        if ((lastSenderCity == 'ar-riyadh' &&
-                                                lastReceiverCity ==
-                                                    'ar-riyadh') ||
-                                            (senderCityString == 'ar-riyadh' &&
-                                                receiverCityString ==
-                                                    'ar-riyadh')) {
-                                          return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost_inside']}',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .errorColor),
-                                          );
-                                        } else {
-                                          return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost']}',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .errorColor),
-                                          );
-                                        }
-                                      } else if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text('${snapshot.error}'),
-                                        );
-                                      }
-                                      return LoadingIndicator();
-                                    },
-                                  )
-                                : Text('')
-
-                            // _buildInvoiceButton(context, senderName)
-                          ],
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('${snapshot.error}'),
-                    );
-                  }
-                  return LoadingIndicator();
-                },
+                            )
+                          : Text('', style: TextStyle(fontSize: 2)),
+                    ],
+                  ),
+                ),
               ),
         Icon(Icons.arrow_forward_rounded),
         selectedReceiverAddressId != null
@@ -392,12 +390,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                     userPvd.getUserAddressById(user, selectedReceiverAddressId),
                 builder: (context, snapshot) {
                   List<UserAddress> userAddresses = snapshot.data;
-                  receiverAddressbyId = userAddresses[0].cityName;
                   if (snapshot.hasData) {
+                    receiverAddressbyIdCity = userAddresses[0].cityName;
                     return Card(
                       child: Container(
-                        width: MediaQuery.of(context).size.width / 2.6,
-                        height: MediaQuery.of(context).size.height / 4,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        height: MediaQuery.of(context).size.height / 3.8,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16, horizontal: 6),
                         child: Column(
@@ -409,30 +407,36 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                             const SizedBox(height: 8),
                             Text('${userAddresses[0].fullname}'),
                             const SizedBox(height: 6),
-
                             Text('${userAddresses[0].cityName}'),
                             const SizedBox(height: 6),
-
                             Text('${userAddresses[0].mobile}'),
                             const SizedBox(height: 6),
-
                             orderPvd.orderPayer == 'Receiver'
-                                ? FutureBuilder<Map>(
+                                ? FutureBuilder(
                                     future: orderPvd.getDeliveryCost(user),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         Map deliveryCost = snapshot.data;
-                                        if (senderAddressbyId ==
-                                            '37444ar-Riyad') {
+                                        var costInside = deliveryCost[
+                                            'delivery_cost_inside'];
+                                        var costOutside =
+                                            deliveryCost['delivery_cost'];
+
+                                        if ((senderCity == 'ar-Riyad' &&
+                                                receiverCity == 'ar-Riyad') ||
+                                            (senderAddressbyIdCity ==
+                                                    'ar-Riyad' &&
+                                                receiverAddressbyIdCity ==
+                                                    'ar-Riyad')) {
                                           return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost_inside']}',
+                                            'Delivery cost: $costInside',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .errorColor),
                                           );
                                         } else {
                                           return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost']}',
+                                            'Delivery cost: $costOutside',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .errorColor),
@@ -446,17 +450,11 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                       return LoadingIndicator();
                                     },
                                   )
-                                : Text(
-                                    '',
-                                    style: TextStyle(fontSize: 2),
-                                  ),
-
+                                : Text('', style: TextStyle(fontSize: 2)),
                             Text(
                               'COD Amount: $collectionCash',
                               style: TextStyle(color: Colors.green),
                             ),
-
-                            // _buildInvoiceButton(context, senderName)
                           ],
                         ),
                       ),
@@ -469,127 +467,71 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                   return LoadingIndicator();
                 },
               )
-            : FutureBuilder<List<UserAddress>>(
-                future: userPvd.getReceiverAddresses(user),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<UserAddress> userAddresses = snapshot.data;
-                    return Card(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.6,
-                        height: MediaQuery.of(context).size.height / 4,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 6),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Receiver Detail',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            receiverName != null
-                                ? Text('$receiverName')
-                                : Text('${userAddresses.last.fullname}'),
-                            const SizedBox(height: 6),
-
-                            receiverCityString != null
-                                ? Text('$receiverCityString')
-                                : Text('${userAddresses.last.cityName}'),
-                            const SizedBox(height: 6),
-
-                            receiverContact != null
-                                ? Text('$receiverContact')
-                                : Text('${userAddresses.last.mobile}'),
-                            const SizedBox(height: 6),
-
-                            orderPvd.orderPayer == 'Receiver'
-                                ? FutureBuilder<Map>(
-                                    future: orderPvd.getDeliveryCost(user),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        Map deliveryCost = snapshot.data;
-                                        if ((lastSenderCity == 'ar-riyadh' &&
-                                                lastReceiverCity ==
-                                                    'ar-riyadh') ||
-                                            (senderCityString == 'ar-riyadh' &&
-                                                receiverCityString ==
-                                                    'ar-riyadh')) {
-                                          return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost_inside']}',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .errorColor),
-                                          );
-                                        } else {
-                                          return Text(
-                                            'Delivery cost: ${deliveryCost['delivery_cost']}',
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .errorColor),
-                                          );
-                                        }
-                                      } else if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text('${snapshot.error}'),
-                                        );
-                                      }
-                                      return LoadingIndicator();
-                                    },
-                                  )
-                                : Text(
-                                    '',
-                                    style: TextStyle(fontSize: 2),
-                                  ),
-                            Text(
-                              'COD Amount: $collectionCash',
-                              style: TextStyle(color: Colors.green),
-                            ),
-
-                            // _buildInvoiceButton(context, senderName)
-                          ],
-                        ),
+            : Card(
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  height: MediaQuery.of(context).size.height / 3.8,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Receiver Detail',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('${snapshot.error}'),
-                    );
-                  }
-                  return LoadingIndicator();
-                },
+                      const SizedBox(height: 8),
+                      Text('$receiverName'),
+                      const SizedBox(height: 6),
+                      Text('$receiverCity'),
+                      const SizedBox(height: 6),
+                      Text('$receiverContact'),
+                      const SizedBox(height: 6),
+                      orderPvd.orderPayer == 'Receiver'
+                          ? FutureBuilder(
+                              future: orderPvd.getDeliveryCost(user),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  Map deliveryCost = snapshot.data;
+                                  var costInside =
+                                      deliveryCost['delivery_cost_inside'];
+                                  var costOutside =
+                                      deliveryCost['delivery_cost'];
+
+                                  if ((senderCity == 'ar-Riyad' &&
+                                          receiverCity == 'ar-Riyad') ||
+                                      (senderAddressbyIdCity == 'ar-Riyad' &&
+                                          receiverAddressbyIdCity ==
+                                              'ar-Riyad')) {
+                                    return Text(
+                                      'Delivery cost: $costInside',
+                                      style: TextStyle(
+                                          color: Theme.of(context).errorColor),
+                                    );
+                                  } else {
+                                    return Text(
+                                      'Delivery cost: $costOutside',
+                                      style: TextStyle(
+                                          color: Theme.of(context).errorColor),
+                                    );
+                                  }
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text('${snapshot.error}'),
+                                  );
+                                }
+                                return LoadingIndicator();
+                              },
+                            )
+                          : Text('', style: TextStyle(fontSize: 2)),
+                      Text(
+                        'COD Amount: $collectionCash',
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    ],
+                  ),
+                ),
               ),
       ],
-    );
-  }
-
-  Widget _buildInvoiceButton(context, senderName) {
-    return RaisedButton(
-      onPressed: () async {
-        // writeOnPdf(senderName);
-        // await savePdf();
-
-        // print(savePdf());
-
-        // Directory documentDirectory = await getApplicationDocumentsDirectory();
-
-        // String documentPath = documentDirectory.path;
-
-        // String fullPath = "$documentPath/example.pdf";
-
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PdfPreviewScreen(
-        //       path: fullPath,
-        //     ),
-        //   ),
-        // );
-      },
-      child: Text(
-        "${getTranslatedValue(context, 'invoice')}",
-        style: TextStyle(color: Colors.white),
-      ),
-      color: Theme.of(context).primaryColor,
     );
   }
 
