@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FilterProvider with ChangeNotifier {
-  // ADDRESS FILTER
+  // SENDER ADDRESS FILTER
   bool _addressFilterBtn1 = false;
   bool get addressFilterBtn1 => _addressFilterBtn1;
   set addressFilterBtn1(bool value) {

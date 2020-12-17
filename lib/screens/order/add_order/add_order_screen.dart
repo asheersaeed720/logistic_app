@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/delivery_cost.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/form_wizard/form_wizard.dart';
 
 import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_one_widget.dart';
 import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
@@ -87,7 +88,8 @@ class AddOrderScreen extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height / 4),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed(FormOneWidget.routeName);
+                    Navigator.of(context)
+                        .pushReplacementNamed(OrderFormWizard.routeName);
                   },
                   child: Column(
                     children: [
