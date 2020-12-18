@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/models/user_address.dart';
+import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
+import 'package:hani_almutairi_logistic/providers/user_provider.dart';
+import 'package:hani_almutairi_logistic/widgets/loading_indicator.dart';
+import 'package:provider/provider.dart';
 
 class OrderStatusFilterBtn extends StatelessWidget {
   final filterTitle1;
@@ -177,6 +182,7 @@ class SenderAddressFilterBtn extends StatelessWidget {
   final activateFilterBtn2;
   final activateFilterBtn3;
   final clearRadio;
+  List addressSender;
 
   SenderAddressFilterBtn(
     this.filterTitle1,
@@ -189,6 +195,7 @@ class SenderAddressFilterBtn extends StatelessWidget {
     this.activateFilterBtn2,
     this.activateFilterBtn3,
     this.clearRadio,
+    this.addressSender,
   );
 
   @override
@@ -198,27 +205,32 @@ class SenderAddressFilterBtn extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RaisedButton(
-            padding: const EdgeInsets.symmetric(horizontal: 6.5),
-            elevation: 0,
-            onPressed: () {
-              activateFilterBtn1();
-              clearRadio();
-            },
-            child: Text(
-              '$filterTitle1',
-              style: TextStyle(
-                color:
-                    filterBtn1 ? Colors.white : Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
-            color: filterBtn1 ? Theme.of(context).primaryColor : Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-          ),
+          addressSender.isEmpty
+              ? Text('')
+              : RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    activateFilterBtn1();
+                    clearRadio();
+                  },
+                  child: Text(
+                    '$filterTitle1',
+                    style: TextStyle(
+                      color: filterBtn1
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterBtn1
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
           RaisedButton(
             padding: const EdgeInsets.symmetric(horizontal: 6.5),
             elevation: 0,
@@ -240,26 +252,31 @@ class SenderAddressFilterBtn extends StatelessWidget {
               side: BorderSide(color: Theme.of(context).primaryColor),
             ),
           ),
-          RaisedButton(
-            padding: const EdgeInsets.symmetric(horizontal: 6.5),
-            elevation: 0,
-            onPressed: () {
-              activateFilterBtn3();
-            },
-            child: Text(
-              '$filterTitle3',
-              style: TextStyle(
-                color:
-                    filterBtn3 ? Colors.white : Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
-            color: filterBtn3 ? Theme.of(context).primaryColor : Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-          ),
+          addressSender.isEmpty
+              ? Text('')
+              : RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    activateFilterBtn3();
+                  },
+                  child: Text(
+                    '$filterTitle3',
+                    style: TextStyle(
+                      color: filterBtn3
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterBtn3
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
         ],
       ),
     );
@@ -277,20 +294,20 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
   final activateFilterBtn2;
   final activateFilterBtn3;
   final clearRadio;
-  final resetReceiverDefaultAddressNotFound;
-
+  List addressReceiver;
   ReceiverAddressFilterBtn(
-      this.filterTitle1,
-      this.filterTitle2,
-      this.filterTitle3,
-      this.filterBtn1,
-      this.filterBtn2,
-      this.filterBtn3,
-      this.activateFilterBtn1,
-      this.activateFilterBtn2,
-      this.activateFilterBtn3,
-      this.clearRadio,
-      this.resetReceiverDefaultAddressNotFound);
+    this.filterTitle1,
+    this.filterTitle2,
+    this.filterTitle3,
+    this.filterBtn1,
+    this.filterBtn2,
+    this.filterBtn3,
+    this.activateFilterBtn1,
+    this.activateFilterBtn2,
+    this.activateFilterBtn3,
+    this.clearRadio,
+    this.addressReceiver,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -299,35 +316,38 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RaisedButton(
-            padding: const EdgeInsets.symmetric(horizontal: 6.5),
-            elevation: 0,
-            onPressed: () {
-              activateFilterBtn1();
-              clearRadio();
-              resetReceiverDefaultAddressNotFound();
-            },
-            child: Text(
-              '$filterTitle1',
-              style: TextStyle(
-                color:
-                    filterBtn1 ? Colors.white : Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
-            color: filterBtn1 ? Theme.of(context).primaryColor : Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-          ),
+          addressReceiver.isEmpty
+              ? Text('')
+              : RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    activateFilterBtn1();
+                    clearRadio();
+                  },
+                  child: Text(
+                    '$filterTitle1',
+                    style: TextStyle(
+                      color: filterBtn1
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterBtn1
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
           RaisedButton(
             padding: const EdgeInsets.symmetric(horizontal: 6.5),
             elevation: 0,
             onPressed: () {
               activateFilterBtn2();
               clearRadio();
-              resetReceiverDefaultAddressNotFound();
             },
             child: Text(
               '$filterTitle2',
@@ -343,27 +363,31 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
               side: BorderSide(color: Theme.of(context).primaryColor),
             ),
           ),
-          RaisedButton(
-            padding: const EdgeInsets.symmetric(horizontal: 6.5),
-            elevation: 0,
-            onPressed: () {
-              activateFilterBtn3();
-              resetReceiverDefaultAddressNotFound();
-            },
-            child: Text(
-              '$filterTitle3',
-              style: TextStyle(
-                color:
-                    filterBtn3 ? Colors.white : Theme.of(context).primaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
-            color: filterBtn3 ? Theme.of(context).primaryColor : Colors.white,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).primaryColor),
-            ),
-          ),
+          addressReceiver.isEmpty
+              ? Text('')
+              : RaisedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.5),
+                  elevation: 0,
+                  onPressed: () {
+                    activateFilterBtn3();
+                  },
+                  child: Text(
+                    '$filterTitle3',
+                    style: TextStyle(
+                      color: filterBtn3
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                  color: filterBtn3
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
         ],
       ),
     );

@@ -34,8 +34,8 @@ final routes = {
   UserVerificationScreen.routeName: (context) => UserVerificationScreen(),
   ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
   ResetPasswordScreen.routeName: (context) => ResetPasswordScreen(),
-  // FormOneWidget.routeName: (context) => FormOneWidget(),
-  // FormTwoWidget.routeName: (context) => FormTwoWidget(),
+  FormOneWidget.routeName: (context) => FormOneWidget(),
+  FormTwoWidget.routeName: (context) => FormTwoWidget(),
   OrderSuccess.routeName: (context) => OrderSuccess(),
   SenderAddresses.routeName: (context) => SenderAddresses(),
   ReceiverAddresses.routeName: (context) => ReceiverAddresses(),
@@ -50,5 +50,5 @@ final routes = {
   CODAmountScreen.routeName: (context) => CODAmountScreen(),
   // EditOrderScreen.routeName: (context) => EditOrderScreen(),
   SearchOrderScreen.routeName: (context) => SearchOrderScreen(),
-  OrderFormWizard.routeName: (context) => OrderFormWizard(),
+  // OrderFormWizard.routeName: (context) => OrderFormWizard(),
 };

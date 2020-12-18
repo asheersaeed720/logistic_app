@@ -153,110 +153,111 @@ class OrderProvider with ChangeNotifier {
   }
 
   // // ADD ORDER
-  // addOrder(
-  //   context,
-  //   user,
-  //   // SENDER DETAILS
-  //   selectedSenderAddressId,
-  //   senderName,
-  //   senderCity,
-  //   senderAddress,
-  //   senderDistrict,
-  //   senderContact,
-  //   // RECEIVER DETAILS
-  //   selectedReceiverAddressId,
-  //   receiverName,
-  //   receiverCity,
-  //   receiverAddress,
-  //   receiverDistrict,
-  //   receiverContact,
-  //   // EXTRA DETAILS
-  //   packageCheckedValue,
-  //   fragileCheckedValue,
-  //   selectedTime,
-  //   collectionCash,
-  //   refNo,
-  //   isSenderAddressSave,
-  //   isReceiverAddressSave,
-  //   orderPayer,
-  //   couponCode,
-  // ) async {
-  //   isLoading = true;
-  //   final response = await _orderService.addUserOrder(
-  //     context,
-  //     user,
-  //     // SENDER DETAILS
-  //     selectedSenderAddressId,
-  //     senderName,
-  //     senderCity,
-  //     senderAddress,
-  //     senderDistrict,
-  //     senderContact,
-  //     // RECEIVER DETAILS
-  //     selectedReceiverAddressId,
-  //     receiverName,
-  //     receiverCity,
-  //     receiverAddress,
-  //     receiverDistrict,
-  //     receiverContact,
-  //     // EXTRA DETAILS
-  //     packageCheckedValue,
-  //     fragileCheckedValue,
-  //     selectedTime,
-  //     collectionCash,
-  //     refNo,
-  //     isSenderAddressSave,
-  //     isReceiverAddressSave,
-  //     orderPayer,
-  //     couponCode,
-  //   );
+  addOrder(
+    context,
+    user,
+    // SENDER DETAILS
+    selectedSenderAddressId,
+    senderName,
+    senderCity,
+    senderAddress,
+    senderDistrict,
+    senderContact,
+    // RECEIVER DETAILS
+    selectedReceiverAddressId,
+    receiverName,
+    receiverCity,
+    receiverAddress,
+    receiverDistrict,
+    receiverContact,
+    // EXTRA DETAILS
+    packageCheckedValue,
+    fragileCheckedValue,
+    selectedTime,
+    collectionCash,
+    refNo,
+    isSenderAddressSave,
+    isReceiverAddressSave,
+    orderPayer,
+    couponCode,
+  ) async {
+    isLoading = true;
+    final response = await _orderService.addUserOrder(
+      context,
+      user,
+      // SENDER DETAILS
+      selectedSenderAddressId,
+      senderName,
+      senderCity,
+      senderAddress,
+      senderDistrict,
+      senderContact,
+      // RECEIVER DETAILS
+      selectedReceiverAddressId,
+      receiverName,
+      receiverCity,
+      receiverAddress,
+      receiverDistrict,
+      receiverContact,
+      // EXTRA DETAILS
+      packageCheckedValue,
+      fragileCheckedValue,
+      selectedTime,
+      collectionCash,
+      refNo,
+      isSenderAddressSave,
+      isReceiverAddressSave,
+      orderPayer,
+      couponCode,
+    );
 
-  //   if (response['status'] == true) {
-  //     Fluttertoast.showToast(
-  //       msg: "Your Order has been Added",
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.BOTTOM,
-  //       timeInSecForIosWeb: 1,
-  //       backgroundColor: Colors.black87,
-  //       textColor: Colors.white,
-  //       fontSize: 16.0,
-  //     );
-  //     print(response['user']['data']);
-  //     Navigator.of(context).pushReplacementNamed(
-  //       OrderSuccess.routeName,
-  //       arguments: {
-  //         'orderId': response['user']['data']['order_user_id'],
-  //         // SENDER DETAILS
-  //         'senderName': response['user']['data']['order_sender_name'],
-  //         'senderCity': response['user']['data']['order_sender_city'],
-  //         'senderAddress': response['user']['data']['order_sender_address'],
-  //         'senderDistrict': response['user']['data']['order_sender_district'],
-  //         'senderContact': response['user']['data']['order_sender_contact'],
-  //         // RECEIVER DETAILS
-  //         'receiverName': response['user']['data']['order_reciever_name'],
-  //         'receiverCity': response['user']['data']['order_reciever_city'],
-  //         'receiverAddress': response['user']['data']['order_reciever_address'],
-  //         'receiverDistrict': response['user']['data']
-  //             ['order_reciever_district'],
-  //         'receiverContact': response['user']['data']['order_reciever_contact'],
-  //         // EXTRA DETAILS
-  //         'packageCheckedValue': response['user']['data']['order_packaging'],
-  //         'fragileCheckedValue': response['user']['data']['order_fragile'],
-  //         'selectedTime': response['user']['data']['order_pickup_time'],
-  //         'orderPayer': response['user']['data']['order_payer'],
-  //         'refNo': response['user']['data']['order_ref_no'],
-  //       },
-  //     );
-  //   } else {
-  //     Flushbar(
-  //       title: "Order Failed",
-  //       message: response['message']['message'].toString(),
-  //       duration: Duration(seconds: 3),
-  //     ).show(context);
-  //   }
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Your Order has been Added",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response['user']['data']);
+      Navigator.of(context).pushReplacementNamed(
+        OrderSuccess.routeName,
+        arguments: {
+          'orderId': response['user']['data']['order_user_id'],
+          // SENDER DETAILS
+          'senderName': response['user']['data']['order_sender_name'],
+          'senderCity': response['user']['data']['order_sender_city'],
+          'senderAddress': response['user']['data']['order_sender_address'],
+          'senderDistrict': response['user']['data']['order_sender_district'],
+          'senderContact': response['user']['data']['order_sender_contact'],
+          // RECEIVER DETAILS
+          'receiverName': response['user']['data']['order_reciever_name'],
+          'receiverCity': response['user']['data']['order_reciever_city'],
+          'receiverAddress': response['user']['data']['order_reciever_address'],
+          'receiverDistrict': response['user']['data']
+              ['order_reciever_district'],
+          'receiverContact': response['user']['data']['order_reciever_contact'],
+          // EXTRA DETAILS
+          'packageCheckedValue': response['user']['data']['order_packaging'],
+          'fragileCheckedValue': response['user']['data']['order_fragile'],
+          'selectedTime': response['user']['data']['order_pickup_time'],
+          'orderPayer': response['user']['data']['order_payer'],
+          'refNo': response['user']['data']['order_ref_no'],
+        },
+      );
+    } else {
+      Flushbar(
+        title: "Order Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
 
-  //   isLoading = false;
-  // }
+    isLoading = false;
+  }
+
   int _stepOrderFormNumber = 1;
   int get stepOrderFormNumber => _stepOrderFormNumber;
   set stepOrderFormNumber(int value) {
@@ -264,28 +265,28 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _senderDefaultAddressNotFound = '';
-  String get senderDefaultAddressNotFound => _senderDefaultAddressNotFound;
-  set senderDefaultAddressNotFound(String value) {
-    _senderDefaultAddressNotFound = value;
-    notifyListeners();
-  }
+  // String _senderDefaultAddressNotFound = '';
+  // String get senderDefaultAddressNotFound => _senderDefaultAddressNotFound;
+  // set senderDefaultAddressNotFound(String value) {
+  //   _senderDefaultAddressNotFound = value;
+  //   notifyListeners();
+  // }
 
-  String _receiverDefaultAddressNotFound = '';
-  String get receiverDefaultAddressNotFound => _receiverDefaultAddressNotFound;
-  set receiverDefaultAddressNotFound(String value) {
-    _receiverDefaultAddressNotFound = value;
-    notifyListeners();
-  }
+  // String _receiverDefaultAddressNotFound = '';
+  // String get receiverDefaultAddressNotFound => _receiverDefaultAddressNotFound;
+  // set receiverDefaultAddressNotFound(String value) {
+  //   _receiverDefaultAddressNotFound = value;
+  //   notifyListeners();
+  // }
 
   // resetSenderDefaultAddressNotFound() {
   //   senderDefaultAddressNotFound = '';
   // }
 
-  resetReceiverDefaultAddressNotFound() {
-    receiverDefaultAddressNotFound = '';
-    notifyListeners();
-  }
+  // resetReceiverDefaultAddressNotFound() {
+  //   receiverDefaultAddressNotFound = '';
+  //   notifyListeners();
+  // }
 
   formNavigation() {
     if (stepOrderFormNumber == 1)
