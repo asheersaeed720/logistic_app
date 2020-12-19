@@ -89,7 +89,7 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
         return null;
       },
       onChanged: (text) {
-        _address.receiverMobileNo = '966$text';
+        _address.receiverMobileNo = text;
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _address.receiverMobileNo = '966$value',
@@ -107,7 +107,9 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
                 if (snapshot.hasData) {
                   List<UserAddress> userAddresses = snapshot.data;
                   return userAddresses.isEmpty
-                      ? Center(child: Text('No Receiver Addresses Found'))
+                      ? Center(
+                          child: Text('No Receiver Addresses Found'),
+                        )
                       : ListView.builder(
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {
@@ -321,17 +323,6 @@ class _ReceiverAddressesState extends State<ReceiverAddresses> {
           },
           child: Icon(Icons.add),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   onPressed: () {
-        //     Navigator.of(context).push(
-        //       MaterialPageRoute(
-        //         builder: (context) => TestReceiverAddress(),
-        //       ),
-        //     );
-        //   },
-        //   child: Icon(Icons.add),
-        // ),
       ),
     );
   }

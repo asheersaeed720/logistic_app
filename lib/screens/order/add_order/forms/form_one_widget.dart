@@ -32,43 +32,23 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
   AddOrder _addOrder = AddOrder();
 
-  // List<UserAddress> senderAddresses;
-
-  // List<UserAddress> receiverAddresses;
-
-  // bool _isNextBtnEnable = true;
-  // _enabledBtn() async {
-  //   await Future.delayed(Duration(seconds: 4));
-  //   setState(() {
-  //     _isNextBtnEnable = false;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   _enabledBtn();
-  //   super.initState();
-  // }
-
-  clearAddressInputVals() {
+  clearSenderAddressInputVals() {
     setState(() {
-      _addOrder.orderSenderName = null;
-      _addOrder.orderReceiverName = null;
-      _addOrder.orderReceiverCity = null;
-      _addOrder.orderReceiverAddress = null;
-      _addOrder.orderReceiverDistrict = null;
-      _addOrder.orderReceiverContact = null;
       _addOrder.orderSenderName = null;
       _addOrder.orderSenderCity = null;
       _addOrder.orderSenderAddress = null;
       _addOrder.orderSenderDistrict = null;
       _addOrder.orderSenderContact = null;
-      // _addOrder.orderPickupTime = null;
-      // _addOrder.orderPackaging = null;
-      // _addOrder.orderFragile = null;
-      // _addOrder.orderPayer = null;
-      // _addOrder.orderCollectionCash = null;
-      // _addOrder.orderRefNo = null;
+    });
+  }
+
+  clearReceiverAddressInputVals() {
+    setState(() {
+      _addOrder.orderReceiverName = null;
+      _addOrder.orderReceiverCity = null;
+      _addOrder.orderReceiverAddress = null;
+      _addOrder.orderReceiverDistrict = null;
+      _addOrder.orderReceiverContact = null;
     });
   }
 
@@ -129,7 +109,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                       ).show(context);
                     } else {
                       _formKey.currentState.save();
-                      print(_addOrder.orderSenderName);
                       Navigator.of(context).pushNamed(
                         FormTwoWidget.routeName,
                         arguments: {
@@ -139,7 +118,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                               ? senderAddresses.last.fullname
                               : _addOrder.orderSenderName,
                           'senderCity': _addOrder.orderSenderCity == null
-                              ? senderAddresses.last.cityName
+                              ? senderAddresses.last.city +
+                                  senderAddresses.last.cityName
                               : _addOrder.orderSenderCity,
                           'senderAddress': _addOrder.orderSenderAddress == null
                               ? senderAddresses.last.address
@@ -159,7 +139,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                               ? receiverAddresses.last.fullname
                               : _addOrder.orderReceiverName,
                           'receiverCity': _addOrder.orderReceiverCity == null
-                              ? receiverAddresses.last.cityName
+                              ? receiverAddresses.last.city +
+                                  receiverAddresses.last.cityName
                               : _addOrder.orderReceiverCity,
                           'receiverAddress':
                               _addOrder.orderReceiverAddress == null
@@ -214,8 +195,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           _addOrder.orderSenderCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
-        var dataString = data.toString();
-        _addOrder.orderSenderCity = dataString.replaceAll(RegExp(r'[0-9]'), '');
+        _addOrder.orderSenderCity = data;
+        // var dataString = data.toString();
+        // _addOrder.orderSenderCity = dataString.replaceAll(RegExp(r'[0-9]'), '');
         print(_addOrder.orderSenderCity);
       },
       dropdownBuilder: _customDropDownExample,
@@ -293,6 +275,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateAddressFilterBtn3,
           orderPvd.clearSenderSelectedRadioBtn,
           senderAddresses,
+          clearSenderAddressInputVals,
         ),
         if (filterPvd.addressFilterBtn1 == true)
           ListTile(
@@ -355,85 +338,75 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           )
         else if (filterPvd.addressFilterBtn3 == true)
+          // Container(
+          //   height: MediaQuery.of(context).size.height * 0.2,
+          //   child: FutureBuilder(
+          //     future: userPvd.getSenderAddresses(authPvd.user),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.hasData) {
+          //         senderAddresses = snapshot.data;
+          //         if (senderAddresses.isNotEmpty) {
+          //           return ListView.builder(
+          //             itemCount: senderAddresses.length,
+          //             itemBuilder: (context, i) {
+          //               return RadioListTile(
+          //                 value: '${senderAddresses[i].id}',
+          //                 groupValue: orderPvd.selectedReceiverAddress,
+          //                 title: Text('${senderAddresses[i].fullname}'),
+          //                 subtitle: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text('${senderAddresses[i].cityName}'),
+          //                     Text('${senderAddresses[i].mobile}'),
+          //                     Text('${senderAddresses[i].address}'),
+          //                   ],
+          //                 ),
+          //                 activeColor: Theme.of(context).primaryColor,
+          //                 onChanged: (currentVal) {
+          //                   orderPvd.setSelectedReceiverAddress(currentVal);
+          //                 },
+          //               );
+          //             },
+          //           );
+          //         } else {
+          //           return Text('Your Default Address not found');
+          //         }
+          //       } else if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text('${snapshot.error}'),
+          //         );
+          //       }
+          //       return LoadingIndicator();
+          //     },
+          //   ),
+          // ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
-            child: FutureBuilder(
-              future: userPvd.getSenderAddresses(authPvd.user),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  senderAddresses = snapshot.data;
-                  if (senderAddresses.isNotEmpty) {
-                    return ListView.builder(
-                      itemCount: senderAddresses.length,
-                      itemBuilder: (context, i) {
-                        return RadioListTile(
-                          value: '${senderAddresses[i].id}',
-                          groupValue: orderPvd.selectedReceiverAddress,
-                          title: Text('${senderAddresses[i].fullname}'),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${senderAddresses[i].cityName}'),
-                              Text('${senderAddresses[i].mobile}'),
-                              Text('${senderAddresses[i].address}'),
-                            ],
-                          ),
-                          activeColor: Theme.of(context).primaryColor,
-                          onChanged: (currentVal) {
-                            orderPvd.setSelectedReceiverAddress(currentVal);
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    return Text('Your Default Address not found');
-                  }
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                }
-                return LoadingIndicator();
+            child: ListView.builder(
+              itemCount: senderAddresses.length,
+              itemBuilder: (context, i) {
+                return RadioListTile(
+                  value: '${senderAddresses[i].id}',
+                  groupValue: orderPvd.selectedSenderAddress,
+                  title: Text('${senderAddresses[i].fullname}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${senderAddresses[i].cityName}'),
+                      Text('${senderAddresses[i].mobile}'),
+                      Text('${senderAddresses[i].address}'),
+                    ],
+                  ),
+                  activeColor: Theme.of(context).primaryColor,
+                  onChanged: (currentVal) {
+                    orderPvd.setSelectedSenderAddress(currentVal);
+                  },
+                );
               },
             ),
           ),
         const SizedBox(height: 18),
       ],
-    );
-  }
-
-  Widget _customDropDownExample(
-      BuildContext context, SearchCityModel item, String itemDesignation) {
-    return Container(
-      // padding: EdgeInsets.all(0),
-      height: 28,
-      child: (item?.name == null)
-          ? Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text('Select City'),
-            )
-          : Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(item.name),
-            ),
-    );
-  }
-
-  Widget _customPopupItemBuilderExample(
-      BuildContext context, SearchCityModel item, bool isSelected) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      decoration: !isSelected
-          ? null
-          : BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-            ),
-      child: ListTile(
-        selected: isSelected,
-        title: Text(item.name),
-      ),
     );
   }
 
@@ -501,9 +474,10 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           _addOrder.orderReceiverCity == null ? 'Select city' : null,
       onFind: (String filter) => authPvd.getCities(filter),
       onChanged: (SearchCityModel data) {
-        var dataString = data.toString();
-        _addOrder.orderReceiverCity =
-            dataString.replaceAll(RegExp(r'[0-9]'), '');
+        _addOrder.orderReceiverCity = data;
+        // var dataString = data.toString();
+        // _addOrder.orderReceiverCity =
+        //     dataString.replaceAll(RegExp(r'[0-9]'), '');
         print(_addOrder.orderReceiverCity);
       },
       dropdownBuilder: _customDropDownExample,
@@ -581,6 +555,7 @@ class _FormOneWidgetState extends State<FormOneWidget> {
           filterPvd.activateReceiverAddressFilterBtn3,
           orderPvd.clearReceiverSelectedRadioBtn,
           receiverAddresses,
+          clearReceiverAddressInputVals,
         ),
         if (filterPvd.receiverAddressFilterBtn1 == true)
           ListTile(
@@ -643,45 +618,70 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
           )
         else if (filterPvd.receiverAddressFilterBtn3 == true)
+          // Container(
+          //   height: MediaQuery.of(context).size.height * 0.2,
+          //   child: FutureBuilder(
+          //     future: userPvd.getReceiverAddresses(authPvd.user),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.hasData) {
+          //         receiverAddresses = snapshot.data;
+          //         if (receiverAddresses.isNotEmpty) {
+          //           return ListView.builder(
+          //             itemCount: receiverAddresses.length,
+          //             itemBuilder: (context, i) {
+          //               return RadioListTile(
+          //                 value: '${receiverAddresses[i].id}',
+          //                 groupValue: orderPvd.selectedReceiverAddress,
+          //                 title: Text('${receiverAddresses[i].fullname}'),
+          //                 subtitle: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text('${receiverAddresses[i].cityName}'),
+          //                     Text('${receiverAddresses[i].mobile}'),
+          //                     Text('${receiverAddresses[i].address}'),
+          //                   ],
+          //                 ),
+          //                 activeColor: Theme.of(context).primaryColor,
+          //                 onChanged: (currentVal) {
+          //                   orderPvd.setSelectedReceiverAddress(currentVal);
+          //                 },
+          //               );
+          //             },
+          //           );
+          //         } else {
+          //           return Text('Receiver Default Address not found');
+          //         }
+          //       } else if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text('${snapshot.error}'),
+          //         );
+          //       }
+          //       return LoadingIndicator();
+          //     },
+          //   ),
+          // ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
-            child: FutureBuilder(
-              future: userPvd.getReceiverAddresses(authPvd.user),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  receiverAddresses = snapshot.data;
-                  if (receiverAddresses.isNotEmpty) {
-                    return ListView.builder(
-                      itemCount: receiverAddresses.length,
-                      itemBuilder: (context, i) {
-                        return RadioListTile(
-                          value: '${receiverAddresses[i].id}',
-                          groupValue: orderPvd.selectedReceiverAddress,
-                          title: Text('${receiverAddresses[i].fullname}'),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${receiverAddresses[i].cityName}'),
-                              Text('${receiverAddresses[i].mobile}'),
-                              Text('${receiverAddresses[i].address}'),
-                            ],
-                          ),
-                          activeColor: Theme.of(context).primaryColor,
-                          onChanged: (currentVal) {
-                            orderPvd.setSelectedReceiverAddress(currentVal);
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    return Text('Receiver Default Address not found');
-                  }
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                }
-                return LoadingIndicator();
+            child: ListView.builder(
+              itemCount: receiverAddresses.length,
+              itemBuilder: (context, i) {
+                return RadioListTile(
+                  value: '${receiverAddresses[i].id}',
+                  groupValue: orderPvd.selectedReceiverAddress,
+                  title: Text('${receiverAddresses[i].fullname}'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${receiverAddresses[i].cityName}'),
+                      Text('${receiverAddresses[i].mobile}'),
+                      Text('${receiverAddresses[i].address}'),
+                    ],
+                  ),
+                  activeColor: Theme.of(context).primaryColor,
+                  onChanged: (currentVal) {
+                    orderPvd.setSelectedReceiverAddress(currentVal);
+                  },
+                );
               },
             ),
           ),
@@ -756,6 +756,41 @@ class _FormOneWidgetState extends State<FormOneWidget> {
         packagingCheckBox,
         fragileCheckBox,
       ],
+    );
+  }
+
+  Widget _customDropDownExample(
+      BuildContext context, SearchCityModel item, String itemDesignation) {
+    return Container(
+      // padding: EdgeInsets.all(0),
+      height: 28,
+      child: (item?.name == null)
+          ? Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text('Select City'),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(item.name),
+            ),
+    );
+  }
+
+  Widget _customPopupItemBuilderExample(
+      BuildContext context, SearchCityModel item, bool isSelected) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item.name),
+      ),
     );
   }
 }

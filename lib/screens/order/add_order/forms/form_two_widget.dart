@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/models/add_order.dart';
 import 'package:hani_almutairi_logistic/screens/order/add_order/forms/form_one_widget.dart';
 // import 'package:pdf/pdf.dart';
 import 'package:provider/provider.dart';
@@ -31,14 +32,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
   var senderAddressbyIdCity;
   var receiverAddressbyIdCity;
-
-  bool back = false;
-
-  void goBack() {
-    setState(() {
-      back = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,29 +154,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                         children: [
                           RaisedButton(
                             onPressed: () {
-                              _formKey.currentState.build(context);
-                              // Navigator.of(context).pushReplacementNamed(
-                              //     FormOneWidget.routeName);
-                              goBack();
-                              selectedSenderAddressId = null;
-                              senderName = null;
-                              senderCity = null;
-                              senderAddress = null;
-                              senderDistrict = null;
-                              senderContact = null;
-                              selectedReceiverAddressId = null;
-                              receiverName = null;
-                              receiverCity = null;
-                              receiverAddress = null;
-                              receiverDistrict = null;
-                              receiverContact = null;
-                              packageCheckedValue = false;
-                              fragileCheckedValue = false;
-                              selectedTime = null;
-                              collectionCash = null;
-                              refNo = null;
-                              isSenderAddressSave = false;
-                              isReceiverAddressSave = false;
                               Navigator.of(context).pop();
                             },
                             child: Text(
@@ -365,6 +335,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                       const SizedBox(height: 8),
                       Text('$senderName'),
                       const SizedBox(height: 6),
+                      // Text('${senderCity.replaceAll(RegExp(r'[0-9]'), '')}'),
                       Text('$senderCity'),
                       const SizedBox(height: 6),
                       Text('$senderContact'),
@@ -509,6 +480,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                       const SizedBox(height: 8),
                       Text('$receiverName'),
                       const SizedBox(height: 6),
+                      // Text('${receiverCity.replaceAll(RegExp(r'[0-9]'), '')}'),
                       Text('$receiverCity'),
                       const SizedBox(height: 6),
                       Text('$receiverContact'),

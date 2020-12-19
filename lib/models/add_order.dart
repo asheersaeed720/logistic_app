@@ -4,18 +4,17 @@ class AddOrder {
   String orderUserId;
   // RECEIVER DETAIL
   String orderReceiverName;
-  String orderReceiverCity;
+  SearchCityModel orderReceiverCity;
   String orderReceiverAddress;
   String orderReceiverDistrict;
   String orderReceiverContact;
   // SENDER DETAIL
   String orderSenderName;
-  String orderSenderCity;
+  SearchCityModel orderSenderCity;
   String orderSenderAddress;
   String orderSenderDistrict;
   String orderSenderContact;
   // EXTRA DETAIL
-  // String orderPickupTime;
   String orderPackaging;
   String orderFragile;
   String orderPayer;

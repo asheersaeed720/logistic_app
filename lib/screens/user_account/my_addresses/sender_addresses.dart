@@ -93,7 +93,7 @@ class _SenderAddressesState extends State<SenderAddresses> {
         return null;
       },
       onChanged: (text) {
-        _address.senderMobileNo = '966$text';
+        _address.senderMobileNo = text;
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _address.senderMobileNo = '966$value',
@@ -111,7 +111,9 @@ class _SenderAddressesState extends State<SenderAddresses> {
                 if (snapshot.hasData) {
                   List<UserAddress> userAddresses = snapshot.data;
                   return userAddresses.isEmpty
-                      ? Center(child: Text('No Sender Addresses Found'))
+                      ? Center(
+                          child: Text('No Sender Addresses Found'),
+                        )
                       : ListView.builder(
                           itemCount: userAddresses.length,
                           itemBuilder: (context, i) {

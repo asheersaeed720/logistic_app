@@ -85,7 +85,8 @@ class UserService {
   Future<List<UserAddress>> getSenderAddresses(user) async {
     try {
       var response = await get(
-        '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        // '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        '${WebApi.getUserAddressesURL}',
         headers: {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
@@ -108,7 +109,8 @@ class UserService {
   Future<List<UserAddress>> getReceiverAddresses(user) async {
     try {
       var response = await get(
-        '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        // '${WebApi.getUserAddressesURL}/${user['user_id']}',
+        '${WebApi.getUserAddressesURL}',
         headers: {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',

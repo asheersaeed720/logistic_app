@@ -181,8 +181,9 @@ class SenderAddressFilterBtn extends StatelessWidget {
   final activateFilterBtn1;
   final activateFilterBtn2;
   final activateFilterBtn3;
-  final clearRadio;
+  Function clearRadio;
   List addressSender;
+  Function clearSenderAddressInputVals;
 
   SenderAddressFilterBtn(
     this.filterTitle1,
@@ -196,6 +197,7 @@ class SenderAddressFilterBtn extends StatelessWidget {
     this.activateFilterBtn3,
     this.clearRadio,
     this.addressSender,
+    this.clearSenderAddressInputVals,
   );
 
   @override
@@ -213,6 +215,7 @@ class SenderAddressFilterBtn extends StatelessWidget {
                   onPressed: () {
                     activateFilterBtn1();
                     clearRadio();
+                    clearSenderAddressInputVals();
                   },
                   child: Text(
                     '$filterTitle1',
@@ -259,6 +262,7 @@ class SenderAddressFilterBtn extends StatelessWidget {
                   elevation: 0,
                   onPressed: () {
                     activateFilterBtn3();
+                    clearSenderAddressInputVals();
                   },
                   child: Text(
                     '$filterTitle3',
@@ -293,8 +297,9 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
   final activateFilterBtn1;
   final activateFilterBtn2;
   final activateFilterBtn3;
-  final clearRadio;
+  Function clearRadio;
   List addressReceiver;
+  Function clearReceiverAddressInputVals;
   ReceiverAddressFilterBtn(
     this.filterTitle1,
     this.filterTitle2,
@@ -307,6 +312,7 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
     this.activateFilterBtn3,
     this.clearRadio,
     this.addressReceiver,
+    this.clearReceiverAddressInputVals,
   );
 
   @override
@@ -324,6 +330,7 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
                   onPressed: () {
                     activateFilterBtn1();
                     clearRadio();
+                    clearReceiverAddressInputVals();
                   },
                   child: Text(
                     '$filterTitle1',
@@ -370,6 +377,7 @@ class ReceiverAddressFilterBtn extends StatelessWidget {
                   elevation: 0,
                   onPressed: () {
                     activateFilterBtn3();
+                    clearReceiverAddressInputVals();
                   },
                   child: Text(
                     '$filterTitle3',

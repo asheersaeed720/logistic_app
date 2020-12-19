@@ -59,7 +59,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     // CHANGE PASSWORD
     final newPassword = TextFormField(
       obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? "Please enter new password" : null,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please Enter Confirm Password';
+        } else if (value.length < 7) {
+          return 'Password must be atleast 6 characters';
+        }
+        return null;
+      },
       onSaved: (value) {
         setState(() {
           passwordVal = value;

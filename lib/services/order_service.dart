@@ -78,6 +78,7 @@ class OrderService {
       'reciever_district': '$receiverDistrict',
       'reciever_contact': '$receiverContact',
       // EXTRA DETAILS
+      'order_total_amount': '100',
       'order_packaging': '$packageCheckedValue',
       'order_fragile': '$fragileCheckedValue',
       'order_pickup_time': '$selectedTime',
@@ -116,72 +117,72 @@ class OrderService {
     return result;
   }
 
-  Future<Map> addUserOrderTest(
-    context,
-    user,
-    addOrderData,
-    isSenderAddressSave,
-    isReceiverAddressSave,
-    packageCheckedValue,
-    fragileCheckedValue,
-    selectedTime,
-    orderPayer,
-  ) async {
-    var result;
+  // Future<Map> addUserOrderTest(
+  //   context,
+  //   user,
+  //   addOrderData,
+  //   isSenderAddressSave,
+  //   isReceiverAddressSave,
+  //   packageCheckedValue,
+  //   fragileCheckedValue,
+  //   selectedTime,
+  //   orderPayer,
+  // ) async {
+  //   var result;
 
-    final orderData = {
-      // SENDER DETAILS
-      'sender_ad_id': '',
-      'sender_name': '${addOrderData.orderSenderName}',
-      'sender_city': '${addOrderData.orderSenderCity}',
-      'sender_address': '${addOrderData.orderSenderAddress}',
-      'sender_district': '${addOrderData.orderSenderDistrict}',
-      'sender_contact': '${addOrderData.orderSenderContact}',
-      // RECEIVER DETAILS
-      'reciever_ad_id': '',
-      'reciever_name': '${addOrderData.orderReceiverName}',
-      'reciever_city': '${addOrderData.orderReceiverCity}',
-      'reciever_address': '${addOrderData.orderReceiverAddress}',
-      'reciever_district': '${addOrderData.orderReceiverDistrict}',
-      'reciever_contact': '${addOrderData.orderReceiverContact}',
-      // EXTRA DETAILS
-      'order_packaging': '$packageCheckedValue',
-      'order_fragile': '$fragileCheckedValue',
-      'order_pickup_time': '$selectedTime',
-      'order_collection_cash': '${addOrderData.orderCollectionCash}',
-      'order_ref_no': '${addOrderData.orderRefNo}',
-      'save_sender_address': '$isSenderAddressSave',
-      'save_reciever_address': '$isReceiverAddressSave',
-      'order_payer': '$orderPayer',
-      'order_coupon': '${addOrderData.coupon}',
-    };
+  //   final orderData = {
+  //     // SENDER DETAILS
+  //     'sender_ad_id': '',
+  //     'sender_name': '${addOrderData.orderSenderName}',
+  //     'sender_city': '${addOrderData.orderSenderCity}',
+  //     'sender_address': '${addOrderData.orderSenderAddress}',
+  //     'sender_district': '${addOrderData.orderSenderDistrict}',
+  //     'sender_contact': '${addOrderData.orderSenderContact}',
+  //     // RECEIVER DETAILS
+  //     'reciever_ad_id': '',
+  //     'reciever_name': '${addOrderData.orderReceiverName}',
+  //     'reciever_city': '${addOrderData.orderReceiverCity}',
+  //     'reciever_address': '${addOrderData.orderReceiverAddress}',
+  //     'reciever_district': '${addOrderData.orderReceiverDistrict}',
+  //     'reciever_contact': '${addOrderData.orderReceiverContact}',
+  //     // EXTRA DETAILS
+  //     'order_packaging': '$packageCheckedValue',
+  //     'order_fragile': '$fragileCheckedValue',
+  //     'order_pickup_time': '$selectedTime',
+  //     'order_collection_cash': '${addOrderData.orderCollectionCash}',
+  //     'order_ref_no': '${addOrderData.orderRefNo}',
+  //     'save_sender_address': '$isSenderAddressSave',
+  //     'save_reciever_address': '$isReceiverAddressSave',
+  //     'order_payer': '$orderPayer',
+  //     'order_coupon': '${addOrderData.coupon}',
+  //   };
 
-    print('Before hit Sender: $orderData');
+  //   print('Before hit Sender: $orderData');
 
-    var response = await post(
-      '${WebApi.addOrderURL}',
-      body: orderData,
-      headers: {
-        'APP_KEY': '${WebApi.appKey}',
-        'x-api-key': user['token'],
-      },
-    );
+  //   var response = await post(
+  //     '${WebApi.addOrderURL}',
+  //     body: orderData,
+  //     headers: {
+  //       'APP_KEY': '${WebApi.appKey}',
+  //       'x-api-key': user['token'],
+  //     },
+  //   );
 
-    if (response.statusCode == 200) {
-      var responseJson = json.decode(response.body);
-      print(responseJson);
+  //   if (response.statusCode == 200) {
+  //     var responseJson = json.decode(response.body);
+  //     print(responseJson);
 
-      result = {'status': true, 'message': 'Successful', 'user': responseJson};
-    } else {
-      result = {
-        'status': false,
-        'message': json.decode(response.body),
-      };
-      print(json.decode(response.body));
-    }
+  //     result = {'status': true, 'message': 'Successful', 'user': responseJson};
+  //   } else {
+  //     result = {
+  //       'status': false,
+  //       'message': json.decode(response.body),
+  //     };
+  //     print(json.decode(response.body));
+  //   }
 
-    return result;
-  }
+  //   return result;
+  // }
 
   Future<List<Order>> getUserOrder(user) async {
     try {
@@ -195,6 +196,7 @@ class OrderService {
 
       if (response.statusCode == 200) {
         var responseJson = json.decode(response.body);
+        print(responseJson);
         return (responseJson as List).map((i) => Order.fromJson(i)).toList();
       } else if (response.statusCode == 404) {
         throw ('No Orders Found');

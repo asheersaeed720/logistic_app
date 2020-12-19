@@ -14,6 +14,7 @@ import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/orders_reports_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/my_addresses/address_tab.dart';
@@ -50,5 +51,6 @@ final routes = {
   CODAmountScreen.routeName: (context) => CODAmountScreen(),
   // EditOrderScreen.routeName: (context) => EditOrderScreen(),
   SearchOrderScreen.routeName: (context) => SearchOrderScreen(),
+  OrdersReportsScreen.routeName: (context) => OrdersReportsScreen(),
   // OrderFormWizard.routeName: (context) => OrderFormWizard(),
 };

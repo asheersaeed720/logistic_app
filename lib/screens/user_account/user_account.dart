@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/orders_reports_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -70,7 +71,8 @@ class UserAccount extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed(CODAmountScreen.routeName);
+              // Navigator.of(context).pushNamed(CODAmountScreen.routeName);
+              Navigator.of(context).pushNamed(OrdersReportsScreen.routeName);
             },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
@@ -80,8 +82,10 @@ class UserAccount extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
                     onPressed: () {
+                      // Navigator.of(context)
+                      //     .pushNamed(CODAmountScreen.routeName);
                       Navigator.of(context)
-                          .pushNamed(CODAmountScreen.routeName);
+                          .pushNamed(OrdersReportsScreen.routeName);
                     },
                     icon: Icon(Icons.attach_money_sharp),
                     color: Colors.white,
@@ -116,7 +120,9 @@ class UserAccount extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              // Navigator.of(context).pushNamed(OrdersReportsScreen.routeName);
+            },
             // splashColor: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(6),
             child: GridTile(
@@ -124,7 +130,10 @@ class UserAccount extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Navigator.of(context)
+                      //     .pushNamed(OrdersReportsScreen.routeName);
+                    },
                     icon: Icon(Icons.search_sharp),
                     color: Colors.white,
                     iconSize: 40,

@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
         return null;
       },
       onChanged: (text) {
-        _user.mobileNo = '966$text';
+        _user.mobileNo = '$text';
       },
       keyboardType: TextInputType.number,
       onSaved: (value) => _user.mobileNo = '966$value',

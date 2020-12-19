@@ -162,7 +162,7 @@ class AuthService {
     } else {
       result = {
         'status': false,
-        'message': json.decode(response.body).toString(),
+        'message': json.decode(response.body)['message'].toString(),
       };
       print(json.decode(response.body));
     }

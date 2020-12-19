@@ -86,13 +86,13 @@ class OrderProvider with ChangeNotifier {
     selectedSenderAddress = null;
   }
 
-  clearReceiverSelectedRadioBtn() {
-    selectedReceiverAddress = null;
-  }
-
   setSelectedReceiverAddress(String selectedValue) {
     selectedReceiverAddress = selectedValue;
     print(selectedReceiverAddress);
+  }
+
+  clearReceiverSelectedRadioBtn() {
+    selectedReceiverAddress = null;
   }
 
   setOrderPayer(String selectedValue) {
@@ -240,6 +240,8 @@ class OrderProvider with ChangeNotifier {
               ['order_reciever_district'],
           'receiverContact': response['user']['data']['order_reciever_contact'],
           // EXTRA DETAILS
+          'order_collection_cash': response['user']['data']
+              ['order_collection_cash'],
           'packageCheckedValue': response['user']['data']['order_packaging'],
           'fragileCheckedValue': response['user']['data']['order_fragile'],
           'selectedTime': response['user']['data']['order_pickup_time'],
@@ -300,76 +302,76 @@ class OrderProvider with ChangeNotifier {
   }
 
   // ADD ORDER
-  addOrderTest(
-    context,
-    user,
-    addOrderData,
-    isSenderAddressSave,
-    isReceiverAddressSave,
-    packageCheckedValue,
-    fragileCheckedValue,
-    selectedTime,
-    orderPayer,
-  ) async {
-    isLoading = true;
-    final response = await _orderService.addUserOrderTest(
-      context,
-      user,
-      addOrderData,
-      isSenderAddressSave,
-      isReceiverAddressSave,
-      packageCheckedValue,
-      fragileCheckedValue,
-      selectedTime,
-      orderPayer,
-    );
+  // addOrderTest(
+  //   context,
+  //   user,
+  //   addOrderData,
+  //   isSenderAddressSave,
+  //   isReceiverAddressSave,
+  //   packageCheckedValue,
+  //   fragileCheckedValue,
+  //   selectedTime,
+  //   orderPayer,
+  // ) async {
+  //   isLoading = true;
+  //   final response = await _orderService.addUserOrderTest(
+  //     context,
+  //     user,
+  //     addOrderData,
+  //     isSenderAddressSave,
+  //     isReceiverAddressSave,
+  //     packageCheckedValue,
+  //     fragileCheckedValue,
+  //     selectedTime,
+  //     orderPayer,
+  //   );
 
-    if (response['status'] == true) {
-      Fluttertoast.showToast(
-        msg: "Your Order has been Added",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      print(response['user']['data']);
-      Navigator.of(context).pushReplacementNamed(
-        OrderSuccess.routeName,
-        arguments: {
-          'orderId': response['user']['data']['order_user_id'],
-          // SENDER DETAILS
-          'senderName': response['user']['data']['order_sender_name'],
-          'senderCity': response['user']['data']['order_sender_city'],
-          'senderAddress': response['user']['data']['order_sender_address'],
-          'senderDistrict': response['user']['data']['order_sender_district'],
-          'senderContact': response['user']['data']['order_sender_contact'],
-          // RECEIVER DETAILS
-          'receiverName': response['user']['data']['order_reciever_name'],
-          'receiverCity': response['user']['data']['order_reciever_city'],
-          'receiverAddress': response['user']['data']['order_reciever_address'],
-          'receiverDistrict': response['user']['data']
-              ['order_reciever_district'],
-          'receiverContact': response['user']['data']['order_reciever_contact'],
-          // EXTRA DETAILS
-          'packageCheckedValue': response['user']['data']['order_packaging'],
-          'fragileCheckedValue': response['user']['data']['order_fragile'],
-          'selectedTime': response['user']['data']['order_pickup_time'],
-          'orderPayer': response['user']['data']['order_payer'],
-          'refNo': response['user']['data']['order_ref_no'],
-        },
-      );
-    } else {
-      Flushbar(
-        title: "Order Failed",
-        message: response['message']['message'].toString(),
-        duration: Duration(seconds: 3),
-      ).show(context);
-    }
+  //   if (response['status'] == true) {
+  //     Fluttertoast.showToast(
+  //       msg: "Your Order has been Added",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 1,
+  //       backgroundColor: Colors.black87,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //     print(response['user']['data']);
+  //     Navigator.of(context).pushReplacementNamed(
+  //       OrderSuccess.routeName,
+  //       arguments: {
+  //         'orderId': response['user']['data']['order_user_id'],
+  //         // SENDER DETAILS
+  //         'senderName': response['user']['data']['order_sender_name'],
+  //         'senderCity': response['user']['data']['order_sender_city'],
+  //         'senderAddress': response['user']['data']['order_sender_address'],
+  //         'senderDistrict': response['user']['data']['order_sender_district'],
+  //         'senderContact': response['user']['data']['order_sender_contact'],
+  //         // RECEIVER DETAILS
+  //         'receiverName': response['user']['data']['order_reciever_name'],
+  //         'receiverCity': response['user']['data']['order_reciever_city'],
+  //         'receiverAddress': response['user']['data']['order_reciever_address'],
+  //         'receiverDistrict': response['user']['data']
+  //             ['order_reciever_district'],
+  //         'receiverContact': response['user']['data']['order_reciever_contact'],
+  //         // EXTRA DETAILS
+  //         'packageCheckedValue': response['user']['data']['order_packaging'],
+  //         'fragileCheckedValue': response['user']['data']['order_fragile'],
+  //         'selectedTime': response['user']['data']['order_pickup_time'],
+  //         'orderPayer': response['user']['data']['order_payer'],
+  //         'refNo': response['user']['data']['order_ref_no'],
+  //       },
+  //     );
+  //   } else {
+  //     Flushbar(
+  //       title: "Order Failed",
+  //       message: response['message']['message'].toString(),
+  //       duration: Duration(seconds: 3),
+  //     ).show(context);
+  //   }
 
-    isLoading = false;
-  }
+  //   isLoading = false;
+  // }
 
   Future<List<Order>> getOrders(user) {
     return _orderService.getUserOrder(user);
