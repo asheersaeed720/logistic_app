@@ -222,6 +222,42 @@ class OrderProvider with ChangeNotifier {
         fontSize: 16.0,
       );
       print(response['user']['data']);
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => OrderSuccess(
+      //             orderId: response['user']['data']['order_user_id'],
+      //             // SENDER DETAILS
+      //             senderName: response['user']['data']['order_sender_name'],
+      //             senderCity: response['user']['data']['order_sender_city'],
+      //             senderAddress: response['user']['data']
+      //                 ['order_sender_address'],
+      //             senderDistrict: response['user']['data']
+      //                 ['order_sender_district'],
+      //             senderContact: response['user']['data']
+      //                 ['order_sender_contact'],
+      //             // RECEIVER DETAILS
+      //             receiverName: response['user']['data']['order_reciever_name'],
+      //             receiverCity: response['user']['data']['order_reciever_city'],
+      //             receiverAddress: response['user']['data']
+      //                 ['order_reciever_address'],
+      //             receiverDistrict: response['user']['data']
+      //                 ['order_reciever_district'],
+      //             receiverContact: response['user']['data']
+      //                 ['order_reciever_contact'],
+      //             // EXTRA DETAILS
+      //             collectionCash: response['user']['data']
+      //                 ['order_collection_cash'],
+      //             packageCheckedValue: response['user']['data']
+      //                 ['order_packaging'],
+      //             fragileCheckedValue: response['user']['data']
+      //                 ['order_fragile'],
+      //             selectedTime: response['user']['data']['order_pickup_time'],
+      //             orderPayer: response['user']['data']['order_payer'],
+      //             refNo: response['user']['data']['order_ref_no'],
+      //           )),
+      //   (Route<dynamic> route) => false,
+      // );
       Navigator.of(context).pushReplacementNamed(
         OrderSuccess.routeName,
         arguments: {

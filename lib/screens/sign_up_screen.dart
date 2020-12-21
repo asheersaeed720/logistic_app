@@ -141,7 +141,7 @@ class _SignupScreenState extends State<SignupScreen> {
       validator: (value) {
         if (value.isEmpty) {
           return 'Please Enter Confirm Password';
-        } else if (value.length < 7) {
+        } else if (value.length < 6) {
           return 'Password must be atleast 6 characters';
         }
         return null;

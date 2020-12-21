@@ -486,7 +486,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 72,
+          width: 74,
           child: RaisedButton(
             elevation: 0,
             onPressed: () {

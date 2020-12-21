@@ -7,6 +7,47 @@ import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
 
 class OrderSuccess extends StatelessWidget {
   static const String routeName = '/order-success';
+  // final orderId;
+
+  // // SENDER DETAIL
+  // final senderName;
+  // final senderCity;
+  // final senderAddress;
+  // final senderDistrict;
+  // final senderContact;
+  // // RECEIVER DETAIL
+  // final receiverName;
+  // final receiverCity;
+  // final receiverAddress;
+  // final receiverDistrict;
+  // final receiverContact;
+  // final collectionCash;
+  // final packageCheckedValue;
+  // final fragileCheckedValue;
+  // final selectedTime;
+  // final orderPayer;
+  // final refNo;
+
+  // const OrderSuccess({
+  //   key,
+  //   this.orderId,
+  //   this.senderName,
+  //   this.senderCity,
+  //   this.senderAddress,
+  //   this.senderDistrict,
+  //   this.senderContact,
+  //   this.receiverName,
+  //   this.receiverCity,
+  //   this.receiverAddress,
+  //   this.receiverDistrict,
+  //   this.receiverContact,
+  //   this.collectionCash,
+  //   this.packageCheckedValue,
+  //   this.fragileCheckedValue,
+  //   this.selectedTime,
+  //   this.orderPayer,
+  //   this.refNo,
+  // }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +95,7 @@ class OrderSuccess extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  // 'Your Order No: $orderId',
-                  'Your Order No',
+                  'Your Order No: $orderId',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -92,6 +132,7 @@ class OrderSuccess extends StatelessWidget {
                     ),
                   ),
                 ),
+                Icon(Icons.arrow_forward_rounded),
                 Card(
                   child: Container(
                     width: MediaQuery.of(context).size.width / 2.5,
@@ -166,15 +207,16 @@ class OrderSuccess extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               elevation: 0,
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.of(context)
                     .pushReplacementNamed(TabsScreen.routeName);
               },
               child: Text(
-                'Create another order',
+                'Add new order',
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontSize: 14,
                 ),
               ),
               color: Colors.white,

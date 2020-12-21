@@ -59,10 +59,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final orderPvd = Provider.of<OrderProvider>(context);
     final userPvd = Provider.of<UserProvider>(context);
 
-    final addressSenderArg =
+    // final addOrderArgs =
+    //     ModalRoute.of(context).settings.arguments as Map<String, List>;
+    final addOrderArgs =
         ModalRoute.of(context).settings.arguments as Map<String, List>;
-    final senderAddresses = addressSenderArg['senderAddresses'];
-    final receiverAddresses = addressSenderArg['receiverAddresses'];
+    final senderAddresses = addOrderArgs['senderAddresses'];
+    final receiverAddresses = addOrderArgs['receiverAddresses'];
+    List deliveryCost = addOrderArgs['deliveryCost'];
+
+    print(deliveryCost[0]['delivery_cost']);
 
     return Scaffold(
       appBar: AppBar(
@@ -132,6 +137,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                               ? senderAddresses.last.mobile
                               : _addOrder.orderSenderContact,
 
+                          'senderDetail': senderAddresses,
+
                           // RECEIVER DETAILS
                           'selectedReceiverAddressId':
                               orderPvd.selectedReceiverAddress,
@@ -155,12 +162,15 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                                   ? receiverAddresses.last.mobile
                                   : _addOrder.orderReceiverContact,
 
+                          'receiverDetail': receiverAddresses,
+
                           // EXTRA DETAILS
                           'packageCheckedValue': orderPvd.packageCheckedValue,
                           'fragileCheckedValue': orderPvd.fragileCheckedValue,
                           'selectedTime': orderPvd.selectedTime,
                           'collectionCash': _addOrder.orderCollectionCash,
                           'refNo': _addOrder.orderRefNo,
+                          'deliveryCost': deliveryCost,
                         },
                       );
                     }
