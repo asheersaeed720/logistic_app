@@ -99,7 +99,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 : receiverDetail
                                     .where((element) => element.id
                                         .contains(selectedReceiverAddressId))
-                                    .map((e) => e.cityName))
+                                    .map((e) => e.cityName),
+                          )
                         : Column(
                             children: [
                               ...(senderDetail)
@@ -113,7 +114,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   e.fullname,
                                   e.cityName,
                                   e.mobile,
-                                  receiverCity,
+                                  selectedReceiverAddressId == null
+                                      ? receiverCity
+                                      : receiverDetail
+                                          .where((element) => element.id
+                                              .contains(
+                                                  selectedReceiverAddressId))
+                                          .map((e) => e.cityName),
                                 );
                               })
                             ],
@@ -134,7 +141,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 : senderDetail
                                     .where((element) => element.id
                                         .contains(selectedSenderAddressId))
-                                    .map((e) => e.cityName))
+                                    .map((e) => e.cityName),
+                          )
                         : Column(
                             children: [
                               ...(receiverDetail)
@@ -149,7 +157,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   e.fullname,
                                   e.cityName,
                                   e.mobile,
-                                  senderCity,
+                                  selectedSenderAddressId == null
+                                      ? senderCity
+                                      : senderDetail
+                                          .where((element) => element.id
+                                              .contains(
+                                                  selectedSenderAddressId))
+                                          .map((e) => e.cityName),
                                 );
                               })
                             ],
@@ -287,14 +301,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // RECEIVER CITY
     receiverCity,
   ) {
-    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
-        (receiverCity.toString() == '(ar-Riyad)' ||
-            receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
-      test = deliveryCost[0]['delivery_cost_inside'];
-    } else {
-      test = deliveryCost[0]['delivery_cost'];
-    }
+    // if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
+    //     (receiverCity.toString() == '(ar-Riyad)' ||
+    //         receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //             'ar-Riyad')) {
+    //   test = deliveryCost[0]['delivery_cost_inside'];
+    // } else {
+    //   test = deliveryCost[0]['delivery_cost'];
+    // }
 
     return Card(
       child: Container(
@@ -349,14 +363,14 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // RECEIVER
     receiverCity,
   ) {
-    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
-        (receiverCity.toString() == '(ar-Riyad)' ||
-            receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
-      test = deliveryCost[0]['delivery_cost_inside'];
-    } else {
-      test = deliveryCost[0]['delivery_cost'];
-    }
+    // if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
+    //     (receiverCity.toString() == '(ar-Riyad)' ||
+    //         receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //             'ar-Riyad')) {
+    //   test = deliveryCost[0]['delivery_cost_inside'];
+    // } else {
+    //   test = deliveryCost[0]['delivery_cost'];
+    // }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
@@ -413,15 +427,15 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // SENDER CITY
     senderCity,
   ) {
-    if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-            'ar-Riyad' &&
-        (senderCity.toString() == '(ar-Riyad)' ||
-            senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
-      test = deliveryCost[0]['delivery_cost_inside'];
-    } else {
-      test = deliveryCost[0]['delivery_cost'];
-    }
+    // if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //         'ar-Riyad' &&
+    //     (senderCity.toString() == '(ar-Riyad)' ||
+    //         senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //             'ar-Riyad')) {
+    //   test = deliveryCost[0]['delivery_cost_inside'];
+    // } else {
+    //   test = deliveryCost[0]['delivery_cost'];
+    // }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
@@ -478,15 +492,15 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // SENDER CITY
     senderCity,
   ) {
-    if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-            'ar-Riyad' &&
-        (senderCity.toString() == '(ar-Riyad)' ||
-            senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
-      test = deliveryCost[0]['delivery_cost_inside'];
-    } else {
-      test = deliveryCost[0]['delivery_cost'];
-    }
+    // if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //         'ar-Riyad' &&
+    //     (senderCity.toString() == '(ar-Riyad)' ||
+    //         senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+    //             'ar-Riyad')) {
+    //   test = deliveryCost[0]['delivery_cost_inside'];
+    // } else {
+    //   test = deliveryCost[0]['delivery_cost'];
+    // }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,

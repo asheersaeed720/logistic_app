@@ -1,7 +1,10 @@
 import 'dart:convert';
-import 'package:async/async.dart';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hani_almutairi_logistic/models/balance.dart';
 import 'package:http/http.dart';
+import 'dart:async';
+import 'package:hani_almutairi_logistic/models/notification.dart';
 
 import 'package:flushbar/flushbar.dart';
 
@@ -9,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/services/user_service.dart';
 import 'package:hani_almutairi_logistic/utils/web_api.dart';
+import 'package:hani_almutairi_logistic/models/notification.dart';
 
 class UserProvider with ChangeNotifier {
   UserService _userService = UserService();
@@ -87,21 +91,13 @@ class UserProvider with ChangeNotifier {
     return _userService.getUserAddressById(user, addressId);
   }
 
-  // delUserAddress(String addressId, user) {
-  //   isLoading = true;
-  //   try {
-  //     delete(
-  //       '${WebApi.delUserAddressesURL}/$addressId',
-  //       headers: {
-  //         'APP-KEY': WebApi.appKey,
-  //         'x-api-key': user['token'],
-  //       },
-  //     );
-  //   } catch (e) {
-  //     throw (e);
-  //   }
-  //   isLoading = false;
-  // }
+  Future<List<Balance>> getbalance(user) {
+    return _userService.getUserbalance(user);
+  }
+
+  Future<List<NotificationMessage>> getNotification(user) {
+    return _userService.getUserNotification(user);
+  }
 
   delUserAddress(context, String addressId, user) async {
     isLoading = true;

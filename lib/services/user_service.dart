@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
+import 'package:hani_almutairi_logistic/models/balance.dart';
+import 'package:hani_almutairi_logistic/models/notification.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:http/http.dart';
 
@@ -183,5 +185,53 @@ class UserService {
     }
 
     return result;
+  }
+
+  Future<List<Balance>> getUserbalance(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getBalanceURL}',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        return ([responseJson] as List)
+            .map((i) => Balance.fromJson(i))
+            .toList();
+      } else {
+        throw ('Failed to load Address');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
+
+  Future<List<NotificationMessage>> getUserNotification(user) async {
+    try {
+      var response = await get(
+        '${WebApi.getNotificationURL}',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+          'x-api-key': '${user['token']}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        return (responseJson as List)
+            .map((i) => NotificationMessage.fromJson(i))
+            .toList();
+      } else {
+        throw ('Failed to load Address');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
   }
 }

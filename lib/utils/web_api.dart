@@ -37,6 +37,10 @@ class WebApi {
   static const String forgotPasswordURL = baseURL + '/auth/forgot';
 
   static const String getDeliveryCost = baseURL + '/Misc/settings';
+
+  static const String getBalanceURL = baseURL + '/Users/dashboard_data';
+
+  static const String getNotificationURL = baseURL + '/Users/notifications';
 }
 
 // TEST LOGIN CREDENTIAL
