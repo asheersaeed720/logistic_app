@@ -67,8 +67,6 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     final receiverAddresses = addOrderArgs['receiverAddresses'];
     List deliveryCost = addOrderArgs['deliveryCost'];
 
-    print(deliveryCost[0]['delivery_cost']);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Order'),
@@ -171,6 +169,19 @@ class _FormOneWidgetState extends State<FormOneWidget> {
                           'collectionCash': _addOrder.orderCollectionCash,
                           'refNo': _addOrder.orderRefNo,
                           'deliveryCost': deliveryCost,
+
+                          // DELIVERY COST ACCORDING TO RIYADH
+                          // 'deliveryCost':
+                          //     (_addOrder.orderSenderCity.toString() ==
+                          //                     'ar-Riyad' ||
+                          //                 senderAddresses.last.cityName ==
+                          //                     'ar-Riyad') &&
+                          //             (_addOrder.orderReceiverCity.toString() ==
+                          //                     'ar-Riyad' ||
+                          //                 receiverAddresses.last.cityName ==
+                          //                     'ar-Riyad')
+                          //         ? deliveryCost[0]['delivery_cost_inside']
+                          //         : deliveryCost[0]['delivery_cost'],
                         },
                       );
                     }

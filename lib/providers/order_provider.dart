@@ -97,7 +97,7 @@ class OrderProvider with ChangeNotifier {
 
   setOrderPayer(String selectedValue) {
     orderPayer = selectedValue;
-    print(orderPayer);
+    // print(orderPayer);
   }
 
   setpackageCheckedVal(bool checkedVal) {

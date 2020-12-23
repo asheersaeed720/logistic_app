@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
@@ -85,13 +86,15 @@ class UserService {
   Future<List<UserAddress>> getSenderAddresses(user) async {
     try {
       var response = await get(
-        // '${WebApi.getUserAddressesURL}/${user['user_id']}',
         '${WebApi.getUserAddressesURL}',
         headers: {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
-      );
+      ).timeout(const Duration(seconds: 6), onTimeout: () {
+        throw TimeoutException(
+            'The connection has timed out, Please try again!');
+      });
 
       if (response.statusCode == 200) {
         var responseJson = json.decode(response.body);
@@ -115,7 +118,10 @@ class UserService {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
-      );
+      ).timeout(const Duration(seconds: 6), onTimeout: () {
+        throw TimeoutException(
+            'The connection has timed out, Please try again!');
+      });
 
       if (response.statusCode == 200) {
         var responseJson = json.decode(response.body);
@@ -152,5 +158,30 @@ class UserService {
     } on SocketException {
       throw ('No Internet connection');
     }
+  }
+
+  delUserAddress(addressId, user) async {
+    var result;
+
+    var response = await delete(
+      '${WebApi.delUserAddressesURL}/$addressId',
+      headers: {
+        'APP-KEY': WebApi.appKey,
+        'x-api-key': user['token'],
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+
+    return result;
   }
 }

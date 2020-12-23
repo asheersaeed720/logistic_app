@@ -105,131 +105,141 @@ class _SenderAddressesState extends State<SenderAddresses> {
         body: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height * 0.8,
-            child: FutureBuilder<List<UserAddress>>(
-              future: userPvd.getSenderAddresses(authPvd.user),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<UserAddress> userAddresses = snapshot.data;
-                  return userAddresses.isEmpty
-                      ? Center(
-                          child: Text('No Sender Addresses Found'),
-                        )
-                      : ListView.builder(
-                          itemCount: userAddresses.length,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              elevation: 1,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                child: ListTile(
-                                  title: Text('${userAddresses[i].fullname}',
-                                      style: TextStyle(fontSize: 16)),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_city,
-                                            color: Colors.grey,
-                                          ),
-                                          Text(
-                                              '  ${userAddresses[i].cityName}'),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.phone,
-                                            color: Colors.grey,
-                                          ),
-                                          Text('  ${userAddresses[i].mobile}'),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Colors.grey,
-                                          ),
-                                          Text(
-                                            '  ${userAddresses[i].address}',
-                                            overflow: TextOverflow.fade,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (dialogContext) => AlertDialog(
-                                          title: Text('Address Delete'),
-                                          content: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                5.6,
-                                            child: Column(
+            child: userPvd.isLoading
+                ? LoadingIndicator()
+                : FutureBuilder<List<UserAddress>>(
+                    future: userPvd.getSenderAddresses(authPvd.user),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<UserAddress> userAddresses = snapshot.data;
+                        return userAddresses.isEmpty
+                            ? Center(
+                                child: Text('No Sender Addresses Found'),
+                              )
+                            : ListView.builder(
+                                itemCount: userAddresses.length,
+                                itemBuilder: (context, i) {
+                                  return Card(
+                                    elevation: 1,
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 8),
+                                      child: ListTile(
+                                        title: Text(
+                                            '${userAddresses[i].fullname}',
+                                            style: TextStyle(fontSize: 16)),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 8),
+                                            Row(
                                               children: [
+                                                Icon(
+                                                  Icons.location_city,
+                                                  color: Colors.grey,
+                                                ),
                                                 Text(
-                                                    'Are you sure, You want to delete address?'),
-                                                SizedBox(height: 14),
+                                                    '  ${userAddresses[i].cityName}'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.phone,
+                                                  color: Colors.grey,
+                                                ),
                                                 Text(
-                                                  'If you delete this address, the orders sent to this address using "${userAddresses[i].mobile}" won\'t apear in search orders',
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: Theme.of(context)
-                                                        .errorColor,
-                                                  ),
+                                                    '  ${userAddresses[i].mobile}'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.grey,
+                                                ),
+                                                Text(
+                                                  '  ${userAddresses[i].address}',
+                                                  overflow: TextOverflow.fade,
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          actions: [
-                                            FlatButton(
-                                              onPressed: () {
-                                                Navigator.of(dialogContext)
-                                                    .pop();
-                                              },
-                                              child: Text('No'),
-                                            ),
-                                            FlatButton(
-                                              onPressed: () async {
-                                                userPvd.delUserAddress(
-                                                    userAddresses[i].id,
-                                                    authPvd.user);
-                                                Navigator.of(dialogContext)
-                                                    .pop();
-                                              },
-                                              child: Text('Yes'),
-                                            ),
                                           ],
-                                          elevation: 20,
                                         ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Theme.of(context).errorColor,
+                                        trailing: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (dialogContext) =>
+                                                  AlertDialog(
+                                                title: Text('Address Delete'),
+                                                content: Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      5.6,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                          'Are you sure, You want to delete address?'),
+                                                      SizedBox(height: 14),
+                                                      Text(
+                                                        'If you delete this address, the orders sent to this address using "${userAddresses[i].mobile}" won\'t apear in search orders',
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .errorColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  FlatButton(
+                                                    onPressed: () {
+                                                      Navigator.of(
+                                                              dialogContext)
+                                                          .pop();
+                                                    },
+                                                    child: Text('No'),
+                                                  ),
+                                                  FlatButton(
+                                                    onPressed: () {
+                                                      userPvd.delUserAddress(
+                                                          context,
+                                                          userAddresses[i].id,
+                                                          authPvd.user);
+                                                      Navigator.of(
+                                                              dialogContext)
+                                                          .pop();
+                                                    },
+                                                    child: Text('Yes'),
+                                                  ),
+                                                ],
+                                                elevation: 20,
+                                              ),
+                                            );
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Theme.of(context).errorColor,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                                  );
+                                },
+                              );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('${snapshot.error}'),
                         );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                }
-                return LoadingIndicator();
-              },
-            ),
+                      }
+                      return LoadingIndicator();
+                    },
+                  ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

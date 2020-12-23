@@ -6,8 +6,6 @@ import 'package:hani_almutairi_logistic/screens/drawer_screens/privacy_screen.da
 import 'package:hani_almutairi_logistic/screens/drawer_screens/terms_conditions_screen.dart';
 import 'package:hani_almutairi_logistic/screens/drawer_screens/track_my_shipment_screen.dart';
 import 'package:hani_almutairi_logistic/screens/forgot_password_screen.dart';
-import 'package:hani_almutairi_logistic/screens/order/add_order/form_wizard/form_wizard.dart';
-import 'package:hani_almutairi_logistic/screens/order/user_order/edit_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/user_order/search_order_screen.dart';
 import 'package:hani_almutairi_logistic/screens/reset_password.dart';
 import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';

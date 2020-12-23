@@ -20,8 +20,6 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // AsyncMemoizer _memorizer = AsyncMemoizer<List<UserAddress>>();
-
   addSenderAddress(context, senderAddress, user) async {
     isLoading = true;
     final response =
@@ -77,31 +75,59 @@ class UserProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  Future<List<UserAddress>> getSenderAddresses(user) async {
+  Future<List<UserAddress>> getSenderAddresses(user) {
     return _userService.getSenderAddresses(user);
   }
 
-  Future<List<UserAddress>> getReceiverAddresses(user) async {
+  Future<List<UserAddress>> getReceiverAddresses(user) {
     return _userService.getReceiverAddresses(user);
   }
 
-  Future<List<UserAddress>> getUserAddressById(user, addressId) async {
+  Future<List<UserAddress>> getUserAddressById(user, addressId) {
     return _userService.getUserAddressById(user, addressId);
   }
 
-  delUserAddress(String userId, user) async {
+  // delUserAddress(String addressId, user) {
+  //   isLoading = true;
+  //   try {
+  //     delete(
+  //       '${WebApi.delUserAddressesURL}/$addressId',
+  //       headers: {
+  //         'APP-KEY': WebApi.appKey,
+  //         'x-api-key': user['token'],
+  //       },
+  //     );
+  //   } catch (e) {
+  //     throw (e);
+  //   }
+  //   isLoading = false;
+  // }
+
+  delUserAddress(context, String addressId, user) async {
     isLoading = true;
-    try {
-      delete(
-        '${WebApi.delUserAddressesURL}/$userId',
-        headers: {
-          'APP-KEY': WebApi.appKey,
-          'x-api-key': user['token'],
-        },
+
+    final response = await _userService.delUserAddress(addressId, user);
+
+    if (response['status'] == true) {
+      // getSenderAddresses(user);
+      Fluttertoast.showToast(
+        msg: "Address has been deleted",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
       );
-    } catch (e) {
-      throw (e);
+      print(response);
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
     }
+
     isLoading = false;
   }
 }
