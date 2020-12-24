@@ -126,4 +126,30 @@ class UserProvider with ChangeNotifier {
 
     isLoading = false;
   }
+
+  banktransfer(context, user, bankName, accountNo, ownerName) async {
+    isLoading = true;
+    final response =
+        await _userService.banktransfer(user, bankName, accountNo, ownerName);
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Successful",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
+    isLoading = false;
+  }
 }

@@ -8,18 +8,24 @@ import 'package:provider/provider.dart';
 class OrderStatusFilterBtn extends StatelessWidget {
   final filterTitle1;
   final filterTitle2;
+  final filterTitle3;
   final filterBtn1;
   final filterBtn2;
+  final filterBtn3;
   final activateFilterBtn1;
   final activateFilterBtn2;
+  final activateFilterBtn3;
 
   OrderStatusFilterBtn(
     this.filterTitle1,
     this.filterTitle2,
+    this.filterTitle3,
     this.filterBtn1,
     this.filterBtn2,
+    this.filterBtn3,
     this.activateFilterBtn1,
     this.activateFilterBtn2,
+    this.activateFilterBtn3,
   );
 
   @override
@@ -65,6 +71,26 @@ class OrderStatusFilterBtn extends StatelessWidget {
               ),
             ),
             color: filterBtn2 ? Theme.of(context).primaryColor : Colors.white,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Theme.of(context).primaryColor),
+            ),
+          ),
+          RaisedButton(
+            padding: const EdgeInsets.symmetric(horizontal: 6.5),
+            elevation: 0,
+            onPressed: () {
+              activateFilterBtn3();
+            },
+            child: Text(
+              '$filterTitle3',
+              style: TextStyle(
+                color:
+                    filterBtn3 ? Colors.white : Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+            color: filterBtn3 ? Theme.of(context).primaryColor : Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Theme.of(context).primaryColor),
             ),

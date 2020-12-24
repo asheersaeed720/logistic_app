@@ -32,7 +32,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     // CHANGE PASSWORD
     final newPassword = TextFormField(
       obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? "Please enter new password" : null,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please Enter Confirm Password';
+        } else if (value.length < 6) {
+          return 'Password must be atleast 6 characters';
+        }
+        return null;
+      },
       onSaved: (value) {
         setState(() {
           passwordVal = value;
@@ -135,7 +142,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${getTranslatedValue(context, 'change_password')}",
+          "Reset Password",
         ),
       ),
       body: Center(

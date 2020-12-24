@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
 
   String _couponCode;
 
-  var test = '';
+  Timer _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +68,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     var collectionCash = formOneDetails['collectionCash'];
     var refNo = formOneDetails['refNo'];
     List deliveryCost = formOneDetails['deliveryCost'];
-
-    print(test);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -265,6 +264,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                   fragileCheckedValue,
                                   selectedTime,
                                   collectionCash,
+                                  orderPvd.calculatedDeliveryCost,
                                   refNo,
                                   isSenderAddressSave,
                                   isReceiverAddressSave,
@@ -301,14 +301,22 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // RECEIVER CITY
     receiverCity,
   ) {
-    // if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
-    //     (receiverCity.toString() == '(ar-Riyad)' ||
-    //         receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //             'ar-Riyad')) {
-    //   test = deliveryCost[0]['delivery_cost_inside'];
-    // } else {
-    //   test = deliveryCost[0]['delivery_cost'];
-    // }
+    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
+        (receiverCity.toString() == '(ar-Riyad)' ||
+            receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+                'ar-Riyad')) {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            deliveryCost[0]['delivery_cost_inside'];
+      });
+    } else {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+      });
+    }
+
+    print(orderPvd.calculatedDeliveryCost);
 
     return Card(
       child: Container(
@@ -363,14 +371,20 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // RECEIVER
     receiverCity,
   ) {
-    // if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
-    //     (receiverCity.toString() == '(ar-Riyad)' ||
-    //         receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //             'ar-Riyad')) {
-    //   test = deliveryCost[0]['delivery_cost_inside'];
-    // } else {
-    //   test = deliveryCost[0]['delivery_cost'];
-    // }
+    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
+        (receiverCity.toString() == '(ar-Riyad)' ||
+            receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+                'ar-Riyad')) {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            deliveryCost[0]['delivery_cost_inside'];
+      });
+    } else {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+      });
+    }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
@@ -427,15 +441,21 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // SENDER CITY
     senderCity,
   ) {
-    // if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //         'ar-Riyad' &&
-    //     (senderCity.toString() == '(ar-Riyad)' ||
-    //         senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //             'ar-Riyad')) {
-    //   test = deliveryCost[0]['delivery_cost_inside'];
-    // } else {
-    //   test = deliveryCost[0]['delivery_cost'];
-    // }
+    if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+            'ar-Riyad' &&
+        (senderCity.toString() == '(ar-Riyad)' ||
+            senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+                'ar-Riyad')) {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            deliveryCost[0]['delivery_cost_inside'];
+      });
+    } else {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+      });
+    }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
@@ -492,15 +512,21 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // SENDER CITY
     senderCity,
   ) {
-    // if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //         'ar-Riyad' &&
-    //     (senderCity.toString() == '(ar-Riyad)' ||
-    //         senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-    //             'ar-Riyad')) {
-    //   test = deliveryCost[0]['delivery_cost_inside'];
-    // } else {
-    //   test = deliveryCost[0]['delivery_cost'];
-    // }
+    if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+            'ar-Riyad' &&
+        (senderCity.toString() == '(ar-Riyad)' ||
+            senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+                'ar-Riyad')) {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            deliveryCost[0]['delivery_cost_inside'];
+      });
+    } else {
+      _timer = Timer(Duration(seconds: 1), () {
+        orderPvd.calculatedDeliveryCost =
+            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+      });
+    }
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
@@ -584,6 +610,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
         const SizedBox(height: 10),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
   }
 
   // SENDER & RECEIVER DETAIL SECTION

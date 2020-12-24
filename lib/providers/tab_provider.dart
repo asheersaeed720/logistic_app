@@ -16,7 +16,7 @@ class TabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String _tabTittle = 'Add Order';
+  String _tabTittle = 'My Account';
   String get tabTittle => _tabTittle;
   set tabTittle(String titleVal) {
     _tabTittle = titleVal;
@@ -24,7 +24,7 @@ class TabProvider with ChangeNotifier {
   }
 
   final List<Widget> childrenTab = [
-    UserAccount(),
+    UserAccountScreen(),
     NotificationScreen(),
     UserOrderScreen(),
     AddOrderScreen(),

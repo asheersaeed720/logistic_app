@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:hani_almutairi_logistic/models/search_bank.dart';
 import 'package:http/http.dart';
 import 'package:dio/dio.dart';
 
@@ -22,6 +23,27 @@ class AuthService {
       );
 
       var models = SearchCityModel.fromJsonList(response.data);
+      return models;
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<List<SearchBankModel>> getBanks(filter, user) async {
+    try {
+      var response = await Dio().get(
+        '${WebApi.getBankURL}',
+        queryParameters: {"filter": filter},
+        options: Options(
+          headers: {
+            "APP_KEY": '${WebApi.appKey}',
+            "x-api-key": '${user['token']}'
+          },
+        ),
+      );
+
+      var models = SearchBankModel.fromJsonList(response.data);
+
       return models;
     } catch (e) {
       throw (e);

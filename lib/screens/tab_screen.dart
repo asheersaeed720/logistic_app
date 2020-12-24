@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/add_order/add_order_screen.dart';
+import 'package:hani_almutairi_logistic/screens/order/user_order/user_order_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/user_account.dart';
 
 import 'package:provider/provider.dart';
 
@@ -109,3 +113,99 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 }
+
+// class TabsScreen extends StatefulWidget {
+//   static const String routeName = '/tabs';
+
+//   @override
+//   _TabsScreenState createState() => _TabsScreenState();
+// }
+
+// class _TabsScreenState extends State<TabsScreen> {
+//   PageController _pageController;
+//   int _page = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: PageView(
+//         physics: NeverScrollableScrollPhysics(),
+//         controller: _pageController,
+//         onPageChanged: onPageChanged,
+//         children: <Widget>[
+//           UserAccountScreen(),
+//           NotificationScreen(),
+//           UserOrderScreen(),
+//           AddOrderScreen(),
+//         ],
+//       ),
+//       bottomNavigationBar: BottomAppBar(
+//         child: Row(
+//           // mainAxisSize: MainAxisSize.max,
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: <Widget>[
+//             SizedBox(width: 2),
+//             IconButton(
+//               icon: Icon(
+//                 Icons.account_circle,
+//                 size: 24.0,
+//               ),
+//               color: _page == 0
+//                   ? Theme.of(context).primaryColor
+//                   : Theme.of(context).textTheme.caption.color,
+//               onPressed: () => _pageController.jumpToPage(0),
+//             ),
+//             IconButton(
+//               icon: Icon(
+//                 Icons.notifications,
+//                 size: 24.0,
+//               ),
+//               color: _page == 1
+//                   ? Theme.of(context).primaryColor
+//                   : Theme.of(context).textTheme.caption.color,
+//               onPressed: () => _pageController.jumpToPage(1),
+//             ),
+//             IconButton(
+//               icon: Icon(
+//                 Icons.folder,
+//                 size: 24.0,
+//               ),
+//               color: _page == 2
+//                   ? Theme.of(context).primaryColor
+//                   : Theme.of(context).textTheme.caption.color,
+//               onPressed: () => _pageController.jumpToPage(2),
+//             ),
+//             IconButton(
+//               icon: Icon(
+//                 Icons.delivery_dining,
+//                 size: 24.0,
+//               ),
+//               color: _page == 3
+//                   ? Theme.of(context).primaryColor
+//                   : Theme.of(context).textTheme.caption.color,
+//               onPressed: () => _pageController.jumpToPage(3),
+//             ),
+//             SizedBox(width: 2),
+//           ],
+//         ),
+//         shape: CircularNotchedRectangle(),
+//       ),
+//     );
+//   }
+
+//   void navigationTapped(int page) {
+//     _pageController.jumpToPage(page);
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _pageController = PageController();
+//   }
+
+//   void onPageChanged(int page) {
+//     setState(() {
+//       this._page = page;
+//     });
+//   }
+// }

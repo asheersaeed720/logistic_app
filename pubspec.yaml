@@ -45,6 +45,7 @@ dependencies:
   font_awesome_flutter: ^8.0.1
   cached_network_image: ^2.3.3
   pin_input_text_field: ^3.1.1
+  flutter_datetime_picker: ^1.4.0
   # flutter_full_pdf_viewer: ^1.0.6
   # pdf_render: ^0.57.2
   # flutter_pdf_viewer: ^0.6.1

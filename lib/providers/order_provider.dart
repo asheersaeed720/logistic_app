@@ -22,12 +22,55 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // bool _isSearchOrderVisible = false;
-  // bool get isSearchOrderVisible => _isSearchOrderVisible;
-  // set isSearchOrderVisible(bool value) {
-  //   _isSearchOrderVisible = value;
-  //   notifyListeners();
-  // }
+  // ORDER REPORT
+
+  bool _isShipmentReportSelected = false;
+  bool get isShipmentReportSelected => _isShipmentReportSelected;
+  set isShipmentReportSelected(bool val) {
+    _isShipmentReportSelected = val;
+    notifyListeners();
+  }
+
+  setShipmentReportSelected(value) {
+    isShipmentReportSelected = value;
+    print(value);
+  }
+
+  bool _isInvoiceReportSelected = false;
+  bool get isInvoiceReportSelected => _isInvoiceReportSelected;
+  set isInvoiceReportSelected(bool val) {
+    _isInvoiceReportSelected = val;
+    notifyListeners();
+  }
+
+  setInvoiceReportSelected(value) {
+    isInvoiceReportSelected = value;
+    print(value);
+  }
+
+  bool _isBalanceReportSelected = false;
+  bool get isBalanceReportSelected => _isBalanceReportSelected;
+  set isBalanceReportSelected(bool val) {
+    _isBalanceReportSelected = val;
+    notifyListeners();
+  }
+
+  setBalanceReportSelected(value) {
+    isBalanceReportSelected = value;
+    print(value);
+  }
+
+  bool _isSelectedTransferReport = false;
+  bool get isSelectedTransferReport => _isSelectedTransferReport;
+  set isSelectedTransferReport(bool val) {
+    _isSelectedTransferReport = val;
+    notifyListeners();
+  }
+
+  setSelectedTransferReport(value) {
+    isSelectedTransferReport = value;
+    print(value);
+  }
 
   String _selectedSenderAddress;
   String get selectedSenderAddress => _selectedSenderAddress;
@@ -136,6 +179,13 @@ class OrderProvider with ChangeNotifier {
     print(isReceiverAddressSave);
   }
 
+  String _calculatedDeliveryCost;
+  String get calculatedDeliveryCost => _calculatedDeliveryCost;
+  set calculatedDeliveryCost(String val) {
+    _calculatedDeliveryCost = val;
+    notifyListeners();
+  }
+
   Future<Map> getDeliveryCost(user) {
     return _orderService.getDeliveryCost(user);
   }
@@ -175,6 +225,7 @@ class OrderProvider with ChangeNotifier {
     fragileCheckedValue,
     selectedTime,
     collectionCash,
+    deliveryCost,
     refNo,
     isSenderAddressSave,
     isReceiverAddressSave,
@@ -204,6 +255,7 @@ class OrderProvider with ChangeNotifier {
       fragileCheckedValue,
       selectedTime,
       collectionCash,
+      deliveryCost,
       refNo,
       isSenderAddressSave,
       isReceiverAddressSave,
@@ -283,6 +335,7 @@ class OrderProvider with ChangeNotifier {
           'selectedTime': response['user']['data']['order_pickup_time'],
           'orderPayer': response['user']['data']['order_payer'],
           'refNo': response['user']['data']['order_ref_no'],
+          'order_total_amount': response['user']['data']['order_total_amount'],
         },
       );
     } else {
@@ -336,78 +389,6 @@ class OrderProvider with ChangeNotifier {
   resetFormNavigation() {
     stepOrderFormNumber = 1;
   }
-
-  // ADD ORDER
-  // addOrderTest(
-  //   context,
-  //   user,
-  //   addOrderData,
-  //   isSenderAddressSave,
-  //   isReceiverAddressSave,
-  //   packageCheckedValue,
-  //   fragileCheckedValue,
-  //   selectedTime,
-  //   orderPayer,
-  // ) async {
-  //   isLoading = true;
-  //   final response = await _orderService.addUserOrderTest(
-  //     context,
-  //     user,
-  //     addOrderData,
-  //     isSenderAddressSave,
-  //     isReceiverAddressSave,
-  //     packageCheckedValue,
-  //     fragileCheckedValue,
-  //     selectedTime,
-  //     orderPayer,
-  //   );
-
-  //   if (response['status'] == true) {
-  //     Fluttertoast.showToast(
-  //       msg: "Your Order has been Added",
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.BOTTOM,
-  //       timeInSecForIosWeb: 1,
-  //       backgroundColor: Colors.black87,
-  //       textColor: Colors.white,
-  //       fontSize: 16.0,
-  //     );
-  //     print(response['user']['data']);
-  //     Navigator.of(context).pushReplacementNamed(
-  //       OrderSuccess.routeName,
-  //       arguments: {
-  //         'orderId': response['user']['data']['order_user_id'],
-  //         // SENDER DETAILS
-  //         'senderName': response['user']['data']['order_sender_name'],
-  //         'senderCity': response['user']['data']['order_sender_city'],
-  //         'senderAddress': response['user']['data']['order_sender_address'],
-  //         'senderDistrict': response['user']['data']['order_sender_district'],
-  //         'senderContact': response['user']['data']['order_sender_contact'],
-  //         // RECEIVER DETAILS
-  //         'receiverName': response['user']['data']['order_reciever_name'],
-  //         'receiverCity': response['user']['data']['order_reciever_city'],
-  //         'receiverAddress': response['user']['data']['order_reciever_address'],
-  //         'receiverDistrict': response['user']['data']
-  //             ['order_reciever_district'],
-  //         'receiverContact': response['user']['data']['order_reciever_contact'],
-  //         // EXTRA DETAILS
-  //         'packageCheckedValue': response['user']['data']['order_packaging'],
-  //         'fragileCheckedValue': response['user']['data']['order_fragile'],
-  //         'selectedTime': response['user']['data']['order_pickup_time'],
-  //         'orderPayer': response['user']['data']['order_payer'],
-  //         'refNo': response['user']['data']['order_ref_no'],
-  //       },
-  //     );
-  //   } else {
-  //     Flushbar(
-  //       title: "Order Failed",
-  //       message: response['message']['message'].toString(),
-  //       duration: Duration(seconds: 3),
-  //     ).show(context);
-  //   }
-
-  //   isLoading = false;
-  // }
 
   Future<List<Order>> getOrders(user) {
     return _orderService.getUserOrder(user);
@@ -502,6 +483,48 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       throw (e);
     }
+    isLoading = false;
+  }
+
+  addOrderReport(
+    context,
+    user,
+    _orderReport,
+    isShipmentReportSelected,
+    isInvoiceReportSelected,
+    isBalanceReportSelected,
+    isSelectedTransferReport,
+  ) async {
+    isLoading = true;
+    final response = await _orderService.addUserOrderReport(
+      context,
+      user,
+      _orderReport,
+      isShipmentReportSelected,
+      isInvoiceReportSelected,
+      isBalanceReportSelected,
+      isSelectedTransferReport,
+    );
+
+    if (response['status'] == true) {
+      Fluttertoast.showToast(
+        msg: "Successful",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.of(context).pop();
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
     isLoading = false;
   }
 }

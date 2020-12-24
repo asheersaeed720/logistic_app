@@ -76,10 +76,12 @@ class OrderSuccess extends StatelessWidget {
     final selectedTime = orderData['selectedTime'];
     final orderPayer = orderData['orderPayer'];
     final refNo = orderData['refNo'];
+    final orderTotalAmount = orderData['order_total_amount'];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Order Success'),
+        leading: null,
       ),
       body: Padding(
         padding:
@@ -195,6 +197,11 @@ class OrderSuccess extends StatelessWidget {
                           ? '0 riyals will be added to your balance if the delivery is successful'
                           : '$collectionCash' +
                               'riyals will be added to your balance if the delivery is successful',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Order Total Amount: $orderTotalAmount',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],

@@ -12,6 +12,7 @@ import 'package:hani_almutairi_logistic/screens/sign_up_screen.dart';
 import 'package:hani_almutairi_logistic/screens/change_password_screen.dart';
 import 'package:hani_almutairi_logistic/screens/notification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/order/order_success_screen.dart';
+import 'package:hani_almutairi_logistic/screens/user_account/bank_transfer_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_account/orders_reports_screen.dart';
 import 'package:hani_almutairi_logistic/screens/user_verification_screen.dart';
 import 'package:hani_almutairi_logistic/screens/tab_screen.dart';
@@ -29,7 +30,7 @@ final routes = {
   UserOrderScreen.routeName: (context) => UserOrderScreen(),
   SignupScreen.routeName: (context) => SignupScreen(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
-  UserAccount.routeName: (context) => UserAccount(),
+  UserAccountScreen.routeName: (context) => UserAccountScreen(),
   UserVerificationScreen.routeName: (context) => UserVerificationScreen(),
   ChangePasswordScreen.routeName: (context) => ChangePasswordScreen(),
   ResetPasswordScreen.routeName: (context) => ResetPasswordScreen(),
@@ -47,8 +48,7 @@ final routes = {
   TermsConditionsScreen.routeName: (context) => TermsConditionsScreen(),
   TrackMyShipmentScreen.routeName: (context) => TrackMyShipmentScreen(),
   CODAmountScreen.routeName: (context) => CODAmountScreen(),
-  // EditOrderScreen.routeName: (context) => EditOrderScreen(),
   SearchOrderScreen.routeName: (context) => SearchOrderScreen(),
   OrdersReportsScreen.routeName: (context) => OrdersReportsScreen(),
-  // OrderFormWizard.routeName: (context) => OrderFormWizard(),
+  BankTransferScreen.routeName: (context) => BankTransferScreen(),
 };

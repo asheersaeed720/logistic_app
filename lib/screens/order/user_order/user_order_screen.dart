@@ -26,6 +26,8 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
 
   String _mobileNoValue, _trackingNoValue;
 
+  List<Order> orders;
+
   @override
   Widget build(BuildContext context) {
     final filterPvd = Provider.of<FilterProvider>(context);
@@ -67,7 +69,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                     future: orderPvd.getOrders(user),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        List<Order> orders = snapshot.data;
+                        orders = snapshot.data;
                         return ListView.builder(
                           itemCount: orders.length,
                           itemBuilder: (context, i) => UserOrderItem(
@@ -121,14 +123,62 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                   children: [
                     HeadingTitle('Receiver'),
                     OrderStatusFilterBtn(
+                      'New',
                       "${getTranslatedValue(context, 'not_delivered')}",
                       "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
+                      filterPvd.orderStatusFilterBtn3,
                       filterPvd.activateOrderStatusFilterBtn1,
                       filterPvd.activateOrderStatusFilterBtn2,
+                      filterPvd.activateOrderStatusFilterBtn3,
                     ),
                     if (filterPvd.orderStatusFilterBtn1 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'reciever', 'PENDING'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  // SENDER DETAILS
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
+                                  orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('${snapshot.error}'),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
+                      )
+                    else if (filterPvd.orderStatusFilterBtn2 == true)
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
@@ -173,7 +223,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                           },
                         ),
                       )
-                    else if (filterPvd.orderStatusFilterBtn2 == true)
+                    else if (filterPvd.orderStatusFilterBtn3 == true)
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
@@ -225,14 +275,62 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                   children: [
                     HeadingTitle('Sender'),
                     OrderStatusFilterBtn(
+                      'New',
                       "${getTranslatedValue(context, 'not_delivered')}",
                       "${getTranslatedValue(context, 'finished_orders')}",
                       filterPvd.orderStatusFilterBtn1,
                       filterPvd.orderStatusFilterBtn2,
+                      filterPvd.orderStatusFilterBtn3,
                       filterPvd.activateOrderStatusFilterBtn1,
                       filterPvd.activateOrderStatusFilterBtn2,
+                      filterPvd.activateOrderStatusFilterBtn3,
                     ),
                     if (filterPvd.orderStatusFilterBtn1 == true)
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: FutureBuilder<List<Order>>(
+                          future: orderPvd.getOrdersAsSenderOrReceiver(
+                              user, 'sender', 'PENDING'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<Order> orders = snapshot.data;
+                              return ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, i) => UserOrderItem(
+                                  orders[i].orderId,
+                                  // SENDER DETAILS
+                                  orders[i].orderSenderName,
+                                  orders[i].orderSenderCity,
+                                  orders[i].orderSenderAddress,
+                                  orders[i].orderSenderDistrict,
+                                  orders[i].orderSenderContact,
+                                  // RECEIVER DETAILS
+                                  orders[i].orderRecieverName,
+                                  orders[i].orderRecieverCity,
+                                  orders[i].orderRecieverAddress,
+                                  orders[i].orderRecieverDistrict,
+                                  orders[i].orderRecieverContact,
+                                  // EXTRA DETAILS
+                                  orders[i].orderDate,
+                                  orders[i].orderPickupTime,
+                                  orders[i].orderPackaging,
+                                  orders[i].orderFragile,
+                                  orders[i].orderPayer,
+                                  orders[i].orderCollectionCash,
+                                  orders[i].orderRefNo,
+                                  orders[i].orderStatus,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('${snapshot.error}'),
+                              );
+                            }
+                            return LoadingIndicator();
+                          },
+                        ),
+                      )
+                    else if (filterPvd.orderStatusFilterBtn2 == true)
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
@@ -277,7 +375,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                           },
                         ),
                       )
-                    else if (filterPvd.orderStatusFilterBtn2 == true)
+                    else if (filterPvd.orderStatusFilterBtn3 == true)
                       Container(
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: FutureBuilder<List<Order>>(
@@ -345,14 +443,14 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     final mobileField = TextFormField(
       maxLength: 9,
       autofocus: false,
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter a phone number';
-      //   } else if (_mobileNo.length < 9) {
-      //     return 'Invalid Number';
-      //   }
-      //   return null;
-      // },
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter a phone number';
+        } else if (_mobileNoValue.length < 9) {
+          return 'Invalid Number';
+        }
+        return null;
+      },
       onChanged: (text) {
         _mobileNoValue = '966$text';
       },

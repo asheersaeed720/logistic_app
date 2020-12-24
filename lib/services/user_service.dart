@@ -234,4 +234,38 @@ class UserService {
       throw ('No Internet connection');
     }
   }
+
+  Future<Map> banktransfer(user, bankName, accountNo, ownerName) async {
+    var result;
+
+    final transferData = {
+      'fullname': '$bankName',
+      'city': '$accountNo',
+      'district': '$ownerName',
+    };
+
+    print('Before hit: $transferData');
+
+    var response = await post(
+      '${WebApi.withDrawAmountURL}',
+      body: transferData,
+      headers: {
+        'APP_KEY': '${WebApi.appKey}',
+        'x-api-key': user['token'],
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+
+    return result;
+  }
 }

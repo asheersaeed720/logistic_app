@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hani_almutairi_logistic/models/search_bank.dart';
 
 import 'package:hani_almutairi_logistic/models/search_city.dart';
 import 'package:hani_almutairi_logistic/screens/login_screen.dart';
@@ -44,6 +45,10 @@ class AuthProvider with ChangeNotifier {
 
   Future<List<SearchCityModel>> getCities(filter) async {
     return await _authService.getCities(filter);
+  }
+
+  Future<List<SearchBankModel>> getBanks(filter, user) async {
+    return await _authService.getBanks(filter, user);
   }
 
   login(context, userCredential) async {

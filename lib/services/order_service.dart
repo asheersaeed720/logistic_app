@@ -54,6 +54,7 @@ class OrderService {
     fragileCheckedValue,
     selectedTime,
     collectionCash,
+    deliveryCost,
     refNo,
     isSenderAddressSave,
     isReceiverAddressSave,
@@ -61,6 +62,10 @@ class OrderService {
     couponCode,
   ) async {
     var result;
+
+    var orderTotalAmount =
+        double.parse(collectionCash) + double.parse(deliveryCost);
+    print(orderTotalAmount);
 
     final orderData = {
       // SENDER DETAILS
@@ -78,7 +83,7 @@ class OrderService {
       'reciever_district': '$receiverDistrict',
       'reciever_contact': '$receiverContact',
       // EXTRA DETAILS
-      'order_total_amount': '100',
+      'order_total_amount': '$orderTotalAmount',
       'order_packaging': '$packageCheckedValue',
       'order_fragile': '$fragileCheckedValue',
       'order_pickup_time': '$selectedTime',
@@ -374,6 +379,51 @@ class OrderService {
         'status': false,
         'message': json.decode(response.body),
       };
+    }
+
+    return result;
+  }
+
+  Future<Map> addUserOrderReport(
+    context,
+    user,
+    _orderReport,
+    isShipmentReportSelected,
+    isInvoiceReportSelected,
+    isBalanceReportSelected,
+    isSelectedTransferReport,
+  ) async {
+    var result;
+
+    var orderReport = {
+      'from': '${_orderReport.fromDate}',
+      'to': '${_orderReport.toDate}',
+      'shipment': '$isShipmentReportSelected',
+      'invoice': '$isInvoiceReportSelected',
+      'balance': '$isBalanceReportSelected',
+      'transfer': '$isSelectedTransferReport',
+      'email': '${_orderReport.email}',
+    };
+
+    var response = await post(
+      '${WebApi.reportOrderURL}',
+      body: orderReport,
+      headers: {
+        'APP_KEY': '${WebApi.appKey}',
+        'x-api-key': user['token'],
+      },
+    );
+    print('Before hit: $orderReport');
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+      // print(json.decode(response.body));
     }
 
     return result;

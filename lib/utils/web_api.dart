@@ -38,9 +38,15 @@ class WebApi {
 
   static const String getDeliveryCost = baseURL + '/Misc/settings';
 
+  static const String getBankURL = baseURL + '/Misc/banks';
+
   static const String getBalanceURL = baseURL + '/Users/dashboard_data';
 
   static const String getNotificationURL = baseURL + '/Users/notifications';
+
+  static const String withDrawAmountURL = baseURL + '/Users/withdraw';
+
+  static const String reportOrderURL = baseURL + '/reports/report';
 }
 
 // TEST LOGIN CREDENTIAL
