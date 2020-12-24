@@ -12,6 +12,8 @@ class CODAmountScreen extends StatefulWidget {
 }
 
 class _CODAmountScreenState extends State<CODAmountScreen> {
+  final DateTime now = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final userPvd = Provider.of<UserProvider>(context);
@@ -22,7 +24,7 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-        child: FutureBuilder(
+        child: FutureBuilder<List<Balance>>(
           future: userPvd.getbalance(authPvd.user),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -87,30 +89,46 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 6),
-                              child: Text('65'),
+                              child: Text('type'),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 6),
-                              child: Text('25'),
+                              child: Text('amount'),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 6, bottom: 6),
-                              child: Text('98'),
+                              child: Text('date'),
                             ),
                           ],
                         ),
-                        TableRow(
-                          children: [
-                            Text('    1'),
-                            Text('    2'),
-                            Text('    3'),
-                            Text('    4'),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 8),
-                              child: Text('25 Mar'),
+                        // TableRow(
+                        //   children: [
+                        //     Text('    1'),
+                        //     Text('    2'),
+                        //     Text('    3'),
+                        //     Text('    4'),
+                        //     Padding(
+                        //       padding: EdgeInsets.only(bottom: 8),
+                        //       child: Text('25 Mar'),
+                        //     ),
+                        //   ],
+                        // ),
+
+                        ...(balance)[0].transactions.map(
+                              (e) => TableRow(
+                                children: [
+                                  Text('${e.id}'),
+                                  Text('${e.orderid}'),
+                                  Text('${e.type}'),
+                                  Text('${e.amount}'),
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 8),
+                                    child: Text(
+                                        '${e.datetime.year} ${e.datetime.month} ${e.datetime.day}'),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
                       ],
                     ),
                   ),

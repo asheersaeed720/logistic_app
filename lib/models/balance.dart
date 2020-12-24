@@ -1,29 +1,64 @@
-import 'dart:convert';
-
 class Balance {
   Balance({
     this.balance,
     this.pending,
     this.lastTransaction,
-    // this.transactions,
+    this.transactions,
   });
 
   String balance;
   String pending;
-  String lastTransaction;
-  // List<dynamic> transactions;
+  DateTime lastTransaction;
+  List<Transaction> transactions;
 
   factory Balance.fromJson(Map<String, dynamic> json) => Balance(
         balance: json["balance"],
         pending: json["pending"],
-        lastTransaction: json["last_transaction"],
-        // transactions: List<dynamic>.from(json["transactions"].map((i) => i)),
+        lastTransaction: DateTime.parse(json["last_transaction"]),
+        transactions: List<Transaction>.from(
+            json["transactions"].map((i) => Transaction.fromJson(i))),
       );
 
   Map<String, dynamic> toJson() => {
         "balance": balance,
         "pending": pending,
-        "last_transaction": lastTransaction,
-        // "transactions": List<dynamic>.from(transactions.map((i) => i)),
+        "last_transaction": lastTransaction.toIso8601String(),
+        "transactions": List<dynamic>.from(transactions.map((i) => i.toJson())),
+      };
+}
+
+class Transaction {
+  Transaction({
+    this.id,
+    this.orderid,
+    this.userid,
+    this.datetime,
+    this.amount,
+    this.type,
+  });
+
+  String id;
+  String orderid;
+  String userid;
+  DateTime datetime;
+  String amount;
+  String type;
+
+  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
+        id: json["id"],
+        orderid: json["orderid"],
+        userid: json["userid"],
+        datetime: DateTime.parse(json["datetime"]),
+        amount: json["amount"],
+        type: json["type"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "orderid": orderid,
+        "userid": userid,
+        "datetime": datetime.toIso8601String(),
+        "amount": amount,
+        "type": type,
       };
 }
