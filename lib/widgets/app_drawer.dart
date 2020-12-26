@@ -50,7 +50,7 @@ class AppDrawer extends StatelessWidget {
           Divider(color: Colors.grey),
           ListTile(
             leading: Icon(Icons.call),
-            title: Text("${getTranslatedValue(context, 'call_us')}"),
+            title: Text("Contact Us"),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).pushNamed(CallUsScreen.routeName);

@@ -460,19 +460,12 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
     );
 
     final trackingNo = TextFormField(
-        // validator: (value) => value.isEmpty ? "Please enter tracking no" : null,
-        onSaved: (value) => _trackingNoValue = value,
-        keyboardType: TextInputType.number,
-        decoration:
-            buildTextFieldInputDecoration('Tracking no', Icons.track_changes));
-
-    // var doSearch = () {
-    //   if (_formKey.currentState.validate()) {
-    //     _formKey.currentState.save();
-    //     // orderPvd.getSearchOrderByMobile(user, _mobileNoValue, _trackingNoValue);
-    //     orderPvd.getSearchOrderByMobile(user, '966576398998');
-    //   }
-    // };
+      // validator: (value) => value.isEmpty ? "Please enter tracking no" : null,
+      onSaved: (value) => _trackingNoValue = value,
+      keyboardType: TextInputType.number,
+      decoration:
+          buildTextFieldInputDecoration('Tracking no', Icons.track_changes),
+    );
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -514,52 +507,6 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            // orderPvd.isSearchOrderVisible == false
-            //     ? Text('')
-            //     : Container(
-            //         height: MediaQuery.of(context).size.height * 0.5,
-            //         child: FutureBuilder<List<Order>>(
-            //           future: orderPvd.getSearchOrderByMobile(
-            //               context, user, _mobileNoValue, _trackingNoValue),
-            //           builder: (context, snapshot) {
-            //             if (snapshot.hasData) {
-            //               List<Order> orders = snapshot.data;
-            //               return ListView.builder(
-            //                 itemCount: orders.length,
-            //                 itemBuilder: (context, i) => UserOrderItem(
-            //                   orders[i].orderId,
-            //                   // SENDER DETAILS
-            //                   orders[i].orderSenderName,
-            //                   orders[i].orderSenderCity,
-            //                   orders[i].orderSenderAddress,
-            //                   orders[i].orderSenderDistrict,
-            //                   orders[i].orderSenderContact,
-            //                   // RECEIVER DETAILS
-            //                   orders[i].orderRecieverName,
-            //                   orders[i].orderRecieverCity,
-            //                   orders[i].orderRecieverAddress,
-            //                   orders[i].orderRecieverDistrict,
-            //                   orders[i].orderRecieverContact,
-            //                   // EXTRA DETAILS
-            //                   orders[i].orderDate,
-            //                   orders[i].orderPickupTime,
-            //                   orders[i].orderPackaging,
-            //                   orders[i].orderFragile,
-            //                   orders[i].orderPayer,
-            //                   orders[i].orderCollectionCash,
-            //                   orders[i].orderRefNo,
-            //                   orders[i].orderStatus,
-            //                 ),
-            //               );
-            //             } else if (snapshot.hasError) {
-            //               return Center(
-            //                 child: Text('${snapshot.error}'),
-            //               );
-            //             }
-            //             return LoadingIndicator();
-            //           },
-            //         ),
-            //       ),
           ],
         ),
       ),

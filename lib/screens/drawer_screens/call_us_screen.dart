@@ -7,7 +7,7 @@ class CallUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Call Us'),
+        title: Text('Contact Us'),
       ),
       body: Center(
         child: Padding(

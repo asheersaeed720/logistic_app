@@ -183,7 +183,8 @@ class OrderProvider with ChangeNotifier {
   double get calculatedDeliveryCost => _calculatedDeliveryCost;
   set calculatedDeliveryCost(double val) {
     var calculatePackageAmount = packageCheckedValue == true ? val + 5 : val;
-    _calculatedDeliveryCost = calculatePackageAmount;
+    _calculatedDeliveryCost =
+        calculatePackageAmount + ((calculatePackageAmount * 15) / 100);
     notifyListeners();
   }
 
@@ -492,5 +493,9 @@ class OrderProvider with ChangeNotifier {
     }
 
     isLoading = false;
+  }
+
+  Future<List<Order>> trackShipment(context, user, mobileNo) {
+    return _orderService.trackUserShipment(context, user, mobileNo);
   }
 }

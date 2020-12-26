@@ -309,13 +309,13 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 'ar-Riyad')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
-            deliveryCost[0]['delivery_cost_inside'];
+            double.parse(deliveryCost[0]['delivery_cost_inside']);
         // _timer.cancel();
       });
     } else {
       _timer = Timer(Duration(seconds: 1), () {
-        orderPvd.calculatedDeliveryCost =
-            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+        orderPvd.calculatedDeliveryCost = orderPvd.calculatedDeliveryCost =
+            double.parse(deliveryCost[0]['delivery_cost']);
       });
     }
 
@@ -366,12 +366,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 'ar-Riyad')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
-            deliveryCost[0]['delivery_cost_inside'];
+            double.parse(deliveryCost[0]['delivery_cost_inside']);
       });
     } else {
       _timer = Timer(Duration(seconds: 1), () {
-        orderPvd.calculatedDeliveryCost =
-            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+        orderPvd.calculatedDeliveryCost = orderPvd.calculatedDeliveryCost =
+            double.parse(deliveryCost[0]['delivery_cost']);
       });
     }
     return Card(
@@ -425,12 +425,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 'ar-Riyad')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
-            deliveryCost[0]['delivery_cost_inside'];
+            double.parse(deliveryCost[0]['delivery_cost_inside']);
       });
     } else {
       _timer = Timer(Duration(seconds: 1), () {
-        orderPvd.calculatedDeliveryCost =
-            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+        orderPvd.calculatedDeliveryCost = orderPvd.calculatedDeliveryCost =
+            double.parse(deliveryCost[0]['delivery_cost']);
       });
     }
     return Card(
@@ -486,12 +486,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 'ar-Riyad')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
-            deliveryCost[0]['delivery_cost_inside'];
+            double.parse(deliveryCost[0]['delivery_cost_inside']);
       });
     } else {
       _timer = Timer(Duration(seconds: 1), () {
-        orderPvd.calculatedDeliveryCost =
-            orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
+        orderPvd.calculatedDeliveryCost = orderPvd.calculatedDeliveryCost =
+            double.parse(deliveryCost[0]['delivery_cost']);
       });
     }
     return Card(

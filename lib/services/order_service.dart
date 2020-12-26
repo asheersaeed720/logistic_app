@@ -428,4 +428,34 @@ class OrderService {
 
     return result;
   }
+
+  Future<List<Order>> trackUserShipment(context, user, mobileNo) async {
+    try {
+      var response = await get(
+        '${WebApi.getFilterOrdersURL}?mobilenumber=$mobileNo&trackingnumber=null',
+        headers: {
+          'APP-KEY': WebApi.appKey,
+          'x-api-key': user['token'],
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        Navigator.of(context).pushNamed(
+          SearchOrderScreen.routeName,
+          arguments: {
+            'mobileNo': mobileNo,
+            'trackingNo': null,
+          },
+        );
+      } else if (response.statusCode == 404) {
+        throw ('No Orders Found');
+      } else {
+        throw ('Failed to load orders');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
+  }
 }
