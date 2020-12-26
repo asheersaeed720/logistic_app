@@ -6,23 +6,29 @@ import 'package:hani_almutairi_logistic/providers/order_provider.dart';
 import 'package:hani_almutairi_logistic/utils/input_decoration.dart';
 import 'package:provider/provider.dart';
 
-class OrdersReportsScreen extends StatelessWidget {
+class OrdersReportsScreen extends StatefulWidget {
   static const String routeName = '/orders-reports';
 
-//   reports
-// from: date picker
-// to  : date picker
-// checkbox:
-// 1. shipment report
-// 2. report of invoice
-// 3. balance report
-// 4. transfer report
-// text feild email
-// btn
+  @override
+  _OrdersReportsScreenState createState() => _OrdersReportsScreenState();
+}
 
+class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
   final _formKey = new GlobalKey<FormState>();
 
   OrderReport _orderReport = OrderReport();
+
+  void confirmFromDate(date) {
+    setState(() {
+      _orderReport.fromDate = date;
+    });
+  }
+
+  void confirmToDate(date) {
+    setState(() {
+      _orderReport.toDate = date;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,14 +135,18 @@ class OrdersReportsScreen extends StatelessWidget {
                           print('change $date');
                         }, onConfirm: (date) {
                           print('confirm $date');
-                          _orderReport.fromDate = date;
+                          confirmFromDate(date);
                         }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                       child: Text(
-                        'From',
+                        'Select date',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
+                    _orderReport.fromDate == null
+                        ? Text('')
+                        : Text(
+                            '${_orderReport.fromDate.year}-${_orderReport.fromDate.month}-${_orderReport.fromDate.day}'),
                   ],
                 ),
                 Row(
@@ -151,14 +161,18 @@ class OrdersReportsScreen extends StatelessWidget {
                           print('change $date');
                         }, onConfirm: (date) {
                           print('confirm $date');
-                          _orderReport.toDate = date;
+                          confirmToDate(date);
                         }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                       child: Text(
-                        'to',
+                        'Select date',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
+                    _orderReport.toDate == null
+                        ? Text('')
+                        : Text(
+                            '${_orderReport.toDate.year}-${_orderReport.toDate.month}-${_orderReport.toDate.day}'),
                   ],
                 ),
                 shipmentReport,

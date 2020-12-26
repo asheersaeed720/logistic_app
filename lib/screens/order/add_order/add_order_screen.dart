@@ -54,7 +54,6 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           "Delivery outside Riyadh \n                 ${deliveryCost['delivery_cost']}",
-                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Container(
@@ -66,7 +65,6 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
                           "Delivery inside Riyadh \n                 ${deliveryCost['delivery_cost_inside']}",
-                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                     ],

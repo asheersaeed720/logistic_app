@@ -126,7 +126,9 @@ class OrderSuccess extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text('$senderName'),
                         const SizedBox(height: 6),
-                        Text('$senderCity'),
+                        Text(senderCity
+                            .toString()
+                            .replaceAll(RegExp(r'[0-9]'), '')),
                         const SizedBox(height: 6),
                         Text('$senderContact'),
                         const SizedBox(height: 6),
@@ -150,7 +152,9 @@ class OrderSuccess extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text('$receiverName'),
                         const SizedBox(height: 6),
-                        Text('$receiverCity'),
+                        Text(receiverCity
+                            .toString()
+                            .replaceAll(RegExp(r'[0-9]'), '')),
                         const SizedBox(height: 6),
                         Text('$receiverContact'),
                         const SizedBox(height: 6),

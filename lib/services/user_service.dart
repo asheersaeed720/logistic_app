@@ -93,7 +93,7 @@ class UserService {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
-      ).timeout(const Duration(seconds: 6), onTimeout: () {
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
         throw TimeoutException(
             'The connection has timed out, Please try again!');
       });
@@ -120,7 +120,7 @@ class UserService {
           'APP_KEY': '${WebApi.appKey}',
           'x-api-key': '${user['token']}',
         },
-      ).timeout(const Duration(seconds: 6), onTimeout: () {
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
         throw TimeoutException(
             'The connection has timed out, Please try again!');
       });
@@ -204,7 +204,7 @@ class UserService {
             .map((i) => Balance.fromJson(i))
             .toList();
       } else {
-        throw ('Failed to load Address');
+        throw ('Failed to load Balance');
       }
     } on SocketException {
       throw ('No Internet connection');
@@ -228,7 +228,7 @@ class UserService {
             .map((i) => NotificationMessage.fromJson(i))
             .toList();
       } else {
-        throw ('Failed to load Address');
+        throw ('Failed to load Notifications');
       }
     } on SocketException {
       throw ('No Internet connection');

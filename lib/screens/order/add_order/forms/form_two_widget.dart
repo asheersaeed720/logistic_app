@@ -66,8 +66,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     var fragileCheckedValue = formOneDetails['fragileCheckedValue'];
     var selectedTime = formOneDetails['selectedTime'];
     var collectionCash = formOneDetails['collectionCash'];
-    var refNo = formOneDetails['refNo'];
+    // double calculateVat = (double.parse(collectionCash) * 15) / 100;
+    // double collectionCashVat = double.parse(collectionCash) + calculateVat;
     List deliveryCost = formOneDetails['deliveryCost'];
+    var refNo = formOneDetails['refNo'];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -308,6 +310,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
             deliveryCost[0]['delivery_cost_inside'];
+        // _timer.cancel();
       });
     } else {
       _timer = Timer(Duration(seconds: 1), () {
@@ -315,8 +318,6 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             orderPvd.calculatedDeliveryCost = deliveryCost[0]['delivery_cost'];
       });
     }
-
-    print(orderPvd.calculatedDeliveryCost);
 
     return Card(
       child: Container(
@@ -337,22 +338,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             Text('$senderContact'),
             const SizedBox(height: 6),
             if (orderPvd.orderPayer == 'Sender')
-              if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                      'ar-Riyad' &&
-                  (receiverCity.toString() == '(ar-Riyad)' ||
-                      receiverCity
-                              .toString()
-                              .replaceAll(RegExp(r'[0-9]'), '') ==
-                          'ar-Riyad'))
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
-              else
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
+              Text(
+                'Delivery cost: ${orderPvd.calculatedDeliveryCost}',
+                style: TextStyle(color: Theme.of(context).errorColor),
+              )
             else
               Text('', style: TextStyle(fontSize: 2)),
           ],
@@ -404,22 +393,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             Text('$senderContact'),
             const SizedBox(height: 6),
             if (orderPvd.orderPayer == 'Sender')
-              if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                      'ar-Riyad' &&
-                  (receiverCity.toString() == '(ar-Riyad)' ||
-                      receiverCity
-                              .toString()
-                              .replaceAll(RegExp(r'[0-9]'), '') ==
-                          'ar-Riyad'))
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
-              else
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
+              Text(
+                'Delivery cost: ${orderPvd.calculatedDeliveryCost}',
+                style: TextStyle(color: Theme.of(context).errorColor),
+              )
             else
               Text('', style: TextStyle(fontSize: 2)),
           ],
@@ -475,20 +452,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             Text('$receiverContact'),
             const SizedBox(height: 6),
             if (orderPvd.orderPayer == 'Receiver')
-              if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                      'ar-Riyad' &&
-                  (senderCity.toString() == '(ar-Riyad)' ||
-                      senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                          'ar-Riyad'))
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
-              else
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
+              Text(
+                'Delivery cost: ${orderPvd.calculatedDeliveryCost}',
+                style: TextStyle(color: Theme.of(context).errorColor),
+              )
             else
               Text('', style: TextStyle(fontSize: 2)),
             Text(
@@ -546,20 +513,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
             Text('$receiverContact'),
             const SizedBox(height: 6),
             if (orderPvd.orderPayer == 'Receiver')
-              if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                      'ar-Riyad' &&
-                  (senderCity.toString() == '(ar-Riyad)' ||
-                      senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                          'ar-Riyad'))
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
-              else
-                Text(
-                  'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-                  style: TextStyle(color: Theme.of(context).errorColor),
-                )
+              Text(
+                'Delivery cost: ${orderPvd.calculatedDeliveryCost}',
+                style: TextStyle(color: Theme.of(context).errorColor),
+              )
             else
               Text('', style: TextStyle(fontSize: 2)),
             Text(

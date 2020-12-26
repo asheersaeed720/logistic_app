@@ -12,8 +12,6 @@ class CODAmountScreen extends StatefulWidget {
 }
 
 class _CODAmountScreenState extends State<CODAmountScreen> {
-  final DateTime now = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     final userPvd = Provider.of<UserProvider>(context);

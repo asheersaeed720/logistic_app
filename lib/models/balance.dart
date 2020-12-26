@@ -8,13 +8,14 @@ class Balance {
 
   String balance;
   String pending;
-  DateTime lastTransaction;
+  var lastTransaction;
   List<Transaction> transactions;
 
   factory Balance.fromJson(Map<String, dynamic> json) => Balance(
         balance: json["balance"],
         pending: json["pending"],
-        lastTransaction: DateTime.parse(json["last_transaction"]),
+        // lastTransaction: DateTime.parse(json["last_transaction"]),
+        lastTransaction: json["last_transaction"],
         transactions: List<Transaction>.from(
             json["transactions"].map((i) => Transaction.fromJson(i))),
       );

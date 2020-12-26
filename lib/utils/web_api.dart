@@ -47,6 +47,8 @@ class WebApi {
   static const String withDrawAmountURL = baseURL + '/Users/withdraw';
 
   static const String reportOrderURL = baseURL + '/reports/report';
+
+  static const String getCouponCodeURL = baseURL + '/Coupon/coupon/data';
 }
 
 // TEST LOGIN CREDENTIAL
