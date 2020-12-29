@@ -63,8 +63,7 @@ class OrderService {
   ) async {
     var result;
 
-    var orderTotalAmount =
-        double.parse(collectionCash) + double.parse(deliveryCost);
+    var orderTotalAmount = double.parse(collectionCash) + deliveryCost;
     print(orderTotalAmount);
 
     final orderData = {
