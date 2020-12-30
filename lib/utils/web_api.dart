@@ -48,7 +48,7 @@ class WebApi {
 
   static const String reportOrderURL = baseURL + '/reports/report';
 
-  static const String getCouponCodeURL = baseURL + '/Coupon/coupon/data';
+  static const String getCouponCodeURL = baseURL + '/Coupon/coupon';
 }
 
 // TEST LOGIN CREDENTIAL

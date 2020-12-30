@@ -457,4 +457,28 @@ class OrderService {
       throw ('No Internet connection');
     }
   }
+
+  Future<Map> getCouponCode(user, couponCode) async {
+    var result;
+
+    var response = await get(
+      '${WebApi.getCouponCodeURL}/$couponCode',
+      headers: {
+        'APP_KEY': '${WebApi.appKey}',
+        'x-api-key': user['token'],
+      },
+    );
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      result = {'status': true, 'message': 'Successful', 'user': responseJson};
+    } else {
+      result = {
+        'status': false,
+        'message': json.decode(response.body),
+      };
+    }
+
+    return result;
+  }
 }

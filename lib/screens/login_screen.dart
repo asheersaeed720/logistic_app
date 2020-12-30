@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         FlatButton(
           padding: const EdgeInsets.all(0.0),
           child: Text(
-            "${getTranslatedValue(context, 'forgot_password?')}",
+            "${getTranslatedValue(context, 'forgot_password')}",
             style: TextStyle(fontSize: 15.0),
           ),
           onPressed: () {

@@ -2,12 +2,14 @@ class Balance {
   Balance({
     this.balance,
     this.pending,
+    this.cancelled,
     this.lastTransaction,
     this.transactions,
   });
 
   String balance;
   String pending;
+  String cancelled;
   var lastTransaction;
   List<Transaction> transactions;
 
@@ -15,6 +17,7 @@ class Balance {
         balance: json["balance"],
         pending: json["pending"],
         // lastTransaction: DateTime.parse(json["last_transaction"]),
+        cancelled: json["cancelled"],
         lastTransaction: json["last_transaction"],
         transactions: List<Transaction>.from(
             json["transactions"].map((i) => Transaction.fromJson(i))),
@@ -23,6 +26,7 @@ class Balance {
   Map<String, dynamic> toJson() => {
         "balance": balance,
         "pending": pending,
+        "cancelled": cancelled,
         "last_transaction": lastTransaction.toIso8601String(),
         "transactions": List<dynamic>.from(transactions.map((i) => i.toJson())),
       };

@@ -105,7 +105,8 @@ class UserAccountScreen extends StatelessWidget {
               footer: GridTileBar(
                 backgroundColor: CustomColor.gradientEnd,
                 title: Text(
-                  "Bank Transfer",
+                  // "Bank Transfer",
+                  '${getTranslatedValue(context, 'bank_transfer')}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -260,7 +261,9 @@ class UserAccountScreen extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (dialogContext) => AlertDialog(
-                  title: Text('Logout'),
+                  title: Text(
+                    '${getTranslatedValue(context, 'logout')}',
+                  ),
                   content: Text('Are you sure, You want to Logout?'),
                   actions: [
                     FlatButton(

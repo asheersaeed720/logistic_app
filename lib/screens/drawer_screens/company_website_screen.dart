@@ -33,13 +33,10 @@ class CompanyWebsiteScreen extends StatelessWidget {
             RaisedButton(
               color: Theme.of(context).primaryColor,
               onPressed: _launchURL,
-              child: Container(
-                width: MediaQuery.of(context).size.width / 4.5,
-                child: Text(
-                  'Visit Here',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+              child: Text(
+                'Visit Here',
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
             ),

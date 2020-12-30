@@ -22,6 +22,13 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _loadingForCoupon = false;
+  bool get loadingForCoupon => _loadingForCoupon;
+  set loadingForCoupon(bool loadVal) {
+    _loadingForCoupon = loadVal;
+    notifyListeners();
+  }
+
   // ORDER REPORT
 
   bool _isShipmentReportSelected = false;
@@ -316,47 +323,6 @@ class OrderProvider with ChangeNotifier {
     isLoading = false;
   }
 
-  int _stepOrderFormNumber = 1;
-  int get stepOrderFormNumber => _stepOrderFormNumber;
-  set stepOrderFormNumber(int value) {
-    _stepOrderFormNumber = value;
-    notifyListeners();
-  }
-
-  // String _senderDefaultAddressNotFound = '';
-  // String get senderDefaultAddressNotFound => _senderDefaultAddressNotFound;
-  // set senderDefaultAddressNotFound(String value) {
-  //   _senderDefaultAddressNotFound = value;
-  //   notifyListeners();
-  // }
-
-  // String _receiverDefaultAddressNotFound = '';
-  // String get receiverDefaultAddressNotFound => _receiverDefaultAddressNotFound;
-  // set receiverDefaultAddressNotFound(String value) {
-  //   _receiverDefaultAddressNotFound = value;
-  //   notifyListeners();
-  // }
-
-  // resetSenderDefaultAddressNotFound() {
-  //   senderDefaultAddressNotFound = '';
-  // }
-
-  // resetReceiverDefaultAddressNotFound() {
-  //   receiverDefaultAddressNotFound = '';
-  //   notifyListeners();
-  // }
-
-  formNavigation() {
-    if (stepOrderFormNumber == 1)
-      stepOrderFormNumber = 2;
-    else
-      stepOrderFormNumber = 1;
-  }
-
-  resetFormNavigation() {
-    stepOrderFormNumber = 1;
-  }
-
   Future<List<Order>> getOrders(user) {
     return _orderService.getUserOrder(user);
   }
@@ -373,13 +339,11 @@ class OrderProvider with ChangeNotifier {
 
   Future<List<Order>> getSearchOrderByMobile(
       context, user, mobileNo, trackingNo) {
-    // isSearchOrderVisible = true;
     return _orderService.getSearchUserOrderByMobile(
         context, user, mobileNo, trackingNo);
   }
 
   Future<List<Order>> getSearch(user, mobileNo, trackingNo) {
-    // isSearchOrderVisible = true;
     return _orderService.getSearch(user, mobileNo, trackingNo);
   }
 
@@ -497,5 +461,70 @@ class OrderProvider with ChangeNotifier {
 
   Future<List<Order>> trackShipment(context, user, mobileNo) {
     return _orderService.trackUserShipment(context, user, mobileNo);
+  }
+
+  double _couponValue = 0.0;
+  double get couponValue => _couponValue;
+  set couponValue(double val) {
+    _couponValue = val;
+    notifyListeners();
+  }
+
+  String _collectionCashWithDiscount;
+  String get collectionCashWithDiscount => _collectionCashWithDiscount;
+  set collectionCashWithDiscount(String val) {
+    _collectionCashWithDiscount = val;
+    notifyListeners();
+  }
+
+  addDiscountToCollectionCash(context, collectionCash, couponCodeAmount) {
+    if (double.parse(collectionCash) > couponCodeAmount) {
+      couponValue = couponCodeAmount;
+      collectionCashWithDiscount = collectionCash;
+      Fluttertoast.showToast(
+        msg: "Coupon has been applied",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(double.parse(collectionCash) - couponValue);
+      return double.parse(collectionCash) - couponValue;
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: 'COD amount must be greater than discount amount',
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+  }
+
+  Future<Map> getCouponCode(context, user, couponCode, collectionCash) async {
+    loadingForCoupon = true;
+    final response = await _orderService.getCouponCode(user, couponCode);
+
+    if (response['status'] == true) {
+      addDiscountToCollectionCash(context, collectionCash,
+          double.parse(response['user']['coupon_value']));
+      // Fluttertoast.showToast(
+      //   msg: "Coupon has been applied",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.black87,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
+    } else {
+      Flushbar(
+        title: "Failed",
+        message: response['message']['message'].toString(),
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
+
+    loadingForCoupon = false;
   }
 }

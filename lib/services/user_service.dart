@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
 import 'package:hani_almutairi_logistic/models/balance.dart';
+import 'package:hani_almutairi_logistic/models/city.dart';
 import 'package:hani_almutairi_logistic/models/notification.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:http/http.dart';
@@ -267,5 +268,26 @@ class UserService {
     }
 
     return result;
+  }
+
+  Future<List<City>> getDropCityList() async {
+    try {
+      var response = await get(
+        '${WebApi.getCitiesURL}',
+        headers: {
+          'APP_KEY': '${WebApi.appKey}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseJson = json.decode(response.body);
+        print(responseJson);
+        return (responseJson as List).map((i) => City.fromJson(i)).toList();
+      } else {
+        throw ('Failed to load Cities');
+      }
+    } on SocketException {
+      throw ('No Internet connection');
+    }
   }
 }

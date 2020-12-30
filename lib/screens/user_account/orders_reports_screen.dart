@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/order_report.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
@@ -36,7 +37,10 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
     final authPvd = Provider.of<AuthProvider>(context);
 
     final shipmentReport = CheckboxListTile(
-      title: Text('Shipment report'),
+      title: Text(
+        // 'Shipment report',
+        '${getTranslatedValue(context, 'shipment_report')}',
+      ),
       value: orderPvd.isShipmentReportSelected,
       onChanged: (value) {
         orderPvd.setShipmentReportSelected(value);
@@ -45,7 +49,10 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
     );
 
     final invoiceReport = CheckboxListTile(
-      title: Text('Report of invoice'),
+      title: Text(
+        // 'Report of invoice',
+        '${getTranslatedValue(context, 'report_of_invoice')}',
+      ),
       value: orderPvd.isInvoiceReportSelected,
       onChanged: (value) {
         orderPvd.setInvoiceReportSelected(value);
@@ -54,7 +61,10 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
     );
 
     final balanceReport = CheckboxListTile(
-      title: Text('Balance Report'),
+      title: Text(
+        // 'Balance Report',
+        '${getTranslatedValue(context, 'balance_report')}',
+      ),
       value: orderPvd.isBalanceReportSelected,
       onChanged: (value) {
         orderPvd.setBalanceReportSelected(value);
@@ -63,7 +73,10 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
     );
 
     final transferReport = CheckboxListTile(
-      title: Text('Transfer Report'),
+      title: Text(
+        // 'Transfer Report',
+        '${getTranslatedValue(context, 'transfer_report')}',
+      ),
       value: orderPvd.isSelectedTransferReport,
       onChanged: (value) {
         orderPvd.setSelectedTransferReport(value);
@@ -76,7 +89,8 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
       validator: (value) => value.isEmpty ? "Please fill this" : null,
       onSaved: (value) => _orderReport.email = value,
       keyboardType: TextInputType.emailAddress,
-      decoration: buildTextFieldInputDecoration("Email", Icons.mail),
+      decoration: buildTextFieldInputDecoration(
+          "${getTranslatedValue(context, 'email')}", Icons.mail),
     );
 
     final submit = Material(
@@ -101,7 +115,7 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
           }
         },
         child: Text(
-          "Submit",
+          "${getTranslatedValue(context, 'submit')}",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -114,7 +128,7 @@ class _OrdersReportsScreenState extends State<OrdersReportsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Report'),
+        title: Text('${getTranslatedValue(context, 'order_report')}'),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/search_bank.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/user_provider.dart';
@@ -51,7 +52,8 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
       onSaved: (value) => accountNo = value,
       keyboardType: TextInputType.number,
       decoration: buildTextFieldInputDecoration(
-        "Account Number(IBAN)",
+        // "Account Number(IBAN)",
+        "${getTranslatedValue(context, 'logout')}(IBAN)",
         Icons.account_box,
       ),
     );
@@ -101,7 +103,7 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bank Transfer Account'),
+        title: Text('${getTranslatedValue(context, 'logout')}'),
       ),
       body: Center(
         child: SingleChildScrollView(

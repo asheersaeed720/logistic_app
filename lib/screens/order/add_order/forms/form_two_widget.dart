@@ -28,6 +28,7 @@ class FormTwoWidget extends StatefulWidget {
 
 class _FormTwoWidgetState extends State<FormTwoWidget> {
   final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
 
   String _couponCode;
 
@@ -66,8 +67,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     var fragileCheckedValue = formOneDetails['fragileCheckedValue'];
     var selectedTime = formOneDetails['selectedTime'];
     var collectionCash = formOneDetails['collectionCash'];
-    // double calculateVat = (double.parse(collectionCash) * 15) / 100;
-    // double collectionCashVat = double.parse(collectionCash) + calculateVat;
+
     List deliveryCost = formOneDetails['deliveryCost'];
     var refNo = formOneDetails['refNo'];
 
@@ -206,7 +206,8 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                                 style: TextStyle(fontSize: 2),
                               ),
                         Text(
-                          '$collectionCash riyals will be added to your balance if the delivery is successful',
+                          // '$collectionCash riyals will be added to your balance if the delivery is successful',
+                          '$collectionCash ${getTranslatedValue(context, 'riyals_will_be_added_to_your_balance')}',
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -217,7 +218,7 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
                 const SizedBox(height: 16),
 
                 // DELIVERY COST SECTION
-                _buildDeliveryCostAndCoupon(context, orderPvd),
+                _buildDeliveryCostAndCoupon(context, orderPvd, collectionCash),
 
                 orderPvd.isLoading
                     ? LoadingIndicator()
@@ -530,42 +531,68 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
   }
 
   // DELIVERY COST SECTION
-  Widget _buildDeliveryCostAndCoupon(context, orderPvd) {
+  Widget _buildDeliveryCostAndCoupon(context, orderPvd, collectionCash) {
+    final authPvd = Provider.of<AuthProvider>(context);
     final couponCodeField = TextFormField(
       onSaved: (value) => _couponCode = value,
       keyboardType: TextInputType.name,
+      validator: (value) => value.isEmpty ? "Please enter coupon code" : null,
       decoration: buildTextFieldInputDecoration(
           "${getTranslatedValue(context, 'coupon')}", Icons.tag_faces_sharp),
     );
-    return Column(
-      children: [
-        HeadingTitle(
-            "${getTranslatedValue(context, 'who_will_be_paying_the_delievery')}"),
-        const SizedBox(height: 6),
-        RadioListTile(
-          value: "${getTranslatedValue(context, 'sender')}",
-          groupValue: orderPvd.orderPayer,
-          title: Text("${getTranslatedValue(context, 'sender_to_pay')}"),
-          activeColor: Theme.of(context).primaryColor,
-          onChanged: (currentVal) {
-            orderPvd.setOrderPayer(currentVal);
-          },
-        ),
-        RadioListTile(
-          value: "${getTranslatedValue(context, 'receiver')}",
-          groupValue: orderPvd.orderPayer,
-          title: Text("${getTranslatedValue(context, 'receiver_to_pay')}"),
-          activeColor: Theme.of(context).primaryColor,
-          onChanged: (currentVal) {
-            orderPvd.setOrderPayer(currentVal);
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-          child: couponCodeField,
-        ),
-        const SizedBox(height: 10),
-      ],
+
+    return Form(
+      key: _formKey1,
+      child: Column(
+        children: [
+          HeadingTitle(
+              "${getTranslatedValue(context, 'who_will_be_paying_the_delievery')}"),
+          const SizedBox(height: 6),
+          RadioListTile(
+            value: "${getTranslatedValue(context, 'sender')}",
+            groupValue: orderPvd.orderPayer,
+            title: Text("${getTranslatedValue(context, 'sender_to_pay')}"),
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: (currentVal) {
+              orderPvd.setOrderPayer(currentVal);
+            },
+          ),
+          RadioListTile(
+            value: "${getTranslatedValue(context, 'receiver')}",
+            groupValue: orderPvd.orderPayer,
+            title: Text("${getTranslatedValue(context, 'receiver_to_pay')}"),
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: (currentVal) {
+              orderPvd.setOrderPayer(currentVal);
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+            child: couponCodeField,
+          ),
+          // orderPvd.loadingForCoupon
+          //     ? LoadingIndicator()
+          //     : RaisedButton(
+          //         onPressed: () {
+          //           if (_formKey1.currentState.validate()) {
+          //             _formKey1.currentState.save();
+          //             orderPvd.getCouponCode(
+          //               context,
+          //               authPvd.user,
+          //               _couponCode,
+          //               collectionCash,
+          //             );
+          //           }
+          //         },
+          //         child: Text(
+          //           "Add Coupon code",
+          //           style: TextStyle(color: Colors.white),
+          //         ),
+          //         color: Theme.of(context).primaryColor,
+          //       ),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 
@@ -574,254 +601,4 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     super.dispose();
     _timer.cancel();
   }
-
-  // SENDER & RECEIVER DETAIL SECTION
-  // Widget _buildSenderAndReceiverDetail(
-  //   context,
-  //   user,
-  //   userPvd,
-  //   orderPvd,
-  //   collectionCash,
-  //   deliveryCost,
-  //   // SENDER DETIALS
-  //   selectedSenderAddressId,
-  //   senderName,
-  //   senderCity,
-  //   senderAddress,
-  //   senderDistrict,
-  //   senderContact,
-  //   List<UserAddress> senderDetail,
-  //   // RECEIVER DETIALS
-  //   selectedReceiverAddressId,
-  //   receiverName,
-  //   receiverCity,
-  //   receiverAddress,
-  //   receiverDistrict,
-  //   receiverContact,
-  // ) {
-  //   return Row(
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       selectedSenderAddressId != null
-  //           ? FutureBuilder<List<UserAddress>>(
-  //               future:
-  //                   userPvd.getUserAddressById(user, selectedSenderAddressId),
-  //               builder: (context, snapshot) {
-  //                 List<UserAddress> userAddresses = snapshot.data;
-  //                 if (snapshot.hasData) {
-  //                   return Card(
-  //                     child: Container(
-  //                       width: MediaQuery.of(context).size.width / 2.5,
-  //                       height: MediaQuery.of(context).size.height / 3.8,
-  //                       padding: const EdgeInsets.symmetric(
-  //                           vertical: 16, horizontal: 6),
-  //                       child: Column(
-  //                         children: [
-  //                           Text(
-  //                             'Sender Detail',
-  //                             style: TextStyle(fontWeight: FontWeight.bold),
-  //                           ),
-  //                           const SizedBox(height: 8),
-  //                           Text('${userAddresses[0].fullname}'),
-  //                           const SizedBox(height: 6),
-  //                           Text('${userAddresses[0].cityName}'),
-  //                           const SizedBox(height: 6),
-  //                           Text('${userAddresses[0].mobile}'),
-  //                           const SizedBox(height: 6),
-  //                           if (orderPvd.orderPayer == 'Sender')
-  //                             if (userAddresses[0].cityName == 'ar-Riyad' &&
-  //                                 receiverCity
-  //                                         .toString()
-  //                                         .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                                     'ar-Riyad')
-  //                               Text(
-  //                                 'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-  //                                 style: TextStyle(
-  //                                     color: Theme.of(context).errorColor),
-  //                               )
-  //                             else
-  //                               Text(
-  //                                 'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-  //                                 style: TextStyle(
-  //                                     color: Theme.of(context).errorColor),
-  //                               )
-  //                           else
-  //                             Text('', style: TextStyle(fontSize: 2)),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   );
-  //                 } else if (snapshot.hasError) {
-  //                   return Center(
-  //                     child: Text('${snapshot.error}'),
-  //                   );
-  //                 }
-  //                 return LoadingIndicator();
-  //               },
-  //             )
-  //           : Card(
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width / 2.5,
-  //                 height: MediaQuery.of(context).size.height / 3.8,
-  //                 padding:
-  //                     const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
-  //                 child: Column(
-  //                   children: [
-  //                     Text(
-  //                       'Sender Detail',
-  //                       style: TextStyle(fontWeight: FontWeight.bold),
-  //                     ),
-  //                     const SizedBox(height: 8),
-  //                     Text('$senderName'),
-  //                     const SizedBox(height: 6),
-  //                     Text(senderCity
-  //                         .toString()
-  //                         .replaceAll(RegExp(r'[0-9]'), '')),
-  //                     const SizedBox(height: 6),
-  //                     Text('$senderContact'),
-  //                     const SizedBox(height: 6),
-  //                     if (orderPvd.orderPayer == 'Sender')
-  //                       if (senderCity
-  //                                   .toString()
-  //                                   .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                               'ar-Riyad' &&
-  //                           receiverCity
-  //                                   .toString()
-  //                                   .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                               'ar-Riyad')
-  //                         Text(
-  //                           'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-  //                           style:
-  //                               TextStyle(color: Theme.of(context).errorColor),
-  //                         )
-  //                       else
-  //                         Text(
-  //                           'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-  //                           style:
-  //                               TextStyle(color: Theme.of(context).errorColor),
-  //                         )
-  //                     else
-  //                       Text('', style: TextStyle(fontSize: 2)),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //       Icon(Icons.arrow_forward_rounded),
-  //       selectedReceiverAddressId != null
-  //           ? FutureBuilder<List<UserAddress>>(
-  //               future:
-  //                   userPvd.getUserAddressById(user, selectedReceiverAddressId),
-  //               builder: (context, snapshot) {
-  //                 List<UserAddress> userAddresses = snapshot.data;
-  //                 if (snapshot.hasData) {
-  //                   return Card(
-  //                     child: Container(
-  //                       width: MediaQuery.of(context).size.width / 2.5,
-  //                       height: MediaQuery.of(context).size.height / 3.8,
-  //                       padding: const EdgeInsets.symmetric(
-  //                           vertical: 16, horizontal: 6),
-  //                       child: Column(
-  //                         children: [
-  //                           Text(
-  //                             'Receiver Detail',
-  //                             style: TextStyle(fontWeight: FontWeight.bold),
-  //                           ),
-  //                           const SizedBox(height: 8),
-  //                           Text('${userAddresses[0].fullname}'),
-  //                           const SizedBox(height: 6),
-  //                           Text('${userAddresses[0].cityName}'),
-  //                           const SizedBox(height: 6),
-  //                           Text('${userAddresses[0].mobile}'),
-  //                           const SizedBox(height: 6),
-  //                           if (orderPvd.orderPayer == 'Receiver')
-  //                             if (userAddresses[0].cityName == 'ar-Riyad' &&
-  //                                 receiverCity
-  //                                         .toString()
-  //                                         .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                                     'ar-Riyad')
-  //                               Text(
-  //                                 'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-  //                                 style: TextStyle(
-  //                                     color: Theme.of(context).errorColor),
-  //                               )
-  //                             else
-  //                               Text(
-  //                                 'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-  //                                 style: TextStyle(
-  //                                     color: Theme.of(context).errorColor),
-  //                               )
-  //                           else
-  //                             Text('', style: TextStyle(fontSize: 2)),
-  //                           Text(
-  //                             'COD Amount: $collectionCash',
-  //                             style: TextStyle(color: Colors.green),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   );
-  //                 } else if (snapshot.hasError) {
-  //                   return Center(
-  //                     child: Text('${snapshot.error}'),
-  //                   );
-  //                 }
-  //                 return LoadingIndicator();
-  //               },
-  //             )
-  //           : Card(
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width / 2.5,
-  //                 height: MediaQuery.of(context).size.height / 3.8,
-  //                 padding:
-  //                     const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-  //                 child: Column(
-  //                   children: [
-  //                     Text(
-  //                       'Receiver Detail',
-  //                       style: TextStyle(fontWeight: FontWeight.bold),
-  //                     ),
-  //                     const SizedBox(height: 8),
-  //                     Text('$receiverName'),
-  //                     const SizedBox(height: 6),
-  //                     Text(receiverCity
-  //                         .toString()
-  //                         .replaceAll(RegExp(r'[0-9]'), '')),
-  //                     const SizedBox(height: 6),
-  //                     Text('$receiverContact'),
-  //                     const SizedBox(height: 6),
-  //                     if (orderPvd.orderPayer == 'Receiver')
-  //                       if (receiverCity
-  //                                   .toString()
-  //                                   .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                               'ar-Riyad' &&
-  //                           senderCity
-  //                                   .toString()
-  //                                   .replaceAll(RegExp(r'[0-9]'), '') ==
-  //                               'ar-Riyad')
-  //                         Text(
-  //                           'Delivery cost: ${deliveryCost[0]['delivery_cost_inside']}',
-  //                           style:
-  //                               TextStyle(color: Theme.of(context).errorColor),
-  //                         )
-  //                       else
-  //                         Text(
-  //                           'Delivery cost: ${deliveryCost[0]['delivery_cost']}',
-  //                           style:
-  //                               TextStyle(color: Theme.of(context).errorColor),
-  //                         )
-  //                     else
-  //                       Text('', style: TextStyle(fontSize: 2)),
-  //                     Text(
-  //                       'COD Amount: $collectionCash',
-  //                       style: TextStyle(color: Colors.green),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //     ],
-  //   );
-  // }
-
 }

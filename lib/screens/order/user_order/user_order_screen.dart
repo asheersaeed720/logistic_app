@@ -48,7 +48,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
             children: [
               _filterBtn(
                 context,
-                '  All Order',
+                '  ${getTranslatedValue(context, 'all_orders')}',
                 "${getTranslatedValue(context, 'mobile')}",
                 "${getTranslatedValue(context, 'receiver')}",
                 "${getTranslatedValue(context, 'sender')}",

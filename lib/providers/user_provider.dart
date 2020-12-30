@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hani_almutairi_logistic/models/balance.dart';
+import 'package:hani_almutairi_logistic/models/city.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'package:hani_almutairi_logistic/models/notification.dart';
@@ -151,5 +152,9 @@ class UserProvider with ChangeNotifier {
     }
 
     isLoading = false;
+  }
+
+  Future<List<City>> getDropCityList() async {
+    return await _userService.getDropCityList();
   }
 }

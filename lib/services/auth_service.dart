@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:hani_almutairi_logistic/models/city.dart';
 import 'package:hani_almutairi_logistic/models/search_bank.dart';
 import 'package:http/http.dart';
 import 'package:dio/dio.dart';

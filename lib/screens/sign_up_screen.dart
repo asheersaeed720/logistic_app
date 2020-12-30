@@ -253,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   children: [
                     // Image.asset('./assets/images/logo.png'),
                     Text(
-                      'Create an Account',
+                      '${getTranslatedValue(context, 'create_an_account')}',
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     const SizedBox(height: 30.0),

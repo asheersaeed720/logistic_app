@@ -273,7 +273,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
 
     final saveAddressCheckBox = CheckboxListTile(
-      title: Text("Save Address for future use"),
+      title:
+          Text("${getTranslatedValue(context, 'save_address_for_future_use')}"),
       value: orderPvd.isSenderAddressSave,
       onChanged: (value) {
         orderPvd.setSenderAddressChecked(value);
@@ -553,7 +554,8 @@ class _FormOneWidgetState extends State<FormOneWidget> {
     );
 
     final saveAddressCheckBox = CheckboxListTile(
-      title: Text("Save Address for future use"),
+      title:
+          Text("${getTranslatedValue(context, 'save_address_for_future_use')}"),
       value: orderPvd.isReceiverAddressSave,
       onChanged: (value) {
         orderPvd.setReceiverAddressChecked(value);

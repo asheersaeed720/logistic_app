@@ -37,14 +37,14 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
                       Column(
                         children: [
                           Text('Amount waiting transfer'),
-                          Text('${balance[0].balance}'),
+                          Text('${balance[0].pending}'),
                         ],
                       ),
                       Spacer(),
                       Column(
                         children: [
                           Text('Amount of shipment \n    did not deliver'),
-                          Text('${balance[0].pending}'),
+                          Text('${balance[0].cancelled}'),
                         ],
                       ),
                     ],
@@ -55,7 +55,7 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
                     children: [
                       Column(
                         children: [
-                          Text('Last one transections 27'),
+                          Text('Last one transections'),
                           Text('${balance[0].lastTransaction}'),
                         ],
                       ),
@@ -63,7 +63,7 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
                       Column(
                         children: [
                           Text('Balance is ready for withdraw'),
-                          Text('${balance[0].pending}'),
+                          Text('${balance[0].balance}'),
                         ],
                       ),
                     ],
@@ -75,56 +75,52 @@ class _CODAmountScreenState extends State<CODAmountScreen> {
                         horizontal: BorderSide(width: 1, color: Colors.grey),
                       ),
                     ),
-                    child: Table(
+                    child: Column(
                       children: [
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 6),
-                              child: Text('25'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 6),
-                              child: Text('800'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 6),
-                              child: Text('type'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 6),
-                              child: Text('amount'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 6, bottom: 6),
-                              child: Text('date'),
-                            ),
-                          ],
-                        ),
-                        // TableRow(
-                        //   children: [
-                        //     Text('    1'),
-                        //     Text('    2'),
-                        //     Text('    3'),
-                        //     Text('    4'),
-                        //     Padding(
-                        //       padding: EdgeInsets.only(bottom: 8),
-                        //       child: Text('25 Mar'),
-                        //     ),
-                        //   ],
-                        // ),
-
                         ...(balance)[0].transactions.map(
-                              (e) => TableRow(
+                              (e) => Column(
                                 children: [
-                                  Text('${e.id}'),
-                                  Text('${e.orderid}'),
-                                  Text('${e.type}'),
-                                  Text('${e.amount}'),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 8),
-                                    child: Text(
-                                        '${e.datetime.year} ${e.datetime.month} ${e.datetime.day}'),
+                                  Table(
+                                    children: [
+                                      TableRow(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text('id'),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text('orderid'),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text('userid'),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text('Datetime'),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 6, bottom: 6),
+                                            child: Text('amount'),
+                                          ),
+                                        ],
+                                      ),
+                                      TableRow(
+                                        children: [
+                                          Text('${e.id}'),
+                                          Text('${e.orderid}'),
+                                          Text('${e.userid}'),
+                                          Padding(
+                                            padding: EdgeInsets.only(bottom: 8),
+                                            child: Text(
+                                                '${e.datetime.year} ${e.datetime.month} ${e.datetime.day}'),
+                                          ),
+                                          Text('${e.amount}'),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 
 import 'package:provider/provider.dart';
 
@@ -22,14 +23,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final authPvd = Provider.of<AuthProvider>(context);
-
-    // final emailField = TextFormField(
-    //   validator: (value) => value.isEmpty ? "Please enter your email" : null,
-    //   keyboardType: TextInputType.emailAddress,
-    //   onSaved: (value) => _userCredential.mobileNo = value,
-    //   decoration: buildTextFieldInputDecoration(
-    //       "${getTranslatedValue(context, 'email')}", Icons.email),
-    // );
 
     final countriesCodeField = TextFormField(
       initialValue: '966',
@@ -75,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           }
         },
         child: Text(
-          'Submit',
+          '${getTranslatedValue(context, 'submit')}',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -88,7 +81,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: Text('${getTranslatedValue(context, 'forgot_password')}'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -111,7 +104,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         children: [
                           const SizedBox(height: 20),
                           Text(
-                            'Forgot Password',
+                            '${getTranslatedValue(context, 'forgot_password')}',
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           const SizedBox(height: 20),

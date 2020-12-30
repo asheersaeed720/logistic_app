@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hani_almutairi_logistic/localization/localization_contant.dart';
 import 'package:hani_almutairi_logistic/models/user_address.dart';
 import 'package:hani_almutairi_logistic/providers/auth_provider.dart';
 import 'package:hani_almutairi_logistic/providers/order_provider.dart';
@@ -53,7 +54,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Delivery outside Riyadh \n                 ${deliveryCost['delivery_cost']}",
+                          "${getTranslatedValue(context, 'Delivery_outside_riyadh')} \n                 ${deliveryCost['delivery_cost']}",
                         ),
                       ),
                       Container(
@@ -64,7 +65,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
-                          "Delivery inside Riyadh \n                 ${deliveryCost['delivery_cost_inside']}",
+                          "${getTranslatedValue(context, 'delivery_inside_riyadh')} \n                 ${deliveryCost['delivery_cost_inside']}",
                         ),
                       ),
                     ],
@@ -72,7 +73,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Note: Warning that prices not including VAT",
+                  "${getTranslatedValue(context, 'note_warning_that_prices_not_including_vat')}",
                   style: TextStyle(
                       fontSize: 16, color: Theme.of(context).errorColor),
                 ),
@@ -108,11 +109,11 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         color: Theme.of(context).primaryColor,
                       ),
                       Text(
-                        'Add Order',
+                        "${getTranslatedValue(context, 'add_order')}",
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       Text(
-                        'Create new order',
+                        "${getTranslatedValue(context, 'create_new_order')}",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
