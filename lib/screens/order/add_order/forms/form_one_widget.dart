@@ -784,6 +784,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
 
   Widget _customDropDownExample(
       BuildContext context, SearchCityModel item, String itemDesignation) {
+    Locale myLocale = Localizations.localeOf(context);
+
+    print(myLocale.languageCode);
     return Container(
       // padding: EdgeInsets.all(0),
       height: 28,
@@ -792,15 +795,22 @@ class _FormOneWidgetState extends State<FormOneWidget> {
               padding: const EdgeInsets.only(top: 6),
               child: Text('Select City'),
             )
-          : Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(item.name),
-            ),
+          : ((myLocale.languageCode == 'en')
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text(item.name),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Text(item.cityArabicName),
+                )),
     );
   }
 
   Widget _customPopupItemBuilderExample(
       BuildContext context, SearchCityModel item, bool isSelected) {
+    Locale myLocale = Localizations.localeOf(context);
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: !isSelected
@@ -812,7 +822,9 @@ class _FormOneWidgetState extends State<FormOneWidget> {
             ),
       child: ListTile(
         selected: isSelected,
-        title: Text(item.name),
+        title: (myLocale.languageCode == 'en')
+            ? Text(item.name)
+            : Text(item.cityArabicName),
       ),
     );
   }

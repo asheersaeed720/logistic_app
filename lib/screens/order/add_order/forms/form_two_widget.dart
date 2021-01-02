@@ -304,10 +304,12 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     // RECEIVER CITY
     receiverCity,
   ) {
-    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') == 'ar-Riyad' &&
-        (receiverCity.toString() == '(ar-Riyad)' ||
+    // print(senderCity);
+    if (senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
+            'inside Riyadh' &&
+        (receiverCity.toString() == '(inside Riyadh)' ||
             receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
+                'inside Riyadh')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
             double.parse(deliveryCost[0]['delivery_cost_inside']);
@@ -420,10 +422,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     senderCity,
   ) {
     if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-            'ar-Riyad' &&
-        (senderCity.toString() == '(ar-Riyad)' ||
+            'inside Riyadh' &&
+        (senderCity.toString() == '(inside Riyadh)' ||
             senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
+                'inside Riyadh')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
             double.parse(deliveryCost[0]['delivery_cost_inside']);
@@ -481,10 +483,10 @@ class _FormTwoWidgetState extends State<FormTwoWidget> {
     senderCity,
   ) {
     if (receiverCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-            'ar-Riyad' &&
-        (senderCity.toString() == '(ar-Riyad)' ||
+            'inside Riyadh' &&
+        (senderCity.toString() == '(inside Riyadh)' ||
             senderCity.toString().replaceAll(RegExp(r'[0-9]'), '') ==
-                'ar-Riyad')) {
+                'inside Riyadh')) {
       _timer = Timer(Duration(seconds: 1), () {
         orderPvd.calculatedDeliveryCost =
             double.parse(deliveryCost[0]['delivery_cost_inside']);

@@ -9,7 +9,8 @@ class WebApi {
 
   static const String userVerificationURL = baseURL + '/auth/verify';
 
-  static const String getCitiesURL = baseURL + '/locations/cities';
+  // static const String getCitiesURL = baseURL + '/locations/cities';
+  static const String getCitiesURL = 'https://demo.softologics.com/cities.php';
 
   static const String addOrderURL = baseURL + '/Orders/order';
 

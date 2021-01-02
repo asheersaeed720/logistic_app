@@ -61,11 +61,9 @@ class TabProvider with ChangeNotifier {
     switch (language.languageCode) {
       case 'en':
         _temp = Locale(language.languageCode, 'US');
-        // test = true;
         break;
       case 'ar':
         _temp = Locale(language.languageCode, 'SA');
-        // test = true;
         break;
 
       default:

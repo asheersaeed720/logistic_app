@@ -22,7 +22,6 @@ class AuthService {
           headers: {"APP_KEY": '${WebApi.appKey}'},
         ),
       );
-
       var models = SearchCityModel.fromJsonList(response.data);
       return models;
     } catch (e) {
